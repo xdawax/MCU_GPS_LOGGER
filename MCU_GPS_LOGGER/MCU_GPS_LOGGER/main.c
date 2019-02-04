@@ -9,14 +9,12 @@
 
 int main(void)
 {
-	USART_init();
-	
-	for (int i = 0; i < BUF_SIZE; i++)
-	{
+    USART_init();
+
     /* Replace with your application code */
     while (1) 
     {
-		USART_receive_byte();
+	USART_receive_byte();
     }
 	return 0;
 }
