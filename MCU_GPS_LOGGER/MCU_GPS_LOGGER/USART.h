@@ -18,13 +18,11 @@
 
 void USART_init();
 
-bool USART_is_ready();
+void USART_transmit_byte(uint8_t byte);
 
-void USART_transmit_byte(char byte);
+void USART_transmit_string(char *data);
 
-void USART_transmit_string(char *data, size_t size);
+uint8_t USART_receive_byte();
 
-char USART_receive_byte();
-
-void USART_receive_string(char *buf, size_t size) ;
+void USART_receive_string(char *buf, uint8_t size) ;
 #endif /* USART_H_ */

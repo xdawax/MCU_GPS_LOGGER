@@ -1,16 +1,20 @@
 /*
- * USART.c
+ * GPS_test.c
  *
- * Created: 2019-02-02 14:51:46
- *  Author: David
+ * Created: 2019-02-01 11:15:01
+ * Author : dawa
  */ 
-#include "USART.h"
 #include <avr/io.h>
+#include "USART.h"
 
-int main() {
-	USART_init();
-	
-	while (1) {
-		
-	}
+int main(void)
+{
+    USART_init();
+
+    /* Replace with your application code */
+    while (1) 
+    {
+	USART_receive_byte();
+    }
+	return 0;
 }
