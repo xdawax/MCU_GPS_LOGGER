@@ -73,11 +73,11 @@ Disassembly of section .text:
 
 00000080 <main>:
  */ 
-#include "USART.h"
 #include <avr/io.h>
+#include "USART.h"
 
-int main() {
-	USART_init();
+int main(void)
+{
   80:	0e 94 43 00 	call	0x86	; 0x86 <USART_init>
   84:	ff cf       	rjmp	.-2      	; 0x84 <main+0x4>
 
@@ -87,19 +87,19 @@ int main() {
 
 void USART_init()
 {
-	UCSR0B |= (1 << RXEN0) | (1 << TXEN0);	// enabling RX and TX
+	UCSR0B = (1 << TXEN0) | (1 << RXEN0);		// enable TX and RX
   86:	e1 ec       	ldi	r30, 0xC1	; 193
   88:	f0 e0       	ldi	r31, 0x00	; 0
   8a:	80 81       	ld	r24, Z
   8c:	88 61       	ori	r24, 0x18	; 24
   8e:	80 83       	st	Z, r24
-	UCSR0C &= ~((1 << UMSEL00) | (1 << UMSEL01)); // ensuring Asynchronous
+	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);     // 8 data bits, 1 stop bit
   90:	e2 ec       	ldi	r30, 0xC2	; 194
   92:	f0 e0       	ldi	r31, 0x00	; 0
   94:	80 81       	ld	r24, Z
   96:	8f 73       	andi	r24, 0x3F	; 63
   98:	80 83       	st	Z, r24
-	UBRR0L = 6;			// 9600 Bps
+	
   9a:	86 e0       	ldi	r24, 0x06	; 6
   9c:	80 93 c4 00 	sts	0x00C4, r24	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7e00c4>
   a0:	08 95       	ret
