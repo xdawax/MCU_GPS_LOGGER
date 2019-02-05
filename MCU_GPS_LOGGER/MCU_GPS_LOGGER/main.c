@@ -26,7 +26,7 @@ int main(void)
 	uint8_t c = 'c';
 	uint8_t d = 'd';
 	
-	USART_transmit_string("BEFORE:");
+	_delay_ms(100);
 	output(a, b, c, d);
 	
 	EEPROM_write_byte(a, 0x00);
@@ -39,7 +39,6 @@ int main(void)
 	c = EEPROM_read_byte(0x01);
 	d = EEPROM_read_byte(0x00);
 	
-	USART_transmit_string("AFTER:");
 	output(a, b, c, d);
     /* Replace with your application code */
     while (1) 
