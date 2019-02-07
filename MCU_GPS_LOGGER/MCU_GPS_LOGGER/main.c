@@ -4,7 +4,11 @@
  * Created: 2019-02-01 11:15:01
  * Author : dawa
  */ 
+
+#define F_CPU 1000000
+
 #include <avr/io.h>
+#include <util/delay.h>
 #include "USART.h"
 #include "EEPROM.h"
 

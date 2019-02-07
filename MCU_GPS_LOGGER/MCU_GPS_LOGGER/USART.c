@@ -4,8 +4,16 @@
  * Created: 2019-02-02 14:51:46
  *  Author: David
  */ 
-#include "USART.h"
+
+#ifndef F_CPU
+#define F_CPU 1000000
+#endif
+
 #include <avr/io.h>
+#include <stdbool.h>
+#include <stdint.h>
+
+#include "USART.h"
 
 void USART_init()
 {

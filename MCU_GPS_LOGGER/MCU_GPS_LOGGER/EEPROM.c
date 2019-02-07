@@ -5,9 +5,13 @@
  *  Author: dawa
  */ 
 
+#ifndef F_CPU
+#define F_CPU 1000000
+#endif
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "avr/delay.h"
+#include <util/delay.h>
 
 
 // automatically set to atomically RW
@@ -25,6 +29,21 @@ void EEPROM_write_byte(uint8_t byte, uint16_t address) {
 	sei();								// enable the interrupts
 }
 
+void EEPROM_write_byte_next_free(uint8_t byte) {
+	
+}
+
+
+// writes 4 byte to memory from specified address
+void EEPROM_write_word(uint32_t word, uint16_t address) {
+	
+}
+
+// writes a word to next free location in EEPROM
+void EEPROM_write_word_next_free(uint32_t word) {
+	
+}
+
 uint8_t EEPROM_read_byte(uint16_t address) {
 	cli();							// disable interrupts
 	
@@ -39,4 +58,20 @@ uint8_t EEPROM_read_byte(uint16_t address) {
 	
 	sei();							// enable interrupts
 	return byte;
+}
+
+// reads 4 byte from memory and returns it
+uint32_t EEPROM_read_word(uint16_t address){
+	return 0;
+}
+
+// gives the address of the next free byte [xxxxx(address)--------]
+// this is stored in the first 2 bytes of EEPROM memory
+uint16_t EEPROM_get_free_address() {
+	return 0;
+}
+
+// !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros 
+void EEPROM_clear() {
+	
 }

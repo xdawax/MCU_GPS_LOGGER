@@ -29,10 +29,12 @@ uint32_t EEPROM_read_word(uint16_t address);
 
 // gives the address of the next free byte [xxxxx(address)--------]
 // this is stored in the first 2 bytes of EEPROM memory
-uint16_t EEPROM_free_address();
+uint16_t EEPROM_get_free_address();
 
-// Overwrites the entire EEPROM with zeros
+// !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros
 void EEPROM_clear();
+
+
 
 
 

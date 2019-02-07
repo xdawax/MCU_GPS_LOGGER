@@ -10,6 +10,18 @@ Discarded input sections
  .text          0x00000000        0x0 EEPROM.o
  .data          0x00000000        0x0 EEPROM.o
  .bss           0x00000000        0x0 EEPROM.o
+ .text.EEPROM_write_byte_next_free
+                0x00000000        0x2 EEPROM.o
+ .text.EEPROM_write_word
+                0x00000000        0x2 EEPROM.o
+ .text.EEPROM_write_word_next_free
+                0x00000000        0x2 EEPROM.o
+ .text.EEPROM_read_word
+                0x00000000        0x8 EEPROM.o
+ .text.EEPROM_get_free_address
+                0x00000000        0x6 EEPROM.o
+ .text.EEPROM_clear
+                0x00000000        0x2 EEPROM.o
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
@@ -17,11 +29,11 @@ Discarded input sections
  .data          0x00000000        0x0 USART.o
  .bss           0x00000000        0x0 USART.o
  .text.USART_transmit_string
-                0x00000000       0x2c USART.o
+                0x00000000       0x1e USART.o
  .text.USART_receive_byte
-                0x00000000       0x10 USART.o
+                0x00000000       0x20 USART.o
  .text.USART_receive_string
-                0x00000000       0x2c USART.o
+                0x00000000       0x62 USART.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
@@ -165,7 +177,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x1a2
+.text           0x00000000      0x198
  *(.vectors)
  .vectors       0x00000000       0x68 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -259,19 +271,16 @@ END GROUP
  .text.main     0x000000ea       0x78 main.o
                 0x000000ea                main
  .text.USART_init
-                0x00000162       0x1c USART.o
+                0x00000162       0x22 USART.o
                 0x00000162                USART_init
- .text.USART_is_ready
-                0x0000017e        0xc USART.o
-                0x0000017e                USART_is_ready
  .text.USART_transmit_byte
-                0x0000018a       0x14 USART.o
-                0x0000018a                USART_transmit_byte
-                0x0000019e                . = ALIGN (0x2)
+                0x00000184       0x10 USART.o
+                0x00000184                USART_transmit_byte
+                0x00000194                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x0000019e        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x0000019e                _exit
-                0x0000019e                exit
+ .fini9         0x00000194        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x00000194                _exit
+                0x00000194                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -290,11 +299,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x0000019e        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x00000194        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x000001a2                _etext = .
+                0x00000198                _etext = .
 
-.data           0x00800100        0x0 load address 0x000001a2
+.data           0x00800100        0x0 load address 0x00000198
                 [!provide]                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -312,8 +321,8 @@ END GROUP
  *(.bss*)
  *(COMMON)
                 [!provide]                PROVIDE (__bss_end, .)
-                0x000001a2                __data_load_start = LOADADDR (.data)
-                0x000001a2                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00000198                __data_load_start = LOADADDR (.data)
+                0x00000198                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800100        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -386,60 +395,60 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0x98
+.debug_aranges  0x00000000       0xc0
  *(.debug_aranges)
  .debug_aranges
-                0x00000000       0x28 EEPROM.o
+                0x00000000       0x58 EEPROM.o
  .debug_aranges
-                0x00000028       0x28 main.o
+                0x00000058       0x28 main.o
  .debug_aranges
-                0x00000050       0x48 USART.o
+                0x00000080       0x40 USART.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000      0xc5f
+.debug_info     0x00000000      0xd2b
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_info    0x000005f4      0x16d EEPROM.o
- .debug_info    0x00000761      0x35e main.o
- .debug_info    0x00000abf      0x1a0 USART.o
+ .debug_info    0x000005f4      0x270 EEPROM.o
+ .debug_info    0x00000864      0x35e main.o
+ .debug_info    0x00000bc2      0x169 USART.o
 
-.debug_abbrev   0x00000000      0x8b5
+.debug_abbrev   0x00000000      0x910
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_abbrev  0x000005a2      0x100 EEPROM.o
- .debug_abbrev  0x000006a2      0x139 main.o
- .debug_abbrev  0x000007db       0xda USART.o
+ .debug_abbrev  0x000005a2      0x130 EEPROM.o
+ .debug_abbrev  0x000006d2      0x139 main.o
+ .debug_abbrev  0x0000080b      0x105 USART.o
 
-.debug_line     0x00000000      0x65e
+.debug_line     0x00000000      0x65a
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x133 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_line    0x00000133      0x19d EEPROM.o
- .debug_line    0x000002d0      0x1a0 main.o
- .debug_line    0x00000470      0x1ee USART.o
+ .debug_line    0x00000133      0x20b EEPROM.o
+ .debug_line    0x0000033e      0x1a0 main.o
+ .debug_line    0x000004de      0x17c USART.o
 
-.debug_frame    0x00000000      0x11c
+.debug_frame    0x00000000      0x188
  *(.debug_frame)
- .debug_frame   0x00000000       0x34 EEPROM.o
- .debug_frame   0x00000034       0x44 main.o
- .debug_frame   0x00000078       0xa4 USART.o
+ .debug_frame   0x00000000       0x94 EEPROM.o
+ .debug_frame   0x00000094       0x44 main.o
+ .debug_frame   0x000000d8       0xb0 USART.o
 
-.debug_str      0x00000000      0x475
+.debug_str      0x00000000      0x4d2
  *(.debug_str)
  .debug_str     0x00000000      0x208 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_str     0x00000208      0x1c5 EEPROM.o
-                                0x1fe (size before relaxing)
- .debug_str     0x000003cd       0x37 main.o
-                                0x211 (size before relaxing)
- .debug_str     0x00000404       0x71 USART.o
-                                0x206 (size before relaxing)
+ .debug_str     0x00000208      0x23e EEPROM.o
+                                0x284 (size before relaxing)
+ .debug_str     0x00000446       0x37 main.o
+                                0x212 (size before relaxing)
+ .debug_str     0x0000047d       0x55 USART.o
+                                0x1eb (size before relaxing)
 
-.debug_loc      0x00000000      0x456
+.debug_loc      0x00000000      0x462
  *(.debug_loc)
  .debug_loc     0x00000000       0xa9 EEPROM.o
  .debug_loc     0x000000a9      0x1ca main.o
- .debug_loc     0x00000273      0x1e3 USART.o
+ .debug_loc     0x00000273      0x1ef USART.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -459,11 +468,11 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0x68
+.debug_ranges   0x00000000       0x90
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x18 EEPROM.o
- .debug_ranges  0x00000018       0x18 main.o
- .debug_ranges  0x00000030       0x38 USART.o
+ .debug_ranges  0x00000000       0x48 EEPROM.o
+ .debug_ranges  0x00000048       0x18 main.o
+ .debug_ranges  0x00000060       0x30 USART.o
 
 .debug_macro
  *(.debug_macro)
