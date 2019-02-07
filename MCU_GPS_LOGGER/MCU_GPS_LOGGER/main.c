@@ -13,7 +13,7 @@
 #include "EEPROM.h"
 
 void test_TX_binary();
-
+void test_TX_word();
 
 
 int main(void)
@@ -22,12 +22,39 @@ int main(void)
 	
 	USART_clear_putty();
 	test_TX_binary();
+	test_TX_word();
 	/* Replace with your application code */
     while (1) 
     {	
 		
     }
 	return 0;
+}
+
+void test_TX_word() {
+	USART_transmit_string("TESTING: test_TX_binary\n\r");
+	uint32_t a = 1892392;
+	uint32_t b = 0;
+	uint32_t c = 4294967295;
+	uint32_t d = 19910;
+	
+	USART_transmit_string("Expected output 0001892392, got: ");
+	USART_transmit_word(a);
+	USART_transmit_string("\n\r");
+	
+	USART_transmit_string("Expected output 0000000000, got: ");
+	USART_transmit_word(b);
+	USART_transmit_string("\n\r");
+		
+	USART_transmit_string("Expected output 4294967295, got: ");
+	USART_transmit_word(c);
+	USART_transmit_string("\n\r");
+	
+	USART_transmit_string("Expected output 0000019910, got: ");
+	USART_transmit_word(d);
+	USART_transmit_string("\n\r");
+	
+	USART_transmit_string("TEST COMPLETED: test_TX_word\n\n\r");
 }
 
 void test_TX_binary() {

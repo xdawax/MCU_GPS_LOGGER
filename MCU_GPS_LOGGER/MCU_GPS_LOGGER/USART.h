@@ -12,6 +12,7 @@
 #define BUF_SIZE 255	
 #define BYTE 8
 #define WORD 4
+#define UINT32_DIGITS 10
 
 /// Sets up the USART for TX and RX communication
 /// BAUD 9600bps 2X speed
@@ -48,14 +49,14 @@ void USART_receive_string(char *buf, uint8_t size);
 
 /// transmits the value of byte as binary string with format 0bxxxxxxxx (x = 1/0)
 ///
-/// @param byte[in] the byte to be transmited as binary
+/// @param byte[in] the byte to be transmitted as binary
 ///
 /// @returns void
 void USART_transmit_binary(uint8_t byte);
 
-/// transmits the value of a word as base 10 value
+/// transmits the value of a word as base 10 value with leading zeros
 ///
-/// @param word[in] the word to be transmited 
+/// @param word[in] the word to be transmitted 
 ///
 /// @returns void
 void USART_transmit_word(uint32_t word);

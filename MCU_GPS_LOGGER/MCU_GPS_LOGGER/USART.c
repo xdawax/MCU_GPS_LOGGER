@@ -75,13 +75,21 @@ void USART_transmit_binary(uint8_t byte) {
 	}
 }
 
+void USART_transmit_word(uint32_t word) {
+	uint32_t divisor = 1000000000;
+
+	USART_transmit_byte((word / divisor) + '0');
+	
+	while (divisor > 1) {
+		divisor = divisor / 10;
+		USART_transmit_byte(((word / divisor) % 10) + '0');
+	}
+}
+
 void USART_clear_putty() {
 	for (uint8_t i = 0; i < 20; i++)
 	{
 		USART_transmit_byte('\n');
 	}
 	USART_transmit_byte('\r');
-}
-void USART_transmit_word(uint32_t word) {
-	// TODO
 }
