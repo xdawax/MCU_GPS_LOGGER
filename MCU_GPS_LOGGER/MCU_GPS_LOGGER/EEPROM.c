@@ -67,9 +67,18 @@ uint8_t EEPROM_read_byte(uint16_t address) {
 	return byte;
 }
 
-// reads 4 byte from memory and returns it
+// reads 4 byte from memory starting at address and returns it
 uint32_t EEPROM_read_word(uint16_t address){
-	return 0;
+	uint32_t byte = 0;
+	uint32_t word = 0;
+	
+	for (uint8_t i = 0; i < WORD; i++)
+	{
+		byte = EEPROM_read_byte(address + i);
+		word |= (byte << (WORD - i - 1) * BYTE);
+	}
+	
+	return word;
 }
 
 // gives the address of the next free byte [xxxxx(address)--------]
@@ -100,5 +109,5 @@ void EEPROM_clear() {
 	}
 	EEPROM_write_byte(0, ADDRESS_HIGH_BYTE);
 	EEPROM_write_byte(FIRST_DATA_BYTE, ADDRESS_LOW_BYTE);  // set the address of the first available byte as 2
-	USART_transmit_string("\n\rEEPROM CLEARED!\n\r");
+	USART_transmit_string("EEPROM CLEARED!\n\n\r");
 }

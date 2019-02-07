@@ -25,8 +25,8 @@ int main(void)
 	
 	
 	// can only run one test at the time since they will use same address-space
-	//test_RW_word();
-	test_RW_byte();
+	test_RW_word();
+	//test_RW_byte();
 	/* Replace with your application code */
     while (1) 
     {	
@@ -59,6 +59,22 @@ void test_RW_word() {
 		USART_transmit_byte(values[i] + '0');
 	}
 	USART_transmit_string("\n\r");
+	
+	uint32_t read_word = EEPROM_read_word(FIRST_DATA_BYTE);
+	if (read_word == word) {
+		USART_transmit_string("READING WORD: SUCCESS\n\r");
+	} else {
+		USART_transmit_string("READING WORD: FAILURE\n\r");
+		USART_transmit_string("GOT: ");
+		for (int i = FIRST_DATA_BYTE; i < FIRST_DATA_BYTE + 4; i++)
+		{
+			values[i] = EEPROM_read_byte(i);
+			USART_transmit_byte(values[i] + '0');
+		}
+		USART_transmit_string("\n\rEXPECTED: 16909060\n\r");
+	}
+	
+		
 	USART_transmit_string("TEST COMPLETED: test_RW_word\n\n\r");
 	
 }
