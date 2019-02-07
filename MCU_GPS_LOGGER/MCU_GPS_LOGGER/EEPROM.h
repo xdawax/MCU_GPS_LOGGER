@@ -11,7 +11,7 @@
 
 #define LAST_BYTE 1023
 #define FIRST_BYTE 0
-#define FIRST_DATA_BYTE
+#define FIRST_DATA_BYTE 2
 #define BYTE 8
 
 void EEPROM_write_byte(uint8_t byte, uint16_t address);

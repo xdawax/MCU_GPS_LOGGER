@@ -89,5 +89,5 @@ void EEPROM_clear() {
 	{
 		EEPROM_write_byte(0, i);
 	}
-	EEPROM_write_byte(FIRST_DATA_BYTE, 2);  // set the address of the first available byte as 2
+	EEPROM_write_byte(FIRST_DATA_BYTE, 1);  // set the address of the first available byte as 2
 }
