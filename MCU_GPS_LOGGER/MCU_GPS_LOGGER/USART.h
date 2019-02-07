@@ -10,6 +10,8 @@
 #define USART_H_
 
 #define BUF_SIZE 255	
+#define BYTE 8
+#define WORD 4
 
 /// Sets up the USART for TX and RX communication
 /// BAUD 9600bps 2X speed

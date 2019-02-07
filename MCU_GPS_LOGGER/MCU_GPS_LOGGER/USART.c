@@ -63,7 +63,16 @@ void USART_receive_string(char *buf, uint8_t size) {
 }
 
 void USART_transmit_binary(uint8_t byte) {
-	// TODO
+	USART_transmit_string("0b");
+	
+	for (uint8_t i = BYTE - 1; i < 255; i--)
+	{
+		if (byte & (1 << i)) {
+			USART_transmit_byte('1');
+		} else {
+			USART_transmit_byte('0');
+		}
+	}
 }
 
 void USART_transmit_word(uint32_t word) {
