@@ -25,8 +25,8 @@ int main(void)
 	
 	
 	// can only run one test at the time since they will use same address-space
-	test_RW_word();
-	//test_RW_byte();
+	//test_RW_word();
+	test_RW_byte();
 	/* Replace with your application code */
     while (1) 
     {	

@@ -93,7 +93,8 @@ uint16_t EEPROM_get_free_address() {
 // updates the free address to the next free byte using the size of last written data
 void EEPROM_set_free_address(uint8_t size) {
 	uint16_t last_address = EEPROM_get_free_address();
-	uint8_t last_address_low = last_address + size;			// set 8 lsb, WARNING!!! WHAT IF OF?
+	last_address += size;
+	uint8_t last_address_low = last_address;			// set 8 lsb, 
 	uint8_t last_address_high = (last_address >> BYTE);		// set 8 msb
 	EEPROM_write_byte(last_address_low, ADDRESS_LOW_BYTE);
 	EEPROM_write_byte(last_address_high, ADDRESS_HIGH_BYTE);
