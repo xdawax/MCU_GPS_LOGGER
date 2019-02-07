@@ -13,7 +13,7 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include "EEPROM.h"
-
+#include "USART.h"  // debugging
 
 // automatically set to atomically RW
 void EEPROM_write_byte(uint8_t byte, uint16_t address) {
@@ -23,10 +23,13 @@ void EEPROM_write_byte(uint8_t byte, uint16_t address) {
 	
 	EEAR = address;		// write address into address register
 	EEDR = byte;		// write data into data register
-	
 	EECR |= (1 << EEMPE);	// set Master Write Enable
 	EECR |= (1 << EEPE);	// within 4 clock cycles enable write
 	_delay_ms(5);			// write takes about 3-4 ms, R.I.P Run In Peace
+	
+	if (address >= FIRST_DATA_BYTE) {
+		EEPROM_set_free_address(1);	// stepping one byte at the time
+	}
 	sei();								// enable the interrupts
 }
 
@@ -49,7 +52,7 @@ void EEPROM_write_word_next_free(uint32_t word) {
 uint8_t EEPROM_read_byte(uint16_t address) {
 	cli();							// disable interrupts
 	
-	uint8_t byte = -1;
+	uint8_t byte = 0;
 	
 	while(EECR & (1 << EEPE));	// check that no one is writing data to EEPROM
 	
@@ -59,6 +62,7 @@ uint8_t EEPROM_read_byte(uint16_t address) {
 	byte = EEDR;
 	
 	sei();							// enable interrupts
+
 	return byte;
 }
 
@@ -70,7 +74,10 @@ uint32_t EEPROM_read_word(uint16_t address){
 // gives the address of the next free byte [xxxxx(address)--------]
 // this is stored in the first 2 bytes of EEPROM memory
 uint16_t EEPROM_get_free_address() {
-	return 0;
+	uint16_t address = 0;
+	address |= (EEPROM_read_byte(ADDRESS_HIGH_BYTE) << BYTE);	// set the 8 msb as the address high bits
+	address |= EEPROM_read_byte(ADDRESS_LOW_BYTE);				// set the 8 lsb as the address high bits
+	return address;
 }
 
 // updates the free address to the next free byte using the size of last written data
@@ -78,16 +85,12 @@ void EEPROM_set_free_address(uint8_t size) {
 	uint16_t last_address = EEPROM_get_free_address();
 	uint8_t last_address_low = last_address + size;			// set 8 lsb, WARNING!!! WHAT IF OF?
 	uint8_t last_address_high = (last_address >> BYTE);		// set 8 msb
-	EEPROM_write_byte(last_address_low, 0);
-	EEPROM_write_byte(last_address_high, 1);
+	EEPROM_write_byte(last_address_low, ADDRESS_LOW_BYTE);
+	EEPROM_write_byte(last_address_high, ADDRESS_HIGH_BYTE);
 }
 
-// !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros 
+// !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros and resets next free memory location
 void EEPROM_clear() {
-	// set all values to 0
-	for (int i = 0; i < LAST_BYTE; i++)
-	{
-		EEPROM_write_byte(0, i);
-	}
-	EEPROM_write_byte(FIRST_DATA_BYTE, 1);  // set the address of the first available byte as 2
+	EEPROM_write_byte(0, ADDRESS_HIGH_BYTE);
+	EEPROM_write_byte(FIRST_DATA_BYTE, ADDRESS_LOW_BYTE);  // set the address of the first available byte as 2
 }

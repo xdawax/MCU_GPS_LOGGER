@@ -11,6 +11,8 @@
 
 #define LAST_BYTE 1023
 #define FIRST_BYTE 0
+#define ADDRESS_HIGH_BYTE 0
+#define ADDRESS_LOW_BYTE 1
 #define FIRST_DATA_BYTE 2
 #define BYTE 8
 
@@ -36,7 +38,7 @@ uint16_t EEPROM_get_free_address();
 // updates the free address to the next free byte using the size of last written data
 void EEPROM_set_free_address(uint8_t size);
 
-// !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros
+// !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros and resets next free memory location
 void EEPROM_clear();
 
 

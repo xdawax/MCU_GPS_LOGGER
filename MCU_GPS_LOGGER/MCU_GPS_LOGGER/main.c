@@ -25,10 +25,11 @@ int main(void)
 {
     USART_init();
 	
-	uint8_t a = 'a';
-	uint8_t b = 'b';
-	uint8_t c = 'c';
-	uint8_t d = 'd';
+	EEPROM_clear();
+	uint8_t a = '1';
+	uint8_t b = '2';
+	uint8_t c = '3';
+	uint8_t d = '4';
 	
 	_delay_ms(100);
 	output(a, b, c, d);
@@ -38,10 +39,10 @@ int main(void)
 	EEPROM_write_byte_next_free(c);
 	EEPROM_write_byte_next_free(d);
 	
-	a = EEPROM_read_byte(0x03);
-	b = EEPROM_read_byte(0x02);
-	c = EEPROM_read_byte(0x01);
-	d = EEPROM_read_byte(0x00);
+	a = EEPROM_read_byte(0x05);
+	b = EEPROM_read_byte(0x04);
+	c = EEPROM_read_byte(0x03);
+	d = EEPROM_read_byte(0x02);
 	
 	output(a, b, c, d);
     /* Replace with your application code */

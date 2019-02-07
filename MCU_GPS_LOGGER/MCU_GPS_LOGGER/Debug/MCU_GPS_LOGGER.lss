@@ -3,29 +3,29 @@ MCU_GPS_LOGGER.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  000001e6  2**0
+  0 .data         00000000  00800100  00800100  00000262  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000192  00000000  00000000  00000054  2**1
+  1 .text         0000020e  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  000001e6  2**0
+  2 .comment      00000030  00000000  00000000  00000262  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000218  2**2
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000294  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 000000c8  00000000  00000000  00000258  2**0
+  4 .debug_aranges 000000c8  00000000  00000000  000002d4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00000e08  00000000  00000000  00000320  2**0
+  5 .debug_info   00000e5c  00000000  00000000  0000039c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000966  00000000  00000000  00001128  2**0
+  6 .debug_abbrev 0000095d  00000000  00000000  000011f8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000006a4  00000000  00000000  00001a8e  2**0
+  7 .debug_line   000006c6  00000000  00000000  00001b55  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  000001a4  00000000  00000000  00002134  2**2
+  8 .debug_frame  000001b4  00000000  00000000  0000221c  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    0000051a  00000000  00000000  000022d8  2**0
+  9 .debug_str    0000051a  00000000  00000000  000023d0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000518  00000000  00000000  000027f2  2**0
+ 10 .debug_loc    00000631  00000000  00000000  000028ea  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000098  00000000  00000000  00002d0a  2**0
+ 11 .debug_ranges 00000098  00000000  00000000  00002f1b  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -65,224 +65,316 @@ Disassembly of section .text:
   6e:	d8 e0       	ldi	r29, 0x08	; 8
   70:	de bf       	out	0x3e, r29	; 62
   72:	cd bf       	out	0x3d, r28	; 61
-  74:	0e 94 7a 00 	call	0xf4	; 0xf4 <main>
-  78:	0c 94 c7 00 	jmp	0x18e	; 0x18e <_exit>
+  74:	0e 94 b6 00 	call	0x16c	; 0x16c <main>
+  78:	0c 94 05 01 	jmp	0x20a	; 0x20a <_exit>
 
 0000007c <__bad_interrupt>:
   7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
-00000080 <EEPROM_write_byte>:
-void EEPROM_write_word(uint32_t word, uint16_t address) {
-	
+00000080 <EEPROM_read_byte>:
 }
 
-// writes a word to next free location in EEPROM
-void EEPROM_write_word_next_free(uint32_t word) {
+// reads 4 byte from memory and returns it
+uint32_t EEPROM_read_word(uint16_t address){
+	return 0;
+}
   80:	f8 94       	cli
   82:	f9 99       	sbic	0x1f, 1	; 31
-  84:	fe cf       	rjmp	.-4      	; 0x82 <EEPROM_write_byte+0x2>
-  86:	97 b7       	in	r25, 0x37	; 55
-  88:	72 bd       	out	0x22, r23	; 34
-  8a:	61 bd       	out	0x21, r22	; 33
-  8c:	80 bd       	out	0x20, r24	; 32
-  8e:	fa 9a       	sbi	0x1f, 2	; 31
-  90:	f9 9a       	sbi	0x1f, 1	; 31
-  92:	81 ee       	ldi	r24, 0xE1	; 225
-  94:	94 e0       	ldi	r25, 0x04	; 4
-  96:	01 97       	sbiw	r24, 0x01	; 1
-  98:	f1 f7       	brne	.-4      	; 0x96 <EEPROM_write_byte+0x16>
-  9a:	00 c0       	rjmp	.+0      	; 0x9c <EEPROM_write_byte+0x1c>
-  9c:	00 00       	nop
-  9e:	78 94       	sei
-  a0:	08 95       	ret
+  84:	fe cf       	rjmp	.-4      	; 0x82 <EEPROM_read_byte+0x2>
+  86:	92 bd       	out	0x22, r25	; 34
+  88:	81 bd       	out	0x21, r24	; 33
+  8a:	f8 9a       	sbi	0x1f, 0	; 31
+  8c:	80 b5       	in	r24, 0x20	; 32
+  8e:	78 94       	sei
+  90:	08 95       	ret
 
-000000a2 <EEPROM_write_byte_next_free>:
-  a2:	60 e0       	ldi	r22, 0x00	; 0
-  a4:	70 e0       	ldi	r23, 0x00	; 0
-  a6:	0e 94 40 00 	call	0x80	; 0x80 <EEPROM_write_byte>
-  aa:	08 95       	ret
+00000092 <EEPROM_get_free_address>:
 
-000000ac <EEPROM_read_byte>:
-	
+// gives the address of the next free byte [xxxxx(address)--------]
+// this is stored in the first 2 bytes of EEPROM memory
+uint16_t EEPROM_get_free_address() {
+  92:	cf 93       	push	r28
+	uint16_t address = 0;
+	address |= (EEPROM_read_byte(ADDRESS_HIGH_BYTE) << BYTE);	// set the 8 msb as the address high bits
+  94:	80 e0       	ldi	r24, 0x00	; 0
+  96:	90 e0       	ldi	r25, 0x00	; 0
+  98:	0e 94 40 00 	call	0x80	; 0x80 <EEPROM_read_byte>
+  9c:	c8 2f       	mov	r28, r24
+	address |= EEPROM_read_byte(ADDRESS_LOW_BYTE);				// set the 8 lsb as the address high bits
+  9e:	81 e0       	ldi	r24, 0x01	; 1
+  a0:	90 e0       	ldi	r25, 0x00	; 0
+  a2:	0e 94 40 00 	call	0x80	; 0x80 <EEPROM_read_byte>
+	return address;
+  a6:	2c 2f       	mov	r18, r28
+  a8:	30 e0       	ldi	r19, 0x00	; 0
+  aa:	32 2f       	mov	r19, r18
+  ac:	22 27       	eor	r18, r18
 }
+  ae:	a9 01       	movw	r20, r18
+  b0:	48 2b       	or	r20, r24
+  b2:	ca 01       	movw	r24, r20
+  b4:	cf 91       	pop	r28
+  b6:	08 95       	ret
 
-uint8_t EEPROM_read_byte(uint16_t address) {
-	cli();							// disable interrupts
-  ac:	f8 94       	cli
-	
-	uint8_t byte = -1;
-	
-	while(EECR & (1 << EEPE));	// check that no one is writing data to EEPROM
-  ae:	f9 99       	sbic	0x1f, 1	; 31
-  b0:	fe cf       	rjmp	.-4      	; 0xae <EEPROM_read_byte+0x2>
-	
-	EEAR = address;					// set address to read from
-  b2:	92 bd       	out	0x22, r25	; 34
-  b4:	81 bd       	out	0x21, r24	; 33
-	EECR |= (1 << EERE);			// enable reading 
-  b6:	f8 9a       	sbi	0x1f, 0	; 31
-	
-	byte = EEDR;
-  b8:	80 b5       	in	r24, 0x20	; 32
-	
-	sei();							// enable interrupts
-  ba:	78 94       	sei
-	return byte;
+000000b8 <EEPROM_set_free_address>:
+
+// updates the free address to the next free byte using the size of last written data
+void EEPROM_set_free_address(uint8_t size) {
+  b8:	cf 93       	push	r28
+  ba:	df 93       	push	r29
+  bc:	d8 2f       	mov	r29, r24
+	uint16_t last_address = EEPROM_get_free_address();
+  be:	0e 94 49 00 	call	0x92	; 0x92 <EEPROM_get_free_address>
+  c2:	c9 2f       	mov	r28, r25
+	uint8_t last_address_low = last_address + size;			// set 8 lsb, WARNING!!! WHAT IF OF?
+	uint8_t last_address_high = (last_address >> BYTE);		// set 8 msb
+	EEPROM_write_byte(last_address_low, ADDRESS_LOW_BYTE);
+  c4:	61 e0       	ldi	r22, 0x01	; 1
+  c6:	70 e0       	ldi	r23, 0x00	; 0
+  c8:	8d 0f       	add	r24, r29
+  ca:	0e 94 6f 00 	call	0xde	; 0xde <EEPROM_write_byte>
+	EEPROM_write_byte(last_address_high, ADDRESS_HIGH_BYTE);
+  ce:	60 e0       	ldi	r22, 0x00	; 0
+  d0:	70 e0       	ldi	r23, 0x00	; 0
+  d2:	8c 2f       	mov	r24, r28
+  d4:	0e 94 6f 00 	call	0xde	; 0xde <EEPROM_write_byte>
 }
-  bc:	08 95       	ret
+  d8:	df 91       	pop	r29
+  da:	cf 91       	pop	r28
+  dc:	08 95       	ret
 
-000000be <output>:
-#include <avr/io.h>
-#include <util/delay.h>
-#include "USART.h"
+000000de <EEPROM_write_byte>:
 #include "EEPROM.h"
+#include "USART.h"  // debugging
 
-void output(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
-  be:	1f 93       	push	r17
-  c0:	cf 93       	push	r28
-  c2:	df 93       	push	r29
-  c4:	16 2f       	mov	r17, r22
-  c6:	d4 2f       	mov	r29, r20
-  c8:	c2 2f       	mov	r28, r18
-	USART_transmit_byte(a);
-  ca:	0e 94 bf 00 	call	0x17e	; 0x17e <USART_transmit_byte>
-	USART_transmit_byte(b);
-  ce:	81 2f       	mov	r24, r17
-  d0:	0e 94 bf 00 	call	0x17e	; 0x17e <USART_transmit_byte>
-	USART_transmit_byte(c);
-  d4:	8d 2f       	mov	r24, r29
-  d6:	0e 94 bf 00 	call	0x17e	; 0x17e <USART_transmit_byte>
-	USART_transmit_byte(d);
-  da:	8c 2f       	mov	r24, r28
-  dc:	0e 94 bf 00 	call	0x17e	; 0x17e <USART_transmit_byte>
-	USART_transmit_byte('\n');
-  e0:	8a e0       	ldi	r24, 0x0A	; 10
-  e2:	0e 94 bf 00 	call	0x17e	; 0x17e <USART_transmit_byte>
-	USART_transmit_byte('\r');
-  e6:	8d e0       	ldi	r24, 0x0D	; 13
-  e8:	0e 94 bf 00 	call	0x17e	; 0x17e <USART_transmit_byte>
-}
-  ec:	df 91       	pop	r29
-  ee:	cf 91       	pop	r28
-  f0:	1f 91       	pop	r17
-  f2:	08 95       	ret
-
-000000f4 <main>:
-
-int main(void)
-{
-    USART_init();
-  f4:	0e 94 ae 00 	call	0x15c	; 0x15c <USART_init>
+// automatically set to atomically RW
+void EEPROM_write_byte(uint8_t byte, uint16_t address) {
+	cli();								// disable interrupts so we don't get interrupted between seting the master write and write
+  de:	f8 94       	cli
+	while(EECR & (1 << EEPE));			// wait until previous write is completed
+  e0:	f9 99       	sbic	0x1f, 1	; 31
+  e2:	fe cf       	rjmp	.-4      	; 0xe0 <EEPROM_write_byte+0x2>
+	while(SELFPRGEN & (1 << SPMCSR));
+  e4:	97 b7       	in	r25, 0x37	; 55
+	
+	EEAR = address;		// write address into address register
+  e6:	72 bd       	out	0x22, r23	; 34
+  e8:	61 bd       	out	0x21, r22	; 33
+	EEDR = byte;		// write data into data register
+  ea:	80 bd       	out	0x20, r24	; 32
+	EECR |= (1 << EEMPE);	// set Master Write Enable
+  ec:	fa 9a       	sbi	0x1f, 2	; 31
+	EECR |= (1 << EEPE);	// within 4 clock cycles enable write
+  ee:	f9 9a       	sbi	0x1f, 1	; 31
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
-  f8:	87 ea       	ldi	r24, 0xA7	; 167
-  fa:	91 e6       	ldi	r25, 0x61	; 97
-  fc:	01 97       	sbiw	r24, 0x01	; 1
-  fe:	f1 f7       	brne	.-4      	; 0xfc <main+0x8>
- 100:	00 c0       	rjmp	.+0      	; 0x102 <main+0xe>
- 102:	00 00       	nop
-	uint8_t b = 'b';
-	uint8_t c = 'c';
-	uint8_t d = 'd';
+  f0:	81 ee       	ldi	r24, 0xE1	; 225
+  f2:	94 e0       	ldi	r25, 0x04	; 4
+  f4:	01 97       	sbiw	r24, 0x01	; 1
+  f6:	f1 f7       	brne	.-4      	; 0xf4 <EEPROM_write_byte+0x16>
+  f8:	00 c0       	rjmp	.+0      	; 0xfa <EEPROM_write_byte+0x1c>
+  fa:	00 00       	nop
+	_delay_ms(5);			// write takes about 3-4 ms, R.I.P Run In Peace
+	
+	if (address >= FIRST_DATA_BYTE) {
+  fc:	62 30       	cpi	r22, 0x02	; 2
+  fe:	71 05       	cpc	r23, r1
+ 100:	18 f0       	brcs	.+6      	; 0x108 <EEPROM_write_byte+0x2a>
+		EEPROM_set_free_address(1);	// stepping one byte at the time
+ 102:	81 e0       	ldi	r24, 0x01	; 1
+ 104:	0e 94 5c 00 	call	0xb8	; 0xb8 <EEPROM_set_free_address>
+	}
+	sei();								// enable the interrupts
+ 108:	78 94       	sei
+ 10a:	08 95       	ret
+
+0000010c <EEPROM_write_byte_next_free>:
+}
+
+void EEPROM_write_byte_next_free(uint8_t byte) {
+ 10c:	cf 93       	push	r28
+ 10e:	c8 2f       	mov	r28, r24
+	uint16_t address = EEPROM_get_free_address();
+ 110:	0e 94 49 00 	call	0x92	; 0x92 <EEPROM_get_free_address>
+	EEPROM_write_byte(byte, address);
+ 114:	bc 01       	movw	r22, r24
+ 116:	8c 2f       	mov	r24, r28
+ 118:	0e 94 6f 00 	call	0xde	; 0xde <EEPROM_write_byte>
+}
+ 11c:	cf 91       	pop	r28
+ 11e:	08 95       	ret
+
+00000120 <EEPROM_clear>:
+	EEPROM_write_byte(last_address_high, ADDRESS_HIGH_BYTE);
+}
+
+// !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros and resets next free memory location
+void EEPROM_clear() {
+	EEPROM_write_byte(0, ADDRESS_HIGH_BYTE);
+ 120:	60 e0       	ldi	r22, 0x00	; 0
+ 122:	70 e0       	ldi	r23, 0x00	; 0
+ 124:	80 e0       	ldi	r24, 0x00	; 0
+ 126:	0e 94 6f 00 	call	0xde	; 0xde <EEPROM_write_byte>
+	EEPROM_write_byte(FIRST_DATA_BYTE, ADDRESS_LOW_BYTE);  // set the address of the first available byte as 2
+ 12a:	61 e0       	ldi	r22, 0x01	; 1
+ 12c:	70 e0       	ldi	r23, 0x00	; 0
+ 12e:	82 e0       	ldi	r24, 0x02	; 2
+ 130:	0e 94 6f 00 	call	0xde	; 0xde <EEPROM_write_byte>
+ 134:	08 95       	ret
+
+00000136 <output>:
+#include <avr/io.h>
+#include <util/delay.h>
+#include "USART.h"
+#include "EEPROM.h"
+
+void output(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
+ 136:	1f 93       	push	r17
+ 138:	cf 93       	push	r28
+ 13a:	df 93       	push	r29
+ 13c:	16 2f       	mov	r17, r22
+ 13e:	d4 2f       	mov	r29, r20
+ 140:	c2 2f       	mov	r28, r18
+	USART_transmit_byte(a);
+ 142:	0e 94 fd 00 	call	0x1fa	; 0x1fa <USART_transmit_byte>
+	USART_transmit_byte(b);
+ 146:	81 2f       	mov	r24, r17
+ 148:	0e 94 fd 00 	call	0x1fa	; 0x1fa <USART_transmit_byte>
+	USART_transmit_byte(c);
+ 14c:	8d 2f       	mov	r24, r29
+ 14e:	0e 94 fd 00 	call	0x1fa	; 0x1fa <USART_transmit_byte>
+	USART_transmit_byte(d);
+ 152:	8c 2f       	mov	r24, r28
+ 154:	0e 94 fd 00 	call	0x1fa	; 0x1fa <USART_transmit_byte>
+	USART_transmit_byte('\n');
+ 158:	8a e0       	ldi	r24, 0x0A	; 10
+ 15a:	0e 94 fd 00 	call	0x1fa	; 0x1fa <USART_transmit_byte>
+	USART_transmit_byte('\r');
+ 15e:	8d e0       	ldi	r24, 0x0D	; 13
+ 160:	0e 94 fd 00 	call	0x1fa	; 0x1fa <USART_transmit_byte>
+}
+ 164:	df 91       	pop	r29
+ 166:	cf 91       	pop	r28
+ 168:	1f 91       	pop	r17
+ 16a:	08 95       	ret
+
+0000016c <main>:
+
+int main(void)
+{
+    USART_init();
+ 16c:	0e 94 ec 00 	call	0x1d8	; 0x1d8 <USART_init>
+	
+	EEPROM_clear();
+ 170:	0e 94 90 00 	call	0x120	; 0x120 <EEPROM_clear>
+ 174:	87 ea       	ldi	r24, 0xA7	; 167
+ 176:	91 e6       	ldi	r25, 0x61	; 97
+ 178:	01 97       	sbiw	r24, 0x01	; 1
+ 17a:	f1 f7       	brne	.-4      	; 0x178 <main+0xc>
+ 17c:	00 c0       	rjmp	.+0      	; 0x17e <main+0x12>
+ 17e:	00 00       	nop
+	uint8_t b = '2';
+	uint8_t c = '3';
+	uint8_t d = '4';
 	
 	_delay_ms(100);
 	output(a, b, c, d);
- 104:	24 e6       	ldi	r18, 0x64	; 100
- 106:	43 e6       	ldi	r20, 0x63	; 99
- 108:	62 e6       	ldi	r22, 0x62	; 98
- 10a:	81 e6       	ldi	r24, 0x61	; 97
- 10c:	0e 94 5f 00 	call	0xbe	; 0xbe <output>
+ 180:	24 e3       	ldi	r18, 0x34	; 52
+ 182:	43 e3       	ldi	r20, 0x33	; 51
+ 184:	62 e3       	ldi	r22, 0x32	; 50
+ 186:	81 e3       	ldi	r24, 0x31	; 49
+ 188:	0e 94 9b 00 	call	0x136	; 0x136 <output>
 	
 	EEPROM_write_byte_next_free(a);
- 110:	81 e6       	ldi	r24, 0x61	; 97
- 112:	0e 94 51 00 	call	0xa2	; 0xa2 <EEPROM_write_byte_next_free>
+ 18c:	81 e3       	ldi	r24, 0x31	; 49
+ 18e:	0e 94 86 00 	call	0x10c	; 0x10c <EEPROM_write_byte_next_free>
 	EEPROM_write_byte_next_free(b);
- 116:	82 e6       	ldi	r24, 0x62	; 98
- 118:	0e 94 51 00 	call	0xa2	; 0xa2 <EEPROM_write_byte_next_free>
+ 192:	82 e3       	ldi	r24, 0x32	; 50
+ 194:	0e 94 86 00 	call	0x10c	; 0x10c <EEPROM_write_byte_next_free>
 	EEPROM_write_byte_next_free(c);
- 11c:	83 e6       	ldi	r24, 0x63	; 99
- 11e:	0e 94 51 00 	call	0xa2	; 0xa2 <EEPROM_write_byte_next_free>
+ 198:	83 e3       	ldi	r24, 0x33	; 51
+ 19a:	0e 94 86 00 	call	0x10c	; 0x10c <EEPROM_write_byte_next_free>
 	EEPROM_write_byte_next_free(d);
- 122:	84 e6       	ldi	r24, 0x64	; 100
- 124:	0e 94 51 00 	call	0xa2	; 0xa2 <EEPROM_write_byte_next_free>
+ 19e:	84 e3       	ldi	r24, 0x34	; 52
+ 1a0:	0e 94 86 00 	call	0x10c	; 0x10c <EEPROM_write_byte_next_free>
 	
-	a = EEPROM_read_byte(0x03);
- 128:	83 e0       	ldi	r24, 0x03	; 3
- 12a:	90 e0       	ldi	r25, 0x00	; 0
- 12c:	0e 94 56 00 	call	0xac	; 0xac <EEPROM_read_byte>
- 130:	c8 2f       	mov	r28, r24
-	b = EEPROM_read_byte(0x02);
- 132:	82 e0       	ldi	r24, 0x02	; 2
- 134:	90 e0       	ldi	r25, 0x00	; 0
- 136:	0e 94 56 00 	call	0xac	; 0xac <EEPROM_read_byte>
- 13a:	d8 2f       	mov	r29, r24
-	c = EEPROM_read_byte(0x01);
- 13c:	81 e0       	ldi	r24, 0x01	; 1
- 13e:	90 e0       	ldi	r25, 0x00	; 0
- 140:	0e 94 56 00 	call	0xac	; 0xac <EEPROM_read_byte>
- 144:	18 2f       	mov	r17, r24
-	d = EEPROM_read_byte(0x00);
- 146:	80 e0       	ldi	r24, 0x00	; 0
- 148:	90 e0       	ldi	r25, 0x00	; 0
- 14a:	0e 94 56 00 	call	0xac	; 0xac <EEPROM_read_byte>
+	a = EEPROM_read_byte(0x05);
+ 1a4:	85 e0       	ldi	r24, 0x05	; 5
+ 1a6:	90 e0       	ldi	r25, 0x00	; 0
+ 1a8:	0e 94 40 00 	call	0x80	; 0x80 <EEPROM_read_byte>
+ 1ac:	c8 2f       	mov	r28, r24
+	b = EEPROM_read_byte(0x04);
+ 1ae:	84 e0       	ldi	r24, 0x04	; 4
+ 1b0:	90 e0       	ldi	r25, 0x00	; 0
+ 1b2:	0e 94 40 00 	call	0x80	; 0x80 <EEPROM_read_byte>
+ 1b6:	d8 2f       	mov	r29, r24
+	c = EEPROM_read_byte(0x03);
+ 1b8:	83 e0       	ldi	r24, 0x03	; 3
+ 1ba:	90 e0       	ldi	r25, 0x00	; 0
+ 1bc:	0e 94 40 00 	call	0x80	; 0x80 <EEPROM_read_byte>
+ 1c0:	18 2f       	mov	r17, r24
+	d = EEPROM_read_byte(0x02);
+ 1c2:	82 e0       	ldi	r24, 0x02	; 2
+ 1c4:	90 e0       	ldi	r25, 0x00	; 0
+ 1c6:	0e 94 40 00 	call	0x80	; 0x80 <EEPROM_read_byte>
 	
 	output(a, b, c, d);
- 14e:	28 2f       	mov	r18, r24
- 150:	41 2f       	mov	r20, r17
- 152:	6d 2f       	mov	r22, r29
- 154:	8c 2f       	mov	r24, r28
- 156:	0e 94 5f 00 	call	0xbe	; 0xbe <output>
- 15a:	ff cf       	rjmp	.-2      	; 0x15a <main+0x66>
+ 1ca:	28 2f       	mov	r18, r24
+ 1cc:	41 2f       	mov	r20, r17
+ 1ce:	6d 2f       	mov	r22, r29
+ 1d0:	8c 2f       	mov	r24, r28
+ 1d2:	0e 94 9b 00 	call	0x136	; 0x136 <output>
+ 1d6:	ff cf       	rjmp	.-2      	; 0x1d6 <main+0x6a>
 
-0000015c <USART_init>:
+000001d8 <USART_init>:
 
 #include "USART.h"
 
 void USART_init()
 {
 	UCSR0B = (1 << TXEN0) | (1 << RXEN0);		// enable TX and RX
- 15c:	88 e1       	ldi	r24, 0x18	; 24
- 15e:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7e00c1>
+ 1d8:	88 e1       	ldi	r24, 0x18	; 24
+ 1da:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7e00c1>
 	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);     // 8 data bits, 1 stop bit
- 162:	86 e0       	ldi	r24, 0x06	; 6
- 164:	80 93 c2 00 	sts	0x00C2, r24	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7e00c2>
+ 1de:	86 e0       	ldi	r24, 0x06	; 6
+ 1e0:	80 93 c2 00 	sts	0x00C2, r24	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7e00c2>
 	
 	// Set baud to 9600
 	UBRR0H = 0;                        
- 168:	10 92 c5 00 	sts	0x00C5, r1	; 0x8000c5 <__TEXT_REGION_LENGTH__+0x7e00c5>
+ 1e4:	10 92 c5 00 	sts	0x00C5, r1	; 0x8000c5 <__TEXT_REGION_LENGTH__+0x7e00c5>
 	UBRR0L = 12;
- 16c:	8c e0       	ldi	r24, 0x0C	; 12
- 16e:	80 93 c4 00 	sts	0x00C4, r24	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7e00c4>
+ 1e8:	8c e0       	ldi	r24, 0x0C	; 12
+ 1ea:	80 93 c4 00 	sts	0x00C4, r24	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7e00c4>
 	// Set baud to 9600
 	
 	UCSR0A |= (1 << U2X0);						// 2X speed
- 172:	e0 ec       	ldi	r30, 0xC0	; 192
- 174:	f0 e0       	ldi	r31, 0x00	; 0
- 176:	80 81       	ld	r24, Z
- 178:	82 60       	ori	r24, 0x02	; 2
- 17a:	80 83       	st	Z, r24
- 17c:	08 95       	ret
+ 1ee:	e0 ec       	ldi	r30, 0xC0	; 192
+ 1f0:	f0 e0       	ldi	r31, 0x00	; 0
+ 1f2:	80 81       	ld	r24, Z
+ 1f4:	82 60       	ori	r24, 0x02	; 2
+ 1f6:	80 83       	st	Z, r24
+ 1f8:	08 95       	ret
 
-0000017e <USART_transmit_byte>:
+000001fa <USART_transmit_byte>:
 }
 
 void USART_transmit_byte(uint8_t byte) {
 	while(!(UCSR0A & (1 <<UDRE0)));	// wait until buffer is empty
- 17e:	e0 ec       	ldi	r30, 0xC0	; 192
- 180:	f0 e0       	ldi	r31, 0x00	; 0
- 182:	90 81       	ld	r25, Z
- 184:	95 ff       	sbrs	r25, 5
- 186:	fd cf       	rjmp	.-6      	; 0x182 <USART_transmit_byte+0x4>
+ 1fa:	e0 ec       	ldi	r30, 0xC0	; 192
+ 1fc:	f0 e0       	ldi	r31, 0x00	; 0
+ 1fe:	90 81       	ld	r25, Z
+ 200:	95 ff       	sbrs	r25, 5
+ 202:	fd cf       	rjmp	.-6      	; 0x1fe <USART_transmit_byte+0x4>
 	UDR0 = byte;
- 188:	80 93 c6 00 	sts	0x00C6, r24	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
- 18c:	08 95       	ret
+ 204:	80 93 c6 00 	sts	0x00C6, r24	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
+ 208:	08 95       	ret
 
-0000018e <_exit>:
- 18e:	f8 94       	cli
+0000020a <_exit>:
+ 20a:	f8 94       	cli
 
-00000190 <__stop_program>:
- 190:	ff cf       	rjmp	.-2      	; 0x190 <__stop_program>
+0000020c <__stop_program>:
+ 20c:	ff cf       	rjmp	.-2      	; 0x20c <__stop_program>
