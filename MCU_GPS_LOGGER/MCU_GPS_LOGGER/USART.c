@@ -75,6 +75,13 @@ void USART_transmit_binary(uint8_t byte) {
 	}
 }
 
+void USART_clear_putty() {
+	for (uint8_t i = 0; i < 20; i++)
+	{
+		USART_transmit_byte('\n');
+	}
+	USART_transmit_byte('\r');
+}
 void USART_transmit_word(uint32_t word) {
 	// TODO
 }

@@ -60,4 +60,9 @@ void USART_transmit_binary(uint8_t byte);
 /// @returns void
 void USART_transmit_word(uint32_t word);
 
+
+/// "clears" the putty screen by scrolling 20 rows
+///
+/// @returns void
+void USART_clear_putty();
 #endif /* USART_H_ */

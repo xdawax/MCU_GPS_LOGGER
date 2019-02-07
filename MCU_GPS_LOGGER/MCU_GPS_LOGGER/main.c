@@ -20,6 +20,7 @@ int main(void)
 {
     USART_init();
 	
+	USART_clear_putty();
 	test_TX_binary();
 	/* Replace with your application code */
     while (1) 
