@@ -11,8 +11,6 @@ int main(void)
 {
 	USART_init();
 	
-	for (int i = 0; i < BUF_SIZE; i++)
-	{
     /* Replace with your application code */
     while (1) 
     {
