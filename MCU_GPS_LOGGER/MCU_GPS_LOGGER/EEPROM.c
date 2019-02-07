@@ -84,5 +84,10 @@ void EEPROM_set_free_address(uint8_t size) {
 
 // !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros 
 void EEPROM_clear() {
-	
+	// set all values to 0
+	for (int i = 0; i < LAST_BYTE; i++)
+	{
+		EEPROM_write_byte(0, i);
+	}
+	EEPROM_write_byte(FIRST_DATA_BYTE, 2);  // set the address of the first available byte as 2
 }
