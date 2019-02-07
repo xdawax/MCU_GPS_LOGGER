@@ -33,7 +33,7 @@ void USART_transmit_byte(uint8_t byte) {
 	UDR0 = byte;
 }
 
-void USART_transmit_string(char *data) {
+void USART_transmit_string(char data[]) {
 	int i = 0;
 	
 	while(data[i]) {
@@ -44,7 +44,7 @@ void USART_transmit_string(char *data) {
 
 uint8_t USART_receive_byte() {
 	while (!(UCSR0A & (1 << RXC0))); 	// check if there is anything in the buffer.
-	USART_transmit_byte(UDR0);
+	USART_transmit_byte(UDR0);			// echo the character 
 	return UDR0;
 }
 
@@ -60,4 +60,12 @@ void USART_receive_string(char *buf, uint8_t size) {
 		}
 	}
 	
+}
+
+void USART_transmit_binary(uint8_t byte) {
+	// TODO
+}
+
+void USART_transmit_word(uint32_t word) {
+	// TODO
 }
