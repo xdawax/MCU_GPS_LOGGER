@@ -104,7 +104,7 @@ void EEPROM_set_free_address(uint8_t size) {
 // takes ~ 5ms/byte in EEPROM
 void EEPROM_clear() {
 	USART_transmit_string("CLEARING THE EEPROM. THIS MIGHT TAKE A WHILE!!!\n\r");
-	for (int i = FIRST_DATA_BYTE; i < 12; i++)	// only erase 10 first bytes debuggmode
+	for (int i = FIRST_DATA_BYTE; i < LAST_BYTE; i++)	// only erase 10 first bytes debuggmode
 	{
 		EEPROM_write_byte(0, i);
 	}

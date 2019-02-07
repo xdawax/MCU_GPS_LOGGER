@@ -187,7 +187,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x2f0
+.text           0x00000000      0x2f2
  *(.vectors)
  .vectors       0x00000000       0x68 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -288,29 +288,29 @@ END GROUP
                 0x00000124       0x14 EEPROM.o
                 0x00000124                EEPROM_write_byte_next_free
  .text.EEPROM_clear
-                0x00000138       0x42 EEPROM.o
+                0x00000138       0x44 EEPROM.o
                 0x00000138                EEPROM_clear
- .text.output   0x0000017a       0x36 main.o
-                0x0000017a                output
+ .text.output   0x0000017c       0x36 main.o
+                0x0000017c                output
  .text.test_RW_byte
-                0x000001b0       0xde main.o
-                0x000001b0                test_RW_byte
- .text.main     0x0000028e        0xe main.o
-                0x0000028e                main
+                0x000001b2       0xde main.o
+                0x000001b2                test_RW_byte
+ .text.main     0x00000290        0xe main.o
+                0x00000290                main
  .text.USART_init
-                0x0000029c       0x22 USART.o
-                0x0000029c                USART_init
+                0x0000029e       0x22 USART.o
+                0x0000029e                USART_init
  .text.USART_transmit_byte
-                0x000002be       0x10 USART.o
-                0x000002be                USART_transmit_byte
+                0x000002c0       0x10 USART.o
+                0x000002c0                USART_transmit_byte
  .text.USART_transmit_string
-                0x000002ce       0x1e USART.o
-                0x000002ce                USART_transmit_string
-                0x000002ec                . = ALIGN (0x2)
+                0x000002d0       0x1e USART.o
+                0x000002d0                USART_transmit_string
+                0x000002ee                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000002ec        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x000002ec                _exit
-                0x000002ec                exit
+ .fini9         0x000002ee        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x000002ee                _exit
+                0x000002ee                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -329,11 +329,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000002ec        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x000002ee        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x000002f0                _etext = .
+                0x000002f2                _etext = .
 
-.data           0x00800100      0x148 load address 0x000002f0
+.data           0x00800100      0x148 load address 0x000002f2
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -357,8 +357,8 @@ END GROUP
  *(.bss*)
  *(COMMON)
                 [!provide]                PROVIDE (__bss_end, .)
-                0x000002f0                __data_load_start = LOADADDR (.data)
-                0x00000438                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000002f2                __data_load_start = LOADADDR (.data)
+                0x0000043a                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800248        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
