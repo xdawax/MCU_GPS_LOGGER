@@ -12,21 +12,17 @@
 #include "USART.h"
 #include "EEPROM.h"
 
+void test_TX_binary();
+void test_TX_word();
 
-void output(uint8_t a, uint8_t b, uint8_t c, uint8_t d);
-void test_RW_byte();
-void test_RW_word();
 
 int main(void)
 {
     USART_init();
 	
-	EEPROM_clear();
-	
-	
-	// can only run one test at the time since they will use same address-space
-	//test_RW_word();
-	test_RW_byte();
+	USART_clear_putty();
+	test_TX_binary();
+	test_TX_word();
 	/* Replace with your application code */
     while (1) 
     {	
@@ -35,84 +31,54 @@ int main(void)
 	return 0;
 }
 
-void output(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
-	USART_transmit_byte(a);
-	USART_transmit_byte(b);
-	USART_transmit_byte(c);
-	USART_transmit_byte(d);
-	USART_transmit_byte('\n');
-	USART_transmit_byte('\r');
-}
-
-void test_RW_word() {
-	USART_transmit_string("TESTING: test_RW_word\n\r");
-	uint8_t values[4] = {0,0,0,0};
+void test_TX_word() {
+	USART_transmit_string("TESTING: test_TX_binary\n\r");
+	uint32_t a = 1892392;
+	uint32_t b = 0;
+	uint32_t c = 4294967295;
+	uint32_t d = 19910;
 	
-	uint32_t word = 0b00000001000000100000001100000100;  // [1,2,3,4] as seperate bytes
-	
-	USART_transmit_string("Expected output 1234: ");
-	EEPROM_write_word_next_free(word);
-	
-	for (int i = FIRST_DATA_BYTE; i < FIRST_DATA_BYTE + 4; i++)
-	{
-		values[i] = EEPROM_read_byte(i);
-		USART_transmit_byte(values[i] + '0');
-	}
+	USART_transmit_string("Expected output 0001892392, got: ");
+	USART_transmit_word(a);
 	USART_transmit_string("\n\r");
 	
-	uint32_t read_word = EEPROM_read_word(FIRST_DATA_BYTE);
-	if (read_word == word) {
-		USART_transmit_string("READING WORD: SUCCESS\n\r");
-	} else {
-		USART_transmit_string("READING WORD: FAILURE\n\r");
-		USART_transmit_string("GOT: ");
-		for (int i = FIRST_DATA_BYTE; i < FIRST_DATA_BYTE + 4; i++)
-		{
-			values[i] = EEPROM_read_byte(i);
-			USART_transmit_byte(values[i] + '0');
-		}
-		USART_transmit_string("\n\rEXPECTED: 16909060\n\r");
-	}
-	
+	USART_transmit_string("Expected output 0000000000, got: ");
+	USART_transmit_word(b);
+	USART_transmit_string("\n\r");
 		
-	USART_transmit_string("TEST COMPLETED: test_RW_word\n\n\r");
+	USART_transmit_string("Expected output 4294967295, got: ");
+	USART_transmit_word(c);
+	USART_transmit_string("\n\r");
 	
+	USART_transmit_string("Expected output 0000019910, got: ");
+	USART_transmit_word(d);
+	USART_transmit_string("\n\r");
+	
+	USART_transmit_string("TEST COMPLETED: test_TX_word\n\n\r");
 }
-void test_RW_byte() {
+
+void test_TX_binary() {
+	USART_transmit_string("TESTING: test_TX_binary\n\r");
+	uint8_t a = 0b11111111;
+	uint8_t b = 0b00000000;
+	uint8_t c = 0b01010101;
+	uint8_t d = 0b10101010;
 	
-	USART_transmit_string("TESTING: test_RW_byte\n\r");
-	uint8_t a = '1';
-	uint8_t b = '2';
-	uint8_t c = '3';
-	uint8_t d = '4';
+	USART_transmit_string("Expected output 0b11111111, got: ");
+	USART_transmit_binary(a);
+	USART_transmit_string("\n\r");
 	
-	USART_transmit_string("Expected output 1234: ");
-	output(a, b, c, d);
+	USART_transmit_string("Expected output 0b00000000, got ");
+	USART_transmit_binary(b);
+	USART_transmit_string("\n\r");
 	
-	EEPROM_write_byte_next_free(a);
-	EEPROM_write_byte_next_free(b);
-	EEPROM_write_byte_next_free(c);
-	EEPROM_write_byte_next_free(d);
+	USART_transmit_string("Expected output 0b01010101, got ");
+	USART_transmit_binary(c);
+	USART_transmit_string("\n\r");
 	
-	a = EEPROM_read_byte(0x05);
-	b = EEPROM_read_byte(0x04);
-	c = EEPROM_read_byte(0x03);
-	d = EEPROM_read_byte(0x02);
+	USART_transmit_string("Expected output 0b10101010, got ");
+	USART_transmit_binary(d);
+	USART_transmit_string("\n\r");
 	
-	USART_transmit_string("Expected output 4321: ");
-	output(a, b, c, d);
-	
-	EEPROM_write_byte_next_free('a');
-	EEPROM_write_byte_next_free('b');
-	EEPROM_write_byte_next_free('c');
-	EEPROM_write_byte_next_free('d');
-	
-	a = EEPROM_read_byte(0x09);
-	b = EEPROM_read_byte(0x08);
-	c = EEPROM_read_byte(0x07);
-	d = EEPROM_read_byte(0x06);
-		
-	USART_transmit_string("Expected output dcba: ");
-	output(a, b, c, d);
-	USART_transmit_string("TEST COMPLETED: test_RW_byte\n\n\r");
+	USART_transmit_string("TEST COMPLETED: test_TX_binary\n\n\r");
 }
