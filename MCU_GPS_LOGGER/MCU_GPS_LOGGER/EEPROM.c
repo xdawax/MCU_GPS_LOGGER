@@ -12,6 +12,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include "EEPROM.h"
 
 
 // automatically set to atomically RW
@@ -25,12 +26,13 @@ void EEPROM_write_byte(uint8_t byte, uint16_t address) {
 	
 	EECR |= (1 << EEMPE);	// set Master Write Enable
 	EECR |= (1 << EEPE);	// within 4 clock cycles enable write
-	_delay_ms(5);			// write takes about 3-4 ms, R.I.P run in peace
+	_delay_ms(5);			// write takes about 3-4 ms, R.I.P Run In Peace
 	sei();								// enable the interrupts
 }
 
 void EEPROM_write_byte_next_free(uint8_t byte) {
-	
+	uint16_t address = EEPROM_get_free_address();
+	EEPROM_write_byte(byte, address);
 }
 
 
@@ -69,6 +71,15 @@ uint32_t EEPROM_read_word(uint16_t address){
 // this is stored in the first 2 bytes of EEPROM memory
 uint16_t EEPROM_get_free_address() {
 	return 0;
+}
+
+// updates the free address to the next free byte using the size of last written data
+void EEPROM_set_free_address(uint8_t size) {
+	uint16_t last_address = EEPROM_get_free_address();
+	uint8_t last_address_low = last_address + size;			// set 8 lsb
+	uint8_t last_address_high = (last_address >> BYTE);		// set 8 msb
+	EEPROM_write_byte(last_address_low, 0);
+	EEPROM_write_byte(last_address_high, 1);
 }
 
 // !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros 

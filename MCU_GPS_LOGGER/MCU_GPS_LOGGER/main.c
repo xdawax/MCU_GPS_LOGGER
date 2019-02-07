@@ -33,10 +33,10 @@ int main(void)
 	_delay_ms(100);
 	output(a, b, c, d);
 	
-	EEPROM_write_byte(a, 0x00);
-	EEPROM_write_byte(b, 0x01);
-	EEPROM_write_byte(c, 0x02);
-	EEPROM_write_byte(d, 0x03);
+	EEPROM_write_byte_next_free(a);
+	EEPROM_write_byte_next_free(b);
+	EEPROM_write_byte_next_free(c);
+	EEPROM_write_byte_next_free(d);
 	
 	a = EEPROM_read_byte(0x03);
 	b = EEPROM_read_byte(0x02);
