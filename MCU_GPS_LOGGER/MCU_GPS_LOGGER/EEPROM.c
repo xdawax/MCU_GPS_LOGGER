@@ -38,15 +38,16 @@ void EEPROM_write_byte_next_free(uint8_t byte) {
 	EEPROM_write_byte(byte, address);
 }
 
-
-// writes 4 byte to memory from specified address
-void EEPROM_write_word(uint32_t word, uint16_t address) {
-	
-}
-
 // writes a word to next free location in EEPROM
 void EEPROM_write_word_next_free(uint32_t word) {
 	
+	uint8_t byte = 0;
+	
+	for (uint8_t i = WORD-1; i < 255; i--)
+	{	
+		byte = (word >> (i * BYTE));			// take the 8 msb and store them at a time [1010101011111111] => [10101010] at address n, [11111111] at address n+1
+		EEPROM_write_byte_next_free(byte);
+	}
 }
 
 uint8_t EEPROM_read_byte(uint16_t address) {
@@ -90,7 +91,14 @@ void EEPROM_set_free_address(uint8_t size) {
 }
 
 // !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros and resets next free memory location
+// takes ~ 5ms/byte in EEPROM
 void EEPROM_clear() {
+	USART_transmit_string("CLEARING THE EEPROM. THIS MIGHT TAKE A WHILE!!!\n\r");
+	for (int i = FIRST_DATA_BYTE; i < 12; i++)	// only erase 10 first bytes debuggmode
+	{
+		EEPROM_write_byte(0, i);
+	}
 	EEPROM_write_byte(0, ADDRESS_HIGH_BYTE);
 	EEPROM_write_byte(FIRST_DATA_BYTE, ADDRESS_LOW_BYTE);  // set the address of the first available byte as 2
+	USART_transmit_string("\n\rEEPROM CLEARED!\n\r");
 }

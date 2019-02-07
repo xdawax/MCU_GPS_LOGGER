@@ -15,12 +15,10 @@
 #define ADDRESS_LOW_BYTE 1
 #define FIRST_DATA_BYTE 2
 #define BYTE 8
+#define WORD 4
 
 void EEPROM_write_byte(uint8_t byte, uint16_t address);
 void EEPROM_write_byte_next_free(uint8_t byte);
-
-// writes 4 byte to memory from specified address
-void EEPROM_write_word(uint32_t word, uint16_t address);
 
 // writes a word to next free location in EEPROM
 void EEPROM_write_word_next_free(uint32_t word);
