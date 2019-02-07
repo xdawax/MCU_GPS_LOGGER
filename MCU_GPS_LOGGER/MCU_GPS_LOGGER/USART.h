@@ -10,9 +10,7 @@
 #define USART_H_
 
 
-#include <stdbool.h>
-#include <stdlib.h>
-#include <avr/delay.h>
+
 
 #define BUF_SIZE 255
 
