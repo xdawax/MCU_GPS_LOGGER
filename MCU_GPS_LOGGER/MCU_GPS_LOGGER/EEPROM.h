@@ -9,6 +9,8 @@
 #ifndef EEPROM_H_
 #define EEPROM_H_
 
+#include <stdint.h>
+
 #define LAST_BYTE 1023			// address-space ends
 #define FIRST_BYTE 0			// address-space start
 #define ADDRESS_HIGH_BYTE 0		// memory header that contains the 8 highest bits of a pointer to the next free spot in memory
