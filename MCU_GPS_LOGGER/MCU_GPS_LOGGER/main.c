@@ -32,7 +32,7 @@ int main(void)
 }
 
 void test_TX_word() {
-	USART_transmit_string("TESTING: test_TX_binary\n\r");
+	USART_transmit_string("TESTING: test_TX_binary_word\n\r");
 	uint32_t a = 1892392;
 	uint32_t b = 0;
 	uint32_t c = 4294967295;
@@ -58,7 +58,7 @@ void test_TX_word() {
 }
 
 void test_TX_binary() {
-	USART_transmit_string("TESTING: test_TX_binary\n\r");
+	USART_transmit_string("TESTING: test_TX_binary_byte\n\r");
 	uint8_t a = 0b11111111;
 	uint8_t b = 0b00000000;
 	uint8_t c = 0b01010101;
@@ -68,15 +68,15 @@ void test_TX_binary() {
 	USART_transmit_binary(a);
 	USART_transmit_string("\n\r");
 	
-	USART_transmit_string("Expected output 0b00000000, got ");
+	USART_transmit_string("Expected output 0b00000000, got: ");
 	USART_transmit_binary(b);
 	USART_transmit_string("\n\r");
 	
-	USART_transmit_string("Expected output 0b01010101, got ");
+	USART_transmit_string("Expected output 0b01010101, got: ");
 	USART_transmit_binary(c);
 	USART_transmit_string("\n\r");
 	
-	USART_transmit_string("Expected output 0b10101010, got ");
+	USART_transmit_string("Expected output 0b10101010, got: ");
 	USART_transmit_binary(d);
 	USART_transmit_string("\n\r");
 	

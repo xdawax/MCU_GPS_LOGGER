@@ -3,29 +3,29 @@ MCU_GPS_LOGGER.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         0000016c  00800100  00000326  0000039a  2**0
+  0 .data         00000194  00800100  00000326  0000039a  2**0
                   CONTENTS, ALLOC, LOAD, DATA
   1 .text         00000326  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  00000506  2**0
+  2 .comment      00000030  00000000  00000000  0000052e  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000538  2**2
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000560  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000088  00000000  00000000  00000578  2**0
+  4 .debug_aranges 00000088  00000000  00000000  000005a0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00000d03  00000000  00000000  00000600  2**0
+  5 .debug_info   00000d03  00000000  00000000  00000628  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 000007d0  00000000  00000000  00001303  2**0
+  6 .debug_abbrev 000007d0  00000000  00000000  0000132b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000004df  00000000  00000000  00001ad3  2**0
+  7 .debug_line   000004df  00000000  00000000  00001afb  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000184  00000000  00000000  00001fb4  2**2
+  8 .debug_frame  00000184  00000000  00000000  00001fdc  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    0000042e  00000000  00000000  00002138  2**0
+  9 .debug_str    0000042e  00000000  00000000  00002160  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000414  00000000  00000000  00002566  2**0
+ 10 .debug_loc    00000414  00000000  00000000  0000258e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000068  00000000  00000000  0000297a  2**0
+ 11 .debug_ranges 00000068  00000000  00000000  000029a2  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -75,7 +75,7 @@ Disassembly of section .text:
   7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
   80:	05 90       	lpm	r0, Z+
   82:	0d 92       	st	X+, r0
-  84:	ac 36       	cpi	r26, 0x6C	; 108
+  84:	a4 39       	cpi	r26, 0x94	; 148
   86:	b1 07       	cpc	r27, r17
   88:	d9 f7       	brne	.-10     	; 0x80 <__do_copy_data+0xc>
   8a:	0e 94 bf 00 	call	0x17e	; 0x17e <main>
@@ -90,7 +90,7 @@ Disassembly of section .text:
 }
 
 void test_TX_word() {
-	USART_transmit_string("TESTING: test_TX_binary\n\r");
+	USART_transmit_string("TESTING: test_TX_binary_word\n\r");
   96:	80 e0       	ldi	r24, 0x00	; 0
   98:	91 e0       	ldi	r25, 0x01	; 1
   9a:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
@@ -100,7 +100,7 @@ void test_TX_word() {
 	uint32_t d = 19910;
 	
 	USART_transmit_string("Expected output 0001892392, got: ");
-  9e:	8a e1       	ldi	r24, 0x1A	; 26
+  9e:	8f e1       	ldi	r24, 0x1F	; 31
   a0:	91 e0       	ldi	r25, 0x01	; 1
   a2:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	USART_transmit_word(a);
@@ -110,12 +110,12 @@ void test_TX_word() {
   ac:	90 e0       	ldi	r25, 0x00	; 0
   ae:	0e 94 10 01 	call	0x220	; 0x220 <USART_transmit_word>
 	USART_transmit_string("\n\r");
-  b2:	8f eb       	ldi	r24, 0xBF	; 191
+  b2:	84 ec       	ldi	r24, 0xC4	; 196
   b4:	91 e0       	ldi	r25, 0x01	; 1
   b6:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	
 	USART_transmit_string("Expected output 0000000000, got: ");
-  ba:	8c e3       	ldi	r24, 0x3C	; 60
+  ba:	81 e4       	ldi	r24, 0x41	; 65
   bc:	91 e0       	ldi	r25, 0x01	; 1
   be:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	USART_transmit_word(b);
@@ -124,12 +124,12 @@ void test_TX_word() {
   c6:	cb 01       	movw	r24, r22
   c8:	0e 94 10 01 	call	0x220	; 0x220 <USART_transmit_word>
 	USART_transmit_string("\n\r");
-  cc:	8f eb       	ldi	r24, 0xBF	; 191
+  cc:	84 ec       	ldi	r24, 0xC4	; 196
   ce:	91 e0       	ldi	r25, 0x01	; 1
   d0:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 		
 	USART_transmit_string("Expected output 4294967295, got: ");
-  d4:	8e e5       	ldi	r24, 0x5E	; 94
+  d4:	83 e6       	ldi	r24, 0x63	; 99
   d6:	91 e0       	ldi	r25, 0x01	; 1
   d8:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	USART_transmit_word(c);
@@ -138,12 +138,12 @@ void test_TX_word() {
   e0:	cb 01       	movw	r24, r22
   e2:	0e 94 10 01 	call	0x220	; 0x220 <USART_transmit_word>
 	USART_transmit_string("\n\r");
-  e6:	8f eb       	ldi	r24, 0xBF	; 191
+  e6:	84 ec       	ldi	r24, 0xC4	; 196
   e8:	91 e0       	ldi	r25, 0x01	; 1
   ea:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	
 	USART_transmit_string("Expected output 0000019910, got: ");
-  ee:	80 e8       	ldi	r24, 0x80	; 128
+  ee:	85 e8       	ldi	r24, 0x85	; 133
   f0:	91 e0       	ldi	r25, 0x01	; 1
   f2:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	USART_transmit_word(d);
@@ -153,12 +153,12 @@ void test_TX_word() {
   fc:	90 e0       	ldi	r25, 0x00	; 0
   fe:	0e 94 10 01 	call	0x220	; 0x220 <USART_transmit_word>
 	USART_transmit_string("\n\r");
- 102:	8f eb       	ldi	r24, 0xBF	; 191
+ 102:	84 ec       	ldi	r24, 0xC4	; 196
  104:	91 e0       	ldi	r25, 0x01	; 1
  106:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	
 	USART_transmit_string("TEST COMPLETED: test_TX_word\n\n\r");
- 10a:	82 ea       	ldi	r24, 0xA2	; 162
+ 10a:	87 ea       	ldi	r24, 0xA7	; 167
  10c:	91 e0       	ldi	r25, 0x01	; 1
  10e:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
  112:	08 95       	ret
@@ -167,8 +167,8 @@ void test_TX_word() {
 }
 
 void test_TX_binary() {
-	USART_transmit_string("TESTING: test_TX_binary\n\r");
- 114:	80 e0       	ldi	r24, 0x00	; 0
+	USART_transmit_string("TESTING: test_TX_binary_byte\n\r");
+ 114:	87 ec       	ldi	r24, 0xC7	; 199
  116:	91 e0       	ldi	r25, 0x01	; 1
  118:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	uint8_t a = 0b11111111;
@@ -177,55 +177,55 @@ void test_TX_binary() {
 	uint8_t d = 0b10101010;
 	
 	USART_transmit_string("Expected output 0b11111111, got: ");
- 11c:	82 ec       	ldi	r24, 0xC2	; 194
+ 11c:	86 ee       	ldi	r24, 0xE6	; 230
  11e:	91 e0       	ldi	r25, 0x01	; 1
  120:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	USART_transmit_binary(a);
  124:	8f ef       	ldi	r24, 0xFF	; 255
  126:	0e 94 f0 00 	call	0x1e0	; 0x1e0 <USART_transmit_binary>
 	USART_transmit_string("\n\r");
- 12a:	8f eb       	ldi	r24, 0xBF	; 191
+ 12a:	84 ec       	ldi	r24, 0xC4	; 196
  12c:	91 e0       	ldi	r25, 0x01	; 1
  12e:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	
-	USART_transmit_string("Expected output 0b00000000, got ");
- 132:	84 ee       	ldi	r24, 0xE4	; 228
- 134:	91 e0       	ldi	r25, 0x01	; 1
+	USART_transmit_string("Expected output 0b00000000, got: ");
+ 132:	88 e0       	ldi	r24, 0x08	; 8
+ 134:	92 e0       	ldi	r25, 0x02	; 2
  136:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	USART_transmit_binary(b);
  13a:	80 e0       	ldi	r24, 0x00	; 0
  13c:	0e 94 f0 00 	call	0x1e0	; 0x1e0 <USART_transmit_binary>
 	USART_transmit_string("\n\r");
- 140:	8f eb       	ldi	r24, 0xBF	; 191
+ 140:	84 ec       	ldi	r24, 0xC4	; 196
  142:	91 e0       	ldi	r25, 0x01	; 1
  144:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	
-	USART_transmit_string("Expected output 0b01010101, got ");
- 148:	85 e0       	ldi	r24, 0x05	; 5
+	USART_transmit_string("Expected output 0b01010101, got: ");
+ 148:	8a e2       	ldi	r24, 0x2A	; 42
  14a:	92 e0       	ldi	r25, 0x02	; 2
  14c:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	USART_transmit_binary(c);
  150:	85 e5       	ldi	r24, 0x55	; 85
  152:	0e 94 f0 00 	call	0x1e0	; 0x1e0 <USART_transmit_binary>
 	USART_transmit_string("\n\r");
- 156:	8f eb       	ldi	r24, 0xBF	; 191
+ 156:	84 ec       	ldi	r24, 0xC4	; 196
  158:	91 e0       	ldi	r25, 0x01	; 1
  15a:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	
-	USART_transmit_string("Expected output 0b10101010, got ");
- 15e:	86 e2       	ldi	r24, 0x26	; 38
+	USART_transmit_string("Expected output 0b10101010, got: ");
+ 15e:	8c e4       	ldi	r24, 0x4C	; 76
  160:	92 e0       	ldi	r25, 0x02	; 2
  162:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	USART_transmit_binary(d);
  166:	8a ea       	ldi	r24, 0xAA	; 170
  168:	0e 94 f0 00 	call	0x1e0	; 0x1e0 <USART_transmit_binary>
 	USART_transmit_string("\n\r");
- 16c:	8f eb       	ldi	r24, 0xBF	; 191
+ 16c:	84 ec       	ldi	r24, 0xC4	; 196
  16e:	91 e0       	ldi	r25, 0x01	; 1
  170:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	
 	USART_transmit_string("TEST COMPLETED: test_TX_binary\n\n\r");
- 174:	87 e4       	ldi	r24, 0x47	; 71
+ 174:	8e e6       	ldi	r24, 0x6E	; 110
  176:	92 e0       	ldi	r25, 0x02	; 2
  178:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
  17c:	08 95       	ret
@@ -301,7 +301,7 @@ void USART_transmit_binary(uint8_t byte) {
  1e4:	cf 93       	push	r28
  1e6:	08 2f       	mov	r16, r24
 	USART_transmit_string("0b");
- 1e8:	89 e6       	ldi	r24, 0x69	; 105
+ 1e8:	80 e9       	ldi	r24, 0x90	; 144
  1ea:	92 e0       	ldi	r25, 0x02	; 2
  1ec:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
 	
