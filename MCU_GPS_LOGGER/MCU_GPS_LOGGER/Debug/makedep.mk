@@ -4,6 +4,8 @@
 
 EEPROM.c
 
+GPS_parse.c
+
 main.c
 
 USART.c

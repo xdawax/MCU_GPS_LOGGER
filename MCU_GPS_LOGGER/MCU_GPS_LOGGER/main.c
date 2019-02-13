@@ -11,6 +11,7 @@
 #include <util/delay.h>
 #include "USART.h"
 #include "EEPROM.h"
+#include "GPS_parse.h"
 
 void test_TX_binary();
 void test_TX_word();
