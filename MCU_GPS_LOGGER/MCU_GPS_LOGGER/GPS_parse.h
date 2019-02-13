@@ -61,10 +61,11 @@ typedef struct {
 int is_gprmc(const char *gps_str);
 
 /*
+    @param coord: pointer to gps struct to insert values into 
     @param gstr: $GPRMC-string 
+    @returns: 1 if succesful otherwise 0 
 */
-void get_gps_coord(gps_t *coord, char *gps_str);
-
+int get_gps_coord(gps_t *coord, char *gps_str);
 
 
 #endif /* GPS_PARSE_H_ */
