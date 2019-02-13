@@ -14,7 +14,7 @@
 
 void test_TX_binary();
 void test_TX_word();
-
+void test_TX_digit();
 
 int main(void)
 {
@@ -23,6 +23,7 @@ int main(void)
 	USART_clear_putty();
 	test_TX_binary();
 	test_TX_word();
+	test_TX_digit();
 	/* Replace with your application code */
     while (1) 
     {	
@@ -55,6 +56,32 @@ void test_TX_word() {
 	USART_transmit_string("\n\r");
 	
 	USART_transmit_string("TEST COMPLETED: test_TX_word\n\n\r");
+}
+
+void test_TX_digit() {
+	USART_transmit_string("TESTING: test_TX_digit\n\r");
+	uint32_t a = 1;
+	uint32_t b = 2;
+	uint32_t c = 3;
+	uint32_t d = 4;
+	
+	USART_transmit_string("Expected output 1, got: ");
+	USART_transmit_digit(a);
+	USART_transmit_string("\n\r");
+	
+	USART_transmit_string("Expected output 2, got: ");
+	USART_transmit_digit(b);
+	USART_transmit_string("\n\r");
+	
+	USART_transmit_string("Expected output 3, got: ");
+	USART_transmit_digit(c);
+	USART_transmit_string("\n\r");
+	
+	USART_transmit_string("Expected output 4, got: ");
+	USART_transmit_digit(d);
+	USART_transmit_string("\n\r");
+	
+	USART_transmit_string("TEST COMPLETED: test_TX_digit\n\n\r");
 }
 
 void test_TX_binary() {
