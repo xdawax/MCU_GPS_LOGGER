@@ -4,6 +4,8 @@
 
 EEPROM.c
 
+EEPROM_translator.c
+
 main.c
 
 USART.c
