@@ -25,7 +25,7 @@ typedef struct {
 
 /// Writes the provided struct to the EEPROM in the first available spot
 ///
-/// @param gps_data the struct to be stored in EEPROM 
+/// @param gps_data[in] the struct to be stored in EEPROM 
 ///
 /// @returns void
 void store_struct(gps_t *gps_data);
@@ -33,15 +33,19 @@ void store_struct(gps_t *gps_data);
 /// Gets the next struct stored in EEPROM
 ///
 /// @returns the struct stored at the next place in memory
-gps_t get_next_struct();
+gps_t *get_next_struct();
 
+/// Prints the contents of the provided struct using USART
+///
+/// @returns void
+void print_struct(gps_t *gps_data);
 
 
 /// Fetches a gps_t struct from EEPROM at provided index
 ///
-///	@param index the indexed order of storage in memory i.e. index 2 = memory location (2 * size_of(gps_t)) + header
-///
+///	@param index[in] the indexed order of storage in memory i.e. index 2 = memory location (2 * size_of(gps_t)) + header
+/// @param gps_data[out] a pointer to the struct to be filled with stored gps data
 /// @returns the struct stored at the provided index in memory
-gps_t get_struct(uint8_t index);
+void get_struct(uint8_t index, gps_t *gps_data);
 
 #endif /* EEPROM_TRANSLATOR_H_ */
