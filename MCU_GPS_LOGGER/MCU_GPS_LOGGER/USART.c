@@ -10,7 +10,6 @@
 #endif
 
 #include <avr/io.h>
-#include <stdbool.h>
 #include <stdint.h>
 
 #include "USART.h"
