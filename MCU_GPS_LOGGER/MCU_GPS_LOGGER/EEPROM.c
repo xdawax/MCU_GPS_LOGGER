@@ -9,9 +9,11 @@
 #define F_CPU 1000000
 #endif
 
+#include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+
 #include "EEPROM.h"
 #include "USART.h"  // debugging
 
