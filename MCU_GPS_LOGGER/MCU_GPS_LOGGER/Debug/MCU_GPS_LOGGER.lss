@@ -11,21 +11,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000538  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000088  00000000  00000000  00000578  2**0
+  4 .debug_aranges 00000090  00000000  00000000  00000578  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00000d03  00000000  00000000  00000600  2**0
+  5 .debug_info   00000d40  00000000  00000000  00000608  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 000007d0  00000000  00000000  00001303  2**0
+  6 .debug_abbrev 000007d0  00000000  00000000  00001348  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000004e0  00000000  00000000  00001ad3  2**0
+  7 .debug_line   000004f7  00000000  00000000  00001b18  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000184  00000000  00000000  00001fb4  2**2
+  8 .debug_frame  00000194  00000000  00000000  00002010  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    0000042f  00000000  00000000  00002138  2**0
+  9 .debug_str    00000443  00000000  00000000  000021a4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000414  00000000  00000000  00002567  2**0
+ 10 .debug_loc    00000442  00000000  00000000  000025e7  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000068  00000000  00000000  0000297b  2**0
+ 11 .debug_ranges 00000070  00000000  00000000  00002a29  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -248,12 +248,12 @@ int main(void)
  18e:	ff cf       	rjmp	.-2      	; 0x18e <main+0x10>
 
 00000190 <USART_init>:
-			buf[i + 1] = '\0';
-			break;
 		}
 	}
-	
 }
+
+void USART_transmit_digit(uint8_t byte) {
+	USART_transmit_byte(byte + '0');
  190:	88 e1       	ldi	r24, 0x18	; 24
  192:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7e00c1>
  196:	86 e0       	ldi	r24, 0x06	; 6
@@ -294,21 +294,14 @@ int main(void)
  1de:	08 95       	ret
 
 000001e0 <USART_transmit_binary>:
-
-void USART_transmit_binary(uint8_t byte) {
  1e0:	0f 93       	push	r16
  1e2:	1f 93       	push	r17
  1e4:	cf 93       	push	r28
  1e6:	08 2f       	mov	r16, r24
-	USART_transmit_string("0b");
  1e8:	89 e6       	ldi	r24, 0x69	; 105
  1ea:	92 e0       	ldi	r25, 0x02	; 2
  1ec:	0e 94 e1 00 	call	0x1c2	; 0x1c2 <USART_transmit_string>
-	
-	for (uint8_t i = BYTE - 1; i < 255; i--)
  1f0:	c7 e0       	ldi	r28, 0x07	; 7
-	{
-		if (byte & (1 << i)) {
  1f2:	10 e0       	ldi	r17, 0x00	; 0
  1f4:	98 01       	movw	r18, r16
  1f6:	0c 2e       	mov	r0, r28
@@ -319,34 +312,20 @@ void USART_transmit_binary(uint8_t byte) {
  200:	e2 f7       	brpl	.-8      	; 0x1fa <USART_transmit_binary+0x1a>
  202:	20 ff       	sbrs	r18, 0
  204:	04 c0       	rjmp	.+8      	; 0x20e <USART_transmit_binary+0x2e>
-			USART_transmit_byte('1');
  206:	81 e3       	ldi	r24, 0x31	; 49
  208:	0e 94 d9 00 	call	0x1b2	; 0x1b2 <USART_transmit_byte>
  20c:	03 c0       	rjmp	.+6      	; 0x214 <USART_transmit_binary+0x34>
-		} else {
-			USART_transmit_byte('0');
  20e:	80 e3       	ldi	r24, 0x30	; 48
  210:	0e 94 d9 00 	call	0x1b2	; 0x1b2 <USART_transmit_byte>
-}
-
-void USART_transmit_binary(uint8_t byte) {
-	USART_transmit_string("0b");
-	
-	for (uint8_t i = BYTE - 1; i < 255; i--)
  214:	c1 50       	subi	r28, 0x01	; 1
  216:	70 f7       	brcc	.-36     	; 0x1f4 <USART_transmit_binary+0x14>
-			USART_transmit_byte('1');
-		} else {
-			USART_transmit_byte('0');
-		}
-	}
-}
  218:	cf 91       	pop	r28
  21a:	1f 91       	pop	r17
  21c:	0f 91       	pop	r16
  21e:	08 95       	ret
 
 00000220 <USART_transmit_word>:
+}
 
 void USART_transmit_word(uint32_t word) {
  220:	4f 92       	push	r4
@@ -378,8 +357,8 @@ void USART_transmit_word(uint32_t word) {
  250:	0e 94 d9 00 	call	0x1b2	; 0x1b2 <USART_transmit_byte>
  254:	c9 e0       	ldi	r28, 0x09	; 9
  256:	d0 e0       	ldi	r29, 0x00	; 0
-		}
-	}
+void USART_transmit_digit(uint8_t byte) {
+	USART_transmit_byte(byte + '0');
 }
 
 void USART_transmit_word(uint32_t word) {
