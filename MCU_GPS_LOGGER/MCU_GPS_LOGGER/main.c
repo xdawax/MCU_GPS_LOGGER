@@ -18,20 +18,15 @@ void test_TX_binary();
 void test_TX_word();
 
 void init_structs(gps_t *gps1, gps_t *gps2);
+void test_store_load_struct();
+
 
 int main(void)
 {
-    gps_t gps1;
-	gps_t gps2;
-	gps_t temp;
-	
 	USART_init();
 	USART_clear_putty();
-	
-	init_structs(&gps1, &gps2);
-	
-	print_struct(&gps1);
-	print_struct(&gps2);
+	EEPROM_clear();
+	test_store_load_struct();
 	
 	
 	/* Replace with your application code */
@@ -41,6 +36,36 @@ int main(void)
     }
 	return 0;
 }
+
+void test_store_load_struct() {
+	gps_t gps1;
+	gps_t gps2;
+	gps_t temp = {0,0,0,0,0,0};
+	
+	init_structs(&gps1, &gps2);
+	
+	store_struct(&gps1);	// should be stored at address 2
+	store_struct(&gps2);	// should be stored at address 14
+	
+	get_struct(0, &temp);
+	USART_transmit_string("#############################################");
+	USART_transmit_string("\n\rEXPECTED: ");
+	print_struct(&gps1);
+	USART_transmit_string("\n\rGOT:");
+	print_struct(&temp);
+	USART_transmit_string("#############################################");
+	
+	get_struct(1, &temp);
+	
+	USART_transmit_string("\n\n\r#############################################");
+	USART_transmit_string("\n\rEXPECTED: ");
+	print_struct(&gps2);
+	USART_transmit_string("\n\rGOT:");
+	print_struct(&temp);
+	USART_transmit_string("#############################################");
+}
+
+
 void init_structs(gps_t *gps1, gps_t *gps2) {
 		gps1->lattitude = 1;
 		gps1->longitude = 2;

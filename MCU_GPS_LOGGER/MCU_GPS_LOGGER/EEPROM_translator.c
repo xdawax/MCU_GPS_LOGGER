@@ -59,12 +59,12 @@ void get_struct(uint8_t index, gps_t *gps_data) {
 	address += sizeof(uint32_t);
 	gps_data->longitude = EEPROM_read_word(address);
 	address += sizeof(uint32_t);
-	gps_data->month = EEPROM_read_word(address);
+	gps_data->month = EEPROM_read_byte(address);
 	address += sizeof(uint8_t);
-	gps_data->day = EEPROM_read_word(address);
+	gps_data->day = EEPROM_read_byte(address);
 	address += sizeof(uint8_t);
-	gps_data->hour = EEPROM_read_word(address);
+	gps_data->hour = EEPROM_read_byte(address);
 	address += sizeof(uint8_t);
-	gps_data->minute = EEPROM_read_word(address);
+	gps_data->minute = EEPROM_read_byte(address);
 	address += sizeof(uint8_t);
 }
