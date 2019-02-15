@@ -9,15 +9,16 @@
 #ifndef EEPROM_H_
 #define EEPROM_H_
 
-#include <stdint.h>
+#define HEADER_SIZE 4
+#define LAST_BYTE 1023					// address-space ends
+#define FIRST_BYTE 0					// address-space start
+#define ADDRESS_HIGH_BYTE 0				// memory header that contains the 8 highest bits of a pointer to the next free spot in memory
+#define ADDRESS_LOW_BYTE 1				// memory header that contains the 8 lowest bits of a pointer to the next free spot in memory
+#define ADDRESS_INDEX 3					// data at this address keeps track of how many structs are stored in memory max 255 (8bit)
+#define FIRST_DATA_BYTE HEADER_SIZE		// memory of where the first data byte is allowed to be written
+#define BYTE 8							// the size of a byte
+#define WORD 4							// number of bytes in a word
 
-#define LAST_BYTE 1023			// address-space ends
-#define FIRST_BYTE 0			// address-space start
-#define ADDRESS_HIGH_BYTE 0		// memory header that contains the 8 highest bits of a pointer to the next free spot in memory
-#define ADDRESS_LOW_BYTE 1		// memory header that contains the 8 lowest bits of a pointer to the next free spot in memory
-#define FIRST_DATA_BYTE 2		// memory of where the first data byte is allowed to be written
-#define BYTE 8					// the size of a byte
-#define WORD 4					// number of bytes in a word
 
 
 
@@ -62,19 +63,18 @@ uint32_t EEPROM_read_word(uint16_t address);
 /// @returns the next free address in EEPROM
 uint16_t EEPROM_get_free_address();
 
-/// updates the next free memory space
-///
-/// @returns void
-void EEPROM_set_free_address(uint8_t size);
+
 
 /// !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros and resets next free memory location
 ///
 /// @returns void
 void EEPROM_clear();
 
-
-
-
+/// Resets the header, next free space will be FIRST_DATA_BYTE 
+/// and amount of structs stored will be set to 0
+///
+/// @returns void
+void EEPROM_reset_header();
 
 
 

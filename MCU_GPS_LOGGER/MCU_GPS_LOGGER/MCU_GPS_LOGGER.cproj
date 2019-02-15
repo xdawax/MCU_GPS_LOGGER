@@ -126,10 +126,11 @@
     <Compile Include="EEPROM.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="EEPROM_translator.c">
+    <Compile Include="EEPROM_test.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="EEPROM_translator.h">
+    <Compile Include="EEPROM_test.h">
+
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
