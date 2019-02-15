@@ -75,6 +75,10 @@ void USART_transmit_binary(uint8_t byte) {
 	}
 }
 
+void USART_transmit_digit(uint8_t byte) {
+	USART_transmit_byte(byte + '0');
+}
+
 void USART_transmit_word(uint32_t word) {
 	uint32_t divisor = 1000000000;
 
