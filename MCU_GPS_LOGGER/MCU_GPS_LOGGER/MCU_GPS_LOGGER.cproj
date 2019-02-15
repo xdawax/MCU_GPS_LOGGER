@@ -130,6 +130,7 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="EEPROM_test.h">
+
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
