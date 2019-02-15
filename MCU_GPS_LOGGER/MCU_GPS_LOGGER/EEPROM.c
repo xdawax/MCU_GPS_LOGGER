@@ -15,7 +15,10 @@
 #include "EEPROM.h"
 #include "USART.h"  // debugging
 
-#define DEBUGG 1
+/// updates the next free memory space
+///
+/// @returns void
+void EEPROM_set_free_address(uint8_t size);
 
 
 // automatically set to atomically RW
@@ -116,9 +119,11 @@ void EEPROM_clear() {
 }
 
 void EEPROM_reset_header() {
+	USART_transmit_string("RESETING THE HEADER\n\r");
 	EEPROM_write_byte(0, ADDRESS_HIGH_BYTE);
 	EEPROM_write_byte(FIRST_DATA_BYTE, ADDRESS_LOW_BYTE);  // set the address of the first available byte as 2
 	EEPROM_write_byte(0, ADDRESS_INDEX);				   // set the amount of stored structs to 0
+	USART_transmit_string("HEADER RESET\n\n\r");
 }
 
 void EEPROM_increment_index() {
@@ -126,4 +131,5 @@ void EEPROM_increment_index() {
 	index++;
 	EEPROM_write_byte(index, ADDRESS_INDEX);
 }
+
 

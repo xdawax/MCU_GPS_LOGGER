@@ -63,10 +63,7 @@ uint32_t EEPROM_read_word(uint16_t address);
 /// @returns the next free address in EEPROM
 uint16_t EEPROM_get_free_address();
 
-/// updates the next free memory space
-///
-/// @returns void
-void EEPROM_set_free_address(uint8_t size);
+
 
 /// !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros and resets next free memory location
 ///
@@ -78,7 +75,6 @@ void EEPROM_clear();
 ///
 /// @returns void
 void EEPROM_reset_header();
-
 
 
 
