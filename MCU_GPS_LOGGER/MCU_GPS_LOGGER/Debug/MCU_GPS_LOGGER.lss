@@ -3,29 +3,29 @@ MCU_GPS_LOGGER.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         000000f0  00800100  000005fa  0000066e  2**0
+  0 .data         000000ae  00800100  000005b2  00000626  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000005fa  00000000  00000000  00000074  2**1
+  1 .text         000005b2  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  0000075e  2**0
+  2 .comment      00000030  00000000  00000000  000006d4  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000790  2**2
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000704  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000110  00000000  00000000  000007d0  2**0
+  4 .debug_aranges 00000130  00000000  00000000  00000744  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00001484  00000000  00000000  000008e0  2**0
+  5 .debug_info   00001513  00000000  00000000  00000874  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000aad  00000000  00000000  00001d64  2**0
+  6 .debug_abbrev 00000b26  00000000  00000000  00001d87  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000009a8  00000000  00000000  00002811  2**0
+  7 .debug_line   000009ea  00000000  00000000  000028ad  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000310  00000000  00000000  000031bc  2**2
+  8 .debug_frame  00000334  00000000  00000000  00003298  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    000005eb  00000000  00000000  000034cc  2**0
+  9 .debug_str    00000616  00000000  00000000  000035cc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000c4d  00000000  00000000  00003ab7  2**0
+ 10 .debug_loc    00000c4d  00000000  00000000  00003be2  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000000d0  00000000  00000000  00004704  2**0
+ 11 .debug_ranges 000000e0  00000000  00000000  0000482f  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -70,16 +70,16 @@ Disassembly of section .text:
   74:	11 e0       	ldi	r17, 0x01	; 1
   76:	a0 e0       	ldi	r26, 0x00	; 0
   78:	b1 e0       	ldi	r27, 0x01	; 1
-  7a:	ea ef       	ldi	r30, 0xFA	; 250
+  7a:	e2 eb       	ldi	r30, 0xB2	; 178
   7c:	f5 e0       	ldi	r31, 0x05	; 5
   7e:	02 c0       	rjmp	.+4      	; 0x84 <__do_copy_data+0x10>
   80:	05 90       	lpm	r0, Z+
   82:	0d 92       	st	X+, r0
-  84:	a0 3f       	cpi	r26, 0xF0	; 240
+  84:	ae 3a       	cpi	r26, 0xAE	; 174
   86:	b1 07       	cpc	r27, r17
   88:	d9 f7       	brne	.-10     	; 0x80 <__do_copy_data+0xc>
-  8a:	0e 94 49 02 	call	0x492	; 0x492 <main>
-  8e:	0c 94 fb 02 	jmp	0x5f6	; 0x5f6 <_exit>
+  8a:	0e 94 8e 01 	call	0x31c	; 0x31c <main>
+  8e:	0c 94 d7 02 	jmp	0x5ae	; 0x5ae <_exit>
 
 00000092 <__bad_interrupt>:
   92:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -365,679 +365,625 @@ void EEPROM_write_word_next_free(uint32_t word) {
  1da:	cf 90       	pop	r12
  1dc:	08 95       	ret
 
-000001de <EEPROM_clear>:
-	EEPROM_write_byte(last_address_high, ADDRESS_HIGH_BYTE);
-}
-
-// !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros and resets next free memory location
-// takes ~ 5ms/byte in EEPROM
-void EEPROM_clear() {
- 1de:	cf 93       	push	r28
- 1e0:	df 93       	push	r29
-	USART_transmit_string("CLEARING THE EEPROM. THIS MIGHT TAKE A WHILE!!!\n\r");
- 1e2:	80 e0       	ldi	r24, 0x00	; 0
- 1e4:	91 e0       	ldi	r25, 0x01	; 1
- 1e6:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
-	for (int i = FIRST_DATA_BYTE; i < LAST_BYTE; i++)	// only erase 10 first bytes debuggmode
- 1ea:	c2 e0       	ldi	r28, 0x02	; 2
- 1ec:	d0 e0       	ldi	r29, 0x00	; 0
-	{
-		EEPROM_write_byte(0, i);
- 1ee:	be 01       	movw	r22, r28
- 1f0:	80 e0       	ldi	r24, 0x00	; 0
- 1f2:	0e 94 ad 00 	call	0x15a	; 0x15a <EEPROM_write_byte>
-
-// !!!!!!!!!WARNING!!!!!!!!!!!!! Overwrites the entire EEPROM with zeros and resets next free memory location
-// takes ~ 5ms/byte in EEPROM
-void EEPROM_clear() {
-	USART_transmit_string("CLEARING THE EEPROM. THIS MIGHT TAKE A WHILE!!!\n\r");
-	for (int i = FIRST_DATA_BYTE; i < LAST_BYTE; i++)	// only erase 10 first bytes debuggmode
- 1f6:	21 96       	adiw	r28, 0x01	; 1
- 1f8:	cf 3f       	cpi	r28, 0xFF	; 255
- 1fa:	83 e0       	ldi	r24, 0x03	; 3
- 1fc:	d8 07       	cpc	r29, r24
- 1fe:	b9 f7       	brne	.-18     	; 0x1ee <EEPROM_clear+0x10>
-	{
-		EEPROM_write_byte(0, i);
-	}
-	EEPROM_write_byte(0, ADDRESS_HIGH_BYTE);
- 200:	60 e0       	ldi	r22, 0x00	; 0
- 202:	70 e0       	ldi	r23, 0x00	; 0
- 204:	80 e0       	ldi	r24, 0x00	; 0
- 206:	0e 94 ad 00 	call	0x15a	; 0x15a <EEPROM_write_byte>
-	EEPROM_write_byte(FIRST_DATA_BYTE, ADDRESS_LOW_BYTE);  // set the address of the first available byte as 2
- 20a:	61 e0       	ldi	r22, 0x01	; 1
- 20c:	70 e0       	ldi	r23, 0x00	; 0
- 20e:	82 e0       	ldi	r24, 0x02	; 2
- 210:	0e 94 ad 00 	call	0x15a	; 0x15a <EEPROM_write_byte>
-	USART_transmit_string("EEPROM CLEARED!\n\n\r");
- 214:	82 e3       	ldi	r24, 0x32	; 50
- 216:	91 e0       	ldi	r25, 0x01	; 1
- 218:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
- 21c:	df 91       	pop	r29
- 21e:	cf 91       	pop	r28
- 220:	08 95       	ret
-
-00000222 <store_struct>:
+000001de <store_struct>:
 	int8_t minute;
 } gps_t;
 */
 
 
 void store_struct(gps_t *gps_data) {
- 222:	cf 93       	push	r28
- 224:	df 93       	push	r29
- 226:	ec 01       	movw	r28, r24
+ 1de:	cf 93       	push	r28
+ 1e0:	df 93       	push	r29
+ 1e2:	ec 01       	movw	r28, r24
 	EEPROM_write_word_next_free(gps_data->lattitude);
- 228:	68 81       	ld	r22, Y
- 22a:	79 81       	ldd	r23, Y+1	; 0x01
- 22c:	8a 81       	ldd	r24, Y+2	; 0x02
- 22e:	9b 81       	ldd	r25, Y+3	; 0x03
- 230:	0e 94 ce 00 	call	0x19c	; 0x19c <EEPROM_write_word_next_free>
+ 1e4:	68 81       	ld	r22, Y
+ 1e6:	79 81       	ldd	r23, Y+1	; 0x01
+ 1e8:	8a 81       	ldd	r24, Y+2	; 0x02
+ 1ea:	9b 81       	ldd	r25, Y+3	; 0x03
+ 1ec:	0e 94 ce 00 	call	0x19c	; 0x19c <EEPROM_write_word_next_free>
 	EEPROM_write_word_next_free(gps_data->longitude);
- 234:	6c 81       	ldd	r22, Y+4	; 0x04
- 236:	7d 81       	ldd	r23, Y+5	; 0x05
- 238:	8e 81       	ldd	r24, Y+6	; 0x06
- 23a:	9f 81       	ldd	r25, Y+7	; 0x07
- 23c:	0e 94 ce 00 	call	0x19c	; 0x19c <EEPROM_write_word_next_free>
+ 1f0:	6c 81       	ldd	r22, Y+4	; 0x04
+ 1f2:	7d 81       	ldd	r23, Y+5	; 0x05
+ 1f4:	8e 81       	ldd	r24, Y+6	; 0x06
+ 1f6:	9f 81       	ldd	r25, Y+7	; 0x07
+ 1f8:	0e 94 ce 00 	call	0x19c	; 0x19c <EEPROM_write_word_next_free>
 	EEPROM_write_byte_next_free(gps_data->month);
- 240:	88 85       	ldd	r24, Y+8	; 0x08
- 242:	0e 94 c4 00 	call	0x188	; 0x188 <EEPROM_write_byte_next_free>
+ 1fc:	88 85       	ldd	r24, Y+8	; 0x08
+ 1fe:	0e 94 c4 00 	call	0x188	; 0x188 <EEPROM_write_byte_next_free>
 	EEPROM_write_byte_next_free(gps_data->day);
- 246:	89 85       	ldd	r24, Y+9	; 0x09
- 248:	0e 94 c4 00 	call	0x188	; 0x188 <EEPROM_write_byte_next_free>
+ 202:	89 85       	ldd	r24, Y+9	; 0x09
+ 204:	0e 94 c4 00 	call	0x188	; 0x188 <EEPROM_write_byte_next_free>
 	EEPROM_write_byte_next_free(gps_data->hour);
- 24c:	8a 85       	ldd	r24, Y+10	; 0x0a
- 24e:	0e 94 c4 00 	call	0x188	; 0x188 <EEPROM_write_byte_next_free>
+ 208:	8a 85       	ldd	r24, Y+10	; 0x0a
+ 20a:	0e 94 c4 00 	call	0x188	; 0x188 <EEPROM_write_byte_next_free>
 	EEPROM_write_byte_next_free(gps_data->minute);
- 252:	8b 85       	ldd	r24, Y+11	; 0x0b
- 254:	0e 94 c4 00 	call	0x188	; 0x188 <EEPROM_write_byte_next_free>
+ 20e:	8b 85       	ldd	r24, Y+11	; 0x0b
+ 210:	0e 94 c4 00 	call	0x188	; 0x188 <EEPROM_write_byte_next_free>
 }
- 258:	df 91       	pop	r29
- 25a:	cf 91       	pop	r28
- 25c:	08 95       	ret
+ 214:	df 91       	pop	r29
+ 216:	cf 91       	pop	r28
+ 218:	08 95       	ret
 
-0000025e <print_struct>:
+0000021a <print_struct>:
 
 void print_struct(gps_t *gps_data) {
- 25e:	cf 93       	push	r28
- 260:	df 93       	push	r29
- 262:	ec 01       	movw	r28, r24
+ 21a:	cf 93       	push	r28
+ 21c:	df 93       	push	r29
+ 21e:	ec 01       	movw	r28, r24
 	USART_transmit_string("\n\r########### GPS DATA ###########");
- 264:	85 e4       	ldi	r24, 0x45	; 69
- 266:	91 e0       	ldi	r25, 0x01	; 1
- 268:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 220:	80 e0       	ldi	r24, 0x00	; 0
+ 222:	91 e0       	ldi	r25, 0x01	; 1
+ 224:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	USART_transmit_string("\n\rLattitude: ");
- 26c:	88 e6       	ldi	r24, 0x68	; 104
- 26e:	91 e0       	ldi	r25, 0x01	; 1
- 270:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 228:	83 e2       	ldi	r24, 0x23	; 35
+ 22a:	91 e0       	ldi	r25, 0x01	; 1
+ 22c:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	USART_transmit_word(gps_data->lattitude);
- 274:	68 81       	ld	r22, Y
- 276:	79 81       	ldd	r23, Y+1	; 0x01
- 278:	8a 81       	ldd	r24, Y+2	; 0x02
- 27a:	9b 81       	ldd	r25, Y+3	; 0x03
- 27c:	0e 94 7a 02 	call	0x4f4	; 0x4f4 <USART_transmit_word>
+ 230:	68 81       	ld	r22, Y
+ 232:	79 81       	ldd	r23, Y+1	; 0x01
+ 234:	8a 81       	ldd	r24, Y+2	; 0x02
+ 236:	9b 81       	ldd	r25, Y+3	; 0x03
+ 238:	0e 94 56 02 	call	0x4ac	; 0x4ac <USART_transmit_word>
 	
 	USART_transmit_string("\n\rLongitude: ");
- 280:	86 e7       	ldi	r24, 0x76	; 118
- 282:	91 e0       	ldi	r25, 0x01	; 1
- 284:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 23c:	81 e3       	ldi	r24, 0x31	; 49
+ 23e:	91 e0       	ldi	r25, 0x01	; 1
+ 240:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	USART_transmit_word(gps_data->longitude);
- 288:	6c 81       	ldd	r22, Y+4	; 0x04
- 28a:	7d 81       	ldd	r23, Y+5	; 0x05
- 28c:	8e 81       	ldd	r24, Y+6	; 0x06
- 28e:	9f 81       	ldd	r25, Y+7	; 0x07
- 290:	0e 94 7a 02 	call	0x4f4	; 0x4f4 <USART_transmit_word>
+ 244:	6c 81       	ldd	r22, Y+4	; 0x04
+ 246:	7d 81       	ldd	r23, Y+5	; 0x05
+ 248:	8e 81       	ldd	r24, Y+6	; 0x06
+ 24a:	9f 81       	ldd	r25, Y+7	; 0x07
+ 24c:	0e 94 56 02 	call	0x4ac	; 0x4ac <USART_transmit_word>
 	
 	USART_transmit_string("\n\rMonth: ");
- 294:	84 e8       	ldi	r24, 0x84	; 132
- 296:	91 e0       	ldi	r25, 0x01	; 1
- 298:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 250:	8f e3       	ldi	r24, 0x3F	; 63
+ 252:	91 e0       	ldi	r25, 0x01	; 1
+ 254:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	USART_transmit_byte(gps_data->month + '0');
- 29c:	88 85       	ldd	r24, Y+8	; 0x08
- 29e:	80 5d       	subi	r24, 0xD0	; 208
- 2a0:	0e 94 63 02 	call	0x4c6	; 0x4c6 <USART_transmit_byte>
+ 258:	88 85       	ldd	r24, Y+8	; 0x08
+ 25a:	80 5d       	subi	r24, 0xD0	; 208
+ 25c:	0e 94 3f 02 	call	0x47e	; 0x47e <USART_transmit_byte>
 	
 	USART_transmit_string("\n\rDay: ");
- 2a4:	8e e8       	ldi	r24, 0x8E	; 142
- 2a6:	91 e0       	ldi	r25, 0x01	; 1
- 2a8:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 260:	89 e4       	ldi	r24, 0x49	; 73
+ 262:	91 e0       	ldi	r25, 0x01	; 1
+ 264:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	USART_transmit_byte(gps_data->day + '0');
- 2ac:	89 85       	ldd	r24, Y+9	; 0x09
- 2ae:	80 5d       	subi	r24, 0xD0	; 208
- 2b0:	0e 94 63 02 	call	0x4c6	; 0x4c6 <USART_transmit_byte>
+ 268:	89 85       	ldd	r24, Y+9	; 0x09
+ 26a:	80 5d       	subi	r24, 0xD0	; 208
+ 26c:	0e 94 3f 02 	call	0x47e	; 0x47e <USART_transmit_byte>
 	
 	USART_transmit_string("\n\rHour: ");
- 2b4:	86 e9       	ldi	r24, 0x96	; 150
- 2b6:	91 e0       	ldi	r25, 0x01	; 1
- 2b8:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 270:	81 e5       	ldi	r24, 0x51	; 81
+ 272:	91 e0       	ldi	r25, 0x01	; 1
+ 274:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	USART_transmit_byte(gps_data->hour + '0');
- 2bc:	8a 85       	ldd	r24, Y+10	; 0x0a
- 2be:	80 5d       	subi	r24, 0xD0	; 208
- 2c0:	0e 94 63 02 	call	0x4c6	; 0x4c6 <USART_transmit_byte>
+ 278:	8a 85       	ldd	r24, Y+10	; 0x0a
+ 27a:	80 5d       	subi	r24, 0xD0	; 208
+ 27c:	0e 94 3f 02 	call	0x47e	; 0x47e <USART_transmit_byte>
 	
 	USART_transmit_string("\n\rMinute: ");
- 2c4:	8f e9       	ldi	r24, 0x9F	; 159
- 2c6:	91 e0       	ldi	r25, 0x01	; 1
- 2c8:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 280:	8a e5       	ldi	r24, 0x5A	; 90
+ 282:	91 e0       	ldi	r25, 0x01	; 1
+ 284:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	USART_transmit_byte(gps_data->minute + '0');
- 2cc:	8b 85       	ldd	r24, Y+11	; 0x0b
- 2ce:	80 5d       	subi	r24, 0xD0	; 208
- 2d0:	0e 94 63 02 	call	0x4c6	; 0x4c6 <USART_transmit_byte>
+ 288:	8b 85       	ldd	r24, Y+11	; 0x0b
+ 28a:	80 5d       	subi	r24, 0xD0	; 208
+ 28c:	0e 94 3f 02 	call	0x47e	; 0x47e <USART_transmit_byte>
 	USART_transmit_string("\n\r");
- 2d4:	82 e4       	ldi	r24, 0x42	; 66
- 2d6:	91 e0       	ldi	r25, 0x01	; 1
- 2d8:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 290:	85 e6       	ldi	r24, 0x65	; 101
+ 292:	91 e0       	ldi	r25, 0x01	; 1
+ 294:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 }
- 2dc:	df 91       	pop	r29
- 2de:	cf 91       	pop	r28
- 2e0:	08 95       	ret
+ 298:	df 91       	pop	r29
+ 29a:	cf 91       	pop	r28
+ 29c:	08 95       	ret
 
-000002e2 <get_struct>:
+0000029e <get_struct>:
 
 gps_t *get_next_struct();
 
 void get_struct(uint8_t index, gps_t *gps_data) {
- 2e2:	0f 93       	push	r16
- 2e4:	1f 93       	push	r17
- 2e6:	cf 93       	push	r28
- 2e8:	df 93       	push	r29
- 2ea:	8b 01       	movw	r16, r22
+ 29e:	0f 93       	push	r16
+ 2a0:	1f 93       	push	r17
+ 2a2:	cf 93       	push	r28
+ 2a4:	df 93       	push	r29
+ 2a6:	8b 01       	movw	r16, r22
 	uint16_t address = index * sizeof(gps_t) + EEPROM_HEADER_SIZE;
- 2ec:	90 e0       	ldi	r25, 0x00	; 0
- 2ee:	ec 01       	movw	r28, r24
- 2f0:	cc 0f       	add	r28, r28
- 2f2:	dd 1f       	adc	r29, r29
- 2f4:	8c 0f       	add	r24, r28
- 2f6:	9d 1f       	adc	r25, r29
- 2f8:	ec 01       	movw	r28, r24
- 2fa:	cc 0f       	add	r28, r28
- 2fc:	dd 1f       	adc	r29, r29
- 2fe:	cc 0f       	add	r28, r28
- 300:	dd 1f       	adc	r29, r29
+ 2a8:	90 e0       	ldi	r25, 0x00	; 0
+ 2aa:	ec 01       	movw	r28, r24
+ 2ac:	cc 0f       	add	r28, r28
+ 2ae:	dd 1f       	adc	r29, r29
+ 2b0:	8c 0f       	add	r24, r28
+ 2b2:	9d 1f       	adc	r25, r29
+ 2b4:	ec 01       	movw	r28, r24
+ 2b6:	cc 0f       	add	r28, r28
+ 2b8:	dd 1f       	adc	r29, r29
+ 2ba:	cc 0f       	add	r28, r28
+ 2bc:	dd 1f       	adc	r29, r29
 	gps_data->lattitude = EEPROM_read_word(address);
- 302:	ce 01       	movw	r24, r28
- 304:	02 96       	adiw	r24, 0x02	; 2
- 306:	0e 94 54 00 	call	0xa8	; 0xa8 <EEPROM_read_word>
- 30a:	f8 01       	movw	r30, r16
- 30c:	60 83       	st	Z, r22
- 30e:	71 83       	std	Z+1, r23	; 0x01
- 310:	82 83       	std	Z+2, r24	; 0x02
- 312:	93 83       	std	Z+3, r25	; 0x03
+ 2be:	ce 01       	movw	r24, r28
+ 2c0:	02 96       	adiw	r24, 0x02	; 2
+ 2c2:	0e 94 54 00 	call	0xa8	; 0xa8 <EEPROM_read_word>
+ 2c6:	f8 01       	movw	r30, r16
+ 2c8:	60 83       	st	Z, r22
+ 2ca:	71 83       	std	Z+1, r23	; 0x01
+ 2cc:	82 83       	std	Z+2, r24	; 0x02
+ 2ce:	93 83       	std	Z+3, r25	; 0x03
 	address += sizeof(uint32_t);
 	gps_data->longitude = EEPROM_read_word(address);
- 314:	ce 01       	movw	r24, r28
- 316:	06 96       	adiw	r24, 0x06	; 6
- 318:	0e 94 54 00 	call	0xa8	; 0xa8 <EEPROM_read_word>
- 31c:	f8 01       	movw	r30, r16
- 31e:	64 83       	std	Z+4, r22	; 0x04
- 320:	75 83       	std	Z+5, r23	; 0x05
- 322:	86 83       	std	Z+6, r24	; 0x06
- 324:	97 83       	std	Z+7, r25	; 0x07
+ 2d0:	ce 01       	movw	r24, r28
+ 2d2:	06 96       	adiw	r24, 0x06	; 6
+ 2d4:	0e 94 54 00 	call	0xa8	; 0xa8 <EEPROM_read_word>
+ 2d8:	f8 01       	movw	r30, r16
+ 2da:	64 83       	std	Z+4, r22	; 0x04
+ 2dc:	75 83       	std	Z+5, r23	; 0x05
+ 2de:	86 83       	std	Z+6, r24	; 0x06
+ 2e0:	97 83       	std	Z+7, r25	; 0x07
 	address += sizeof(uint32_t);
 	gps_data->month = EEPROM_read_byte(address);
- 326:	ce 01       	movw	r24, r28
- 328:	0a 96       	adiw	r24, 0x0a	; 10
- 32a:	0e 94 4b 00 	call	0x96	; 0x96 <EEPROM_read_byte>
- 32e:	f8 01       	movw	r30, r16
- 330:	80 87       	std	Z+8, r24	; 0x08
+ 2e2:	ce 01       	movw	r24, r28
+ 2e4:	0a 96       	adiw	r24, 0x0a	; 10
+ 2e6:	0e 94 4b 00 	call	0x96	; 0x96 <EEPROM_read_byte>
+ 2ea:	f8 01       	movw	r30, r16
+ 2ec:	80 87       	std	Z+8, r24	; 0x08
 	address += sizeof(uint8_t);
 	gps_data->day = EEPROM_read_byte(address);
- 332:	ce 01       	movw	r24, r28
- 334:	0b 96       	adiw	r24, 0x0b	; 11
- 336:	0e 94 4b 00 	call	0x96	; 0x96 <EEPROM_read_byte>
- 33a:	f8 01       	movw	r30, r16
- 33c:	81 87       	std	Z+9, r24	; 0x09
+ 2ee:	ce 01       	movw	r24, r28
+ 2f0:	0b 96       	adiw	r24, 0x0b	; 11
+ 2f2:	0e 94 4b 00 	call	0x96	; 0x96 <EEPROM_read_byte>
+ 2f6:	f8 01       	movw	r30, r16
+ 2f8:	81 87       	std	Z+9, r24	; 0x09
 	address += sizeof(uint8_t);
 	gps_data->hour = EEPROM_read_byte(address);
- 33e:	ce 01       	movw	r24, r28
- 340:	0c 96       	adiw	r24, 0x0c	; 12
- 342:	0e 94 4b 00 	call	0x96	; 0x96 <EEPROM_read_byte>
- 346:	f8 01       	movw	r30, r16
- 348:	82 87       	std	Z+10, r24	; 0x0a
+ 2fa:	ce 01       	movw	r24, r28
+ 2fc:	0c 96       	adiw	r24, 0x0c	; 12
+ 2fe:	0e 94 4b 00 	call	0x96	; 0x96 <EEPROM_read_byte>
+ 302:	f8 01       	movw	r30, r16
+ 304:	82 87       	std	Z+10, r24	; 0x0a
 	address += sizeof(uint8_t);
 	gps_data->minute = EEPROM_read_byte(address);
- 34a:	ce 01       	movw	r24, r28
- 34c:	0d 96       	adiw	r24, 0x0d	; 13
- 34e:	0e 94 4b 00 	call	0x96	; 0x96 <EEPROM_read_byte>
- 352:	f8 01       	movw	r30, r16
- 354:	83 87       	std	Z+11, r24	; 0x0b
+ 306:	ce 01       	movw	r24, r28
+ 308:	0d 96       	adiw	r24, 0x0d	; 13
+ 30a:	0e 94 4b 00 	call	0x96	; 0x96 <EEPROM_read_byte>
+ 30e:	f8 01       	movw	r30, r16
+ 310:	83 87       	std	Z+11, r24	; 0x0b
 	address += sizeof(uint8_t);
- 356:	df 91       	pop	r29
- 358:	cf 91       	pop	r28
- 35a:	1f 91       	pop	r17
- 35c:	0f 91       	pop	r16
- 35e:	08 95       	ret
+ 312:	df 91       	pop	r29
+ 314:	cf 91       	pop	r28
+ 316:	1f 91       	pop	r17
+ 318:	0f 91       	pop	r16
+ 31a:	08 95       	ret
 
-00000360 <init_structs>:
+0000031c <main>:
+
+
+
+int main(void)
+{
+	USART_init();
+ 31c:	0e 94 2e 02 	call	0x45c	; 0x45c <USART_init>
+	USART_clear_putty();
+ 320:	0e 94 a9 02 	call	0x552	; 0x552 <USART_clear_putty>
+	
+	test_store_load_struct();
+ 324:	0e 94 ca 01 	call	0x394	; 0x394 <test_store_load_struct>
+ 328:	ff cf       	rjmp	.-2      	; 0x328 <main+0xc>
+
+0000032a <init_structs>:
 	print_struct(&temp);
 	USART_transmit_string("#############################################");
 }
 
 
 void init_structs(gps_t *gps1, gps_t *gps2) {
- 360:	dc 01       	movw	r26, r24
- 362:	fb 01       	movw	r30, r22
-		gps1->lattitude = 1;
- 364:	41 e0       	ldi	r20, 0x01	; 1
- 366:	50 e0       	ldi	r21, 0x00	; 0
- 368:	60 e0       	ldi	r22, 0x00	; 0
- 36a:	70 e0       	ldi	r23, 0x00	; 0
- 36c:	4d 93       	st	X+, r20
- 36e:	5d 93       	st	X+, r21
- 370:	6d 93       	st	X+, r22
- 372:	7c 93       	st	X, r23
- 374:	13 97       	sbiw	r26, 0x03	; 3
-		gps1->longitude = 2;
- 376:	42 e0       	ldi	r20, 0x02	; 2
- 378:	50 e0       	ldi	r21, 0x00	; 0
- 37a:	60 e0       	ldi	r22, 0x00	; 0
- 37c:	70 e0       	ldi	r23, 0x00	; 0
- 37e:	14 96       	adiw	r26, 0x04	; 4
- 380:	4d 93       	st	X+, r20
- 382:	5d 93       	st	X+, r21
- 384:	6d 93       	st	X+, r22
- 386:	7c 93       	st	X, r23
- 388:	17 97       	sbiw	r26, 0x07	; 7
-		gps1->month = 3;
- 38a:	83 e0       	ldi	r24, 0x03	; 3
- 38c:	18 96       	adiw	r26, 0x08	; 8
- 38e:	8c 93       	st	X, r24
- 390:	18 97       	sbiw	r26, 0x08	; 8
-		gps1->day = 4;
- 392:	84 e0       	ldi	r24, 0x04	; 4
- 394:	19 96       	adiw	r26, 0x09	; 9
- 396:	8c 93       	st	X, r24
- 398:	19 97       	sbiw	r26, 0x09	; 9
-		gps1->hour = 5;
- 39a:	85 e0       	ldi	r24, 0x05	; 5
- 39c:	1a 96       	adiw	r26, 0x0a	; 10
- 39e:	8c 93       	st	X, r24
- 3a0:	1a 97       	sbiw	r26, 0x0a	; 10
-		gps1->minute = 6;
- 3a2:	86 e0       	ldi	r24, 0x06	; 6
- 3a4:	1b 96       	adiw	r26, 0x0b	; 11
- 3a6:	8c 93       	st	X, r24
-		
-		gps2->lattitude = 7;
- 3a8:	87 e0       	ldi	r24, 0x07	; 7
- 3aa:	90 e0       	ldi	r25, 0x00	; 0
- 3ac:	a0 e0       	ldi	r26, 0x00	; 0
- 3ae:	b0 e0       	ldi	r27, 0x00	; 0
- 3b0:	80 83       	st	Z, r24
- 3b2:	91 83       	std	Z+1, r25	; 0x01
- 3b4:	a2 83       	std	Z+2, r26	; 0x02
- 3b6:	b3 83       	std	Z+3, r27	; 0x03
-		gps2->longitude = 7;
- 3b8:	84 83       	std	Z+4, r24	; 0x04
- 3ba:	95 83       	std	Z+5, r25	; 0x05
- 3bc:	a6 83       	std	Z+6, r26	; 0x06
- 3be:	b7 83       	std	Z+7, r27	; 0x07
-		gps2->month = 7;
- 3c0:	80 87       	std	Z+8, r24	; 0x08
-		gps2->day = 7;
- 3c2:	81 87       	std	Z+9, r24	; 0x09
-		gps2->hour = 7;
- 3c4:	82 87       	std	Z+10, r24	; 0x0a
-		gps2->minute = 7;
- 3c6:	83 87       	std	Z+11, r24	; 0x0b
- 3c8:	08 95       	ret
+ 32a:	dc 01       	movw	r26, r24
+ 32c:	fb 01       	movw	r30, r22
+	gps1->lattitude = 1;
+ 32e:	41 e0       	ldi	r20, 0x01	; 1
+ 330:	50 e0       	ldi	r21, 0x00	; 0
+ 332:	60 e0       	ldi	r22, 0x00	; 0
+ 334:	70 e0       	ldi	r23, 0x00	; 0
+ 336:	4d 93       	st	X+, r20
+ 338:	5d 93       	st	X+, r21
+ 33a:	6d 93       	st	X+, r22
+ 33c:	7c 93       	st	X, r23
+ 33e:	13 97       	sbiw	r26, 0x03	; 3
+	gps1->longitude = 2;
+ 340:	42 e0       	ldi	r20, 0x02	; 2
+ 342:	50 e0       	ldi	r21, 0x00	; 0
+ 344:	60 e0       	ldi	r22, 0x00	; 0
+ 346:	70 e0       	ldi	r23, 0x00	; 0
+ 348:	14 96       	adiw	r26, 0x04	; 4
+ 34a:	4d 93       	st	X+, r20
+ 34c:	5d 93       	st	X+, r21
+ 34e:	6d 93       	st	X+, r22
+ 350:	7c 93       	st	X, r23
+ 352:	17 97       	sbiw	r26, 0x07	; 7
+	gps1->month = 3;
+ 354:	83 e0       	ldi	r24, 0x03	; 3
+ 356:	18 96       	adiw	r26, 0x08	; 8
+ 358:	8c 93       	st	X, r24
+ 35a:	18 97       	sbiw	r26, 0x08	; 8
+	gps1->day = 4;
+ 35c:	84 e0       	ldi	r24, 0x04	; 4
+ 35e:	19 96       	adiw	r26, 0x09	; 9
+ 360:	8c 93       	st	X, r24
+ 362:	19 97       	sbiw	r26, 0x09	; 9
+	gps1->hour = 5;
+ 364:	85 e0       	ldi	r24, 0x05	; 5
+ 366:	1a 96       	adiw	r26, 0x0a	; 10
+ 368:	8c 93       	st	X, r24
+ 36a:	1a 97       	sbiw	r26, 0x0a	; 10
+	gps1->minute = 6;
+ 36c:	86 e0       	ldi	r24, 0x06	; 6
+ 36e:	1b 96       	adiw	r26, 0x0b	; 11
+ 370:	8c 93       	st	X, r24
+	
+	gps2->lattitude = 7;
+ 372:	87 e0       	ldi	r24, 0x07	; 7
+ 374:	90 e0       	ldi	r25, 0x00	; 0
+ 376:	a0 e0       	ldi	r26, 0x00	; 0
+ 378:	b0 e0       	ldi	r27, 0x00	; 0
+ 37a:	80 83       	st	Z, r24
+ 37c:	91 83       	std	Z+1, r25	; 0x01
+ 37e:	a2 83       	std	Z+2, r26	; 0x02
+ 380:	b3 83       	std	Z+3, r27	; 0x03
+	gps2->longitude = 7;
+ 382:	84 83       	std	Z+4, r24	; 0x04
+ 384:	95 83       	std	Z+5, r25	; 0x05
+ 386:	a6 83       	std	Z+6, r26	; 0x06
+ 388:	b7 83       	std	Z+7, r27	; 0x07
+	gps2->month = 7;
+ 38a:	80 87       	std	Z+8, r24	; 0x08
+	gps2->day = 7;
+ 38c:	81 87       	std	Z+9, r24	; 0x09
+	gps2->hour = 7;
+ 38e:	82 87       	std	Z+10, r24	; 0x0a
+	gps2->minute = 7;
+ 390:	83 87       	std	Z+11, r24	; 0x0b
+ 392:	08 95       	ret
 
-000003ca <test_store_load_struct>:
-		
-    }
-	return 0;
+00000394 <test_store_load_struct>:
+
+
+void translator_test_all() {
+	test_store_load_struct();
 }
-
 void test_store_load_struct() {
- 3ca:	0f 93       	push	r16
- 3cc:	1f 93       	push	r17
- 3ce:	cf 93       	push	r28
- 3d0:	df 93       	push	r29
- 3d2:	cd b7       	in	r28, 0x3d	; 61
- 3d4:	de b7       	in	r29, 0x3e	; 62
- 3d6:	a4 97       	sbiw	r28, 0x24	; 36
- 3d8:	0f b6       	in	r0, 0x3f	; 63
- 3da:	f8 94       	cli
- 3dc:	de bf       	out	0x3e, r29	; 62
- 3de:	0f be       	out	0x3f, r0	; 63
- 3e0:	cd bf       	out	0x3d, r28	; 61
+ 394:	0f 93       	push	r16
+ 396:	1f 93       	push	r17
+ 398:	cf 93       	push	r28
+ 39a:	df 93       	push	r29
+ 39c:	cd b7       	in	r28, 0x3d	; 61
+ 39e:	de b7       	in	r29, 0x3e	; 62
+ 3a0:	a4 97       	sbiw	r28, 0x24	; 36
+ 3a2:	0f b6       	in	r0, 0x3f	; 63
+ 3a4:	f8 94       	cli
+ 3a6:	de bf       	out	0x3e, r29	; 62
+ 3a8:	0f be       	out	0x3f, r0	; 63
+ 3aa:	cd bf       	out	0x3d, r28	; 61
 	gps_t gps1;
 	gps_t gps2;
 	gps_t temp = {0,0,0,0,0,0};
- 3e2:	8e 01       	movw	r16, r28
- 3e4:	07 5e       	subi	r16, 0xE7	; 231
- 3e6:	1f 4f       	sbci	r17, 0xFF	; 255
- 3e8:	8c e0       	ldi	r24, 0x0C	; 12
- 3ea:	f8 01       	movw	r30, r16
- 3ec:	11 92       	st	Z+, r1
- 3ee:	8a 95       	dec	r24
- 3f0:	e9 f7       	brne	.-6      	; 0x3ec <test_store_load_struct+0x22>
+ 3ac:	8e 01       	movw	r16, r28
+ 3ae:	07 5e       	subi	r16, 0xE7	; 231
+ 3b0:	1f 4f       	sbci	r17, 0xFF	; 255
+ 3b2:	8c e0       	ldi	r24, 0x0C	; 12
+ 3b4:	f8 01       	movw	r30, r16
+ 3b6:	11 92       	st	Z+, r1
+ 3b8:	8a 95       	dec	r24
+ 3ba:	e9 f7       	brne	.-6      	; 0x3b6 <test_store_load_struct+0x22>
 	
 	init_structs(&gps1, &gps2);
- 3f2:	be 01       	movw	r22, r28
- 3f4:	63 5f       	subi	r22, 0xF3	; 243
- 3f6:	7f 4f       	sbci	r23, 0xFF	; 255
- 3f8:	ce 01       	movw	r24, r28
- 3fa:	01 96       	adiw	r24, 0x01	; 1
- 3fc:	0e 94 b0 01 	call	0x360	; 0x360 <init_structs>
+ 3bc:	be 01       	movw	r22, r28
+ 3be:	63 5f       	subi	r22, 0xF3	; 243
+ 3c0:	7f 4f       	sbci	r23, 0xFF	; 255
+ 3c2:	ce 01       	movw	r24, r28
+ 3c4:	01 96       	adiw	r24, 0x01	; 1
+ 3c6:	0e 94 95 01 	call	0x32a	; 0x32a <init_structs>
 	
 	store_struct(&gps1);	// should be stored at address 2
- 400:	ce 01       	movw	r24, r28
- 402:	01 96       	adiw	r24, 0x01	; 1
- 404:	0e 94 11 01 	call	0x222	; 0x222 <store_struct>
+ 3ca:	ce 01       	movw	r24, r28
+ 3cc:	01 96       	adiw	r24, 0x01	; 1
+ 3ce:	0e 94 ef 00 	call	0x1de	; 0x1de <store_struct>
 	store_struct(&gps2);	// should be stored at address 14
- 408:	ce 01       	movw	r24, r28
- 40a:	0d 96       	adiw	r24, 0x0d	; 13
- 40c:	0e 94 11 01 	call	0x222	; 0x222 <store_struct>
+ 3d2:	ce 01       	movw	r24, r28
+ 3d4:	0d 96       	adiw	r24, 0x0d	; 13
+ 3d6:	0e 94 ef 00 	call	0x1de	; 0x1de <store_struct>
 	
 	get_struct(0, &temp);
- 410:	b8 01       	movw	r22, r16
- 412:	80 e0       	ldi	r24, 0x00	; 0
- 414:	0e 94 71 01 	call	0x2e2	; 0x2e2 <get_struct>
+ 3da:	b8 01       	movw	r22, r16
+ 3dc:	80 e0       	ldi	r24, 0x00	; 0
+ 3de:	0e 94 4f 01 	call	0x29e	; 0x29e <get_struct>
 	USART_transmit_string("#############################################");
- 418:	81 ec       	ldi	r24, 0xC1	; 193
- 41a:	91 e0       	ldi	r25, 0x01	; 1
- 41c:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 3e2:	8f e7       	ldi	r24, 0x7F	; 127
+ 3e4:	91 e0       	ldi	r25, 0x01	; 1
+ 3e6:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	USART_transmit_string("\n\rEXPECTED: ");
- 420:	8a ea       	ldi	r24, 0xAA	; 170
- 422:	91 e0       	ldi	r25, 0x01	; 1
- 424:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 3ea:	88 e6       	ldi	r24, 0x68	; 104
+ 3ec:	91 e0       	ldi	r25, 0x01	; 1
+ 3ee:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	print_struct(&gps1);
- 428:	ce 01       	movw	r24, r28
- 42a:	01 96       	adiw	r24, 0x01	; 1
- 42c:	0e 94 2f 01 	call	0x25e	; 0x25e <print_struct>
+ 3f2:	ce 01       	movw	r24, r28
+ 3f4:	01 96       	adiw	r24, 0x01	; 1
+ 3f6:	0e 94 0d 01 	call	0x21a	; 0x21a <print_struct>
 	USART_transmit_string("\n\rGOT:");
- 430:	87 eb       	ldi	r24, 0xB7	; 183
- 432:	91 e0       	ldi	r25, 0x01	; 1
- 434:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 3fa:	85 e7       	ldi	r24, 0x75	; 117
+ 3fc:	91 e0       	ldi	r25, 0x01	; 1
+ 3fe:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	print_struct(&temp);
- 438:	c8 01       	movw	r24, r16
- 43a:	0e 94 2f 01 	call	0x25e	; 0x25e <print_struct>
+ 402:	c8 01       	movw	r24, r16
+ 404:	0e 94 0d 01 	call	0x21a	; 0x21a <print_struct>
 	USART_transmit_string("#############################################");
- 43e:	81 ec       	ldi	r24, 0xC1	; 193
- 440:	91 e0       	ldi	r25, 0x01	; 1
- 442:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 408:	8f e7       	ldi	r24, 0x7F	; 127
+ 40a:	91 e0       	ldi	r25, 0x01	; 1
+ 40c:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	
 	get_struct(1, &temp);
- 446:	b8 01       	movw	r22, r16
- 448:	81 e0       	ldi	r24, 0x01	; 1
- 44a:	0e 94 71 01 	call	0x2e2	; 0x2e2 <get_struct>
+ 410:	b8 01       	movw	r22, r16
+ 412:	81 e0       	ldi	r24, 0x01	; 1
+ 414:	0e 94 4f 01 	call	0x29e	; 0x29e <get_struct>
 	
 	USART_transmit_string("\n\n\r#############################################");
- 44e:	8e eb       	ldi	r24, 0xBE	; 190
- 450:	91 e0       	ldi	r25, 0x01	; 1
- 452:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 418:	8c e7       	ldi	r24, 0x7C	; 124
+ 41a:	91 e0       	ldi	r25, 0x01	; 1
+ 41c:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	USART_transmit_string("\n\rEXPECTED: ");
- 456:	8a ea       	ldi	r24, 0xAA	; 170
- 458:	91 e0       	ldi	r25, 0x01	; 1
- 45a:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 420:	88 e6       	ldi	r24, 0x68	; 104
+ 422:	91 e0       	ldi	r25, 0x01	; 1
+ 424:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	print_struct(&gps2);
- 45e:	ce 01       	movw	r24, r28
- 460:	0d 96       	adiw	r24, 0x0d	; 13
- 462:	0e 94 2f 01 	call	0x25e	; 0x25e <print_struct>
+ 428:	ce 01       	movw	r24, r28
+ 42a:	0d 96       	adiw	r24, 0x0d	; 13
+ 42c:	0e 94 0d 01 	call	0x21a	; 0x21a <print_struct>
 	USART_transmit_string("\n\rGOT:");
- 466:	87 eb       	ldi	r24, 0xB7	; 183
- 468:	91 e0       	ldi	r25, 0x01	; 1
- 46a:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 430:	85 e7       	ldi	r24, 0x75	; 117
+ 432:	91 e0       	ldi	r25, 0x01	; 1
+ 434:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 	print_struct(&temp);
- 46e:	c8 01       	movw	r24, r16
- 470:	0e 94 2f 01 	call	0x25e	; 0x25e <print_struct>
+ 438:	c8 01       	movw	r24, r16
+ 43a:	0e 94 0d 01 	call	0x21a	; 0x21a <print_struct>
 	USART_transmit_string("#############################################");
- 474:	81 ec       	ldi	r24, 0xC1	; 193
- 476:	91 e0       	ldi	r25, 0x01	; 1
- 478:	0e 94 6b 02 	call	0x4d6	; 0x4d6 <USART_transmit_string>
+ 43e:	8f e7       	ldi	r24, 0x7F	; 127
+ 440:	91 e0       	ldi	r25, 0x01	; 1
+ 442:	0e 94 47 02 	call	0x48e	; 0x48e <USART_transmit_string>
 }
- 47c:	a4 96       	adiw	r28, 0x24	; 36
- 47e:	0f b6       	in	r0, 0x3f	; 63
- 480:	f8 94       	cli
- 482:	de bf       	out	0x3e, r29	; 62
- 484:	0f be       	out	0x3f, r0	; 63
- 486:	cd bf       	out	0x3d, r28	; 61
- 488:	df 91       	pop	r29
- 48a:	cf 91       	pop	r28
- 48c:	1f 91       	pop	r17
- 48e:	0f 91       	pop	r16
- 490:	08 95       	ret
+ 446:	a4 96       	adiw	r28, 0x24	; 36
+ 448:	0f b6       	in	r0, 0x3f	; 63
+ 44a:	f8 94       	cli
+ 44c:	de bf       	out	0x3e, r29	; 62
+ 44e:	0f be       	out	0x3f, r0	; 63
+ 450:	cd bf       	out	0x3d, r28	; 61
+ 452:	df 91       	pop	r29
+ 454:	cf 91       	pop	r28
+ 456:	1f 91       	pop	r17
+ 458:	0f 91       	pop	r16
+ 45a:	08 95       	ret
 
-00000492 <main>:
-void test_store_load_struct();
-
-
-int main(void)
-{
-	USART_init();
- 492:	0e 94 52 02 	call	0x4a4	; 0x4a4 <USART_init>
-	USART_clear_putty();
- 496:	0e 94 cd 02 	call	0x59a	; 0x59a <USART_clear_putty>
-	EEPROM_clear();
- 49a:	0e 94 ef 00 	call	0x1de	; 0x1de <EEPROM_clear>
-	test_store_load_struct();
- 49e:	0e 94 e5 01 	call	0x3ca	; 0x3ca <test_store_load_struct>
- 4a2:	ff cf       	rjmp	.-2      	; 0x4a2 <main+0x10>
-
-000004a4 <USART_init>:
+0000045c <USART_init>:
 			USART_transmit_byte('1');
 		} else {
 			USART_transmit_byte('0');
 		}
 	}
 }
- 4a4:	88 e1       	ldi	r24, 0x18	; 24
- 4a6:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7e00c1>
- 4aa:	86 e0       	ldi	r24, 0x06	; 6
- 4ac:	80 93 c2 00 	sts	0x00C2, r24	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7e00c2>
- 4b0:	10 92 c5 00 	sts	0x00C5, r1	; 0x8000c5 <__TEXT_REGION_LENGTH__+0x7e00c5>
- 4b4:	8c e0       	ldi	r24, 0x0C	; 12
- 4b6:	80 93 c4 00 	sts	0x00C4, r24	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7e00c4>
- 4ba:	e0 ec       	ldi	r30, 0xC0	; 192
- 4bc:	f0 e0       	ldi	r31, 0x00	; 0
- 4be:	80 81       	ld	r24, Z
- 4c0:	82 60       	ori	r24, 0x02	; 2
- 4c2:	80 83       	st	Z, r24
- 4c4:	08 95       	ret
+ 45c:	88 e1       	ldi	r24, 0x18	; 24
+ 45e:	80 93 c1 00 	sts	0x00C1, r24	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7e00c1>
+ 462:	86 e0       	ldi	r24, 0x06	; 6
+ 464:	80 93 c2 00 	sts	0x00C2, r24	; 0x8000c2 <__TEXT_REGION_LENGTH__+0x7e00c2>
+ 468:	10 92 c5 00 	sts	0x00C5, r1	; 0x8000c5 <__TEXT_REGION_LENGTH__+0x7e00c5>
+ 46c:	8c e0       	ldi	r24, 0x0C	; 12
+ 46e:	80 93 c4 00 	sts	0x00C4, r24	; 0x8000c4 <__TEXT_REGION_LENGTH__+0x7e00c4>
+ 472:	e0 ec       	ldi	r30, 0xC0	; 192
+ 474:	f0 e0       	ldi	r31, 0x00	; 0
+ 476:	80 81       	ld	r24, Z
+ 478:	82 60       	ori	r24, 0x02	; 2
+ 47a:	80 83       	st	Z, r24
+ 47c:	08 95       	ret
 
-000004c6 <USART_transmit_byte>:
- 4c6:	e0 ec       	ldi	r30, 0xC0	; 192
- 4c8:	f0 e0       	ldi	r31, 0x00	; 0
- 4ca:	90 81       	ld	r25, Z
- 4cc:	95 ff       	sbrs	r25, 5
- 4ce:	fd cf       	rjmp	.-6      	; 0x4ca <USART_transmit_byte+0x4>
- 4d0:	80 93 c6 00 	sts	0x00C6, r24	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
- 4d4:	08 95       	ret
+0000047e <USART_transmit_byte>:
+ 47e:	e0 ec       	ldi	r30, 0xC0	; 192
+ 480:	f0 e0       	ldi	r31, 0x00	; 0
+ 482:	90 81       	ld	r25, Z
+ 484:	95 ff       	sbrs	r25, 5
+ 486:	fd cf       	rjmp	.-6      	; 0x482 <USART_transmit_byte+0x4>
+ 488:	80 93 c6 00 	sts	0x00C6, r24	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7e00c6>
+ 48c:	08 95       	ret
 
-000004d6 <USART_transmit_string>:
- 4d6:	cf 93       	push	r28
- 4d8:	df 93       	push	r29
- 4da:	ec 01       	movw	r28, r24
- 4dc:	88 81       	ld	r24, Y
- 4de:	88 23       	and	r24, r24
- 4e0:	31 f0       	breq	.+12     	; 0x4ee <USART_transmit_string+0x18>
- 4e2:	21 96       	adiw	r28, 0x01	; 1
- 4e4:	0e 94 63 02 	call	0x4c6	; 0x4c6 <USART_transmit_byte>
- 4e8:	89 91       	ld	r24, Y+
- 4ea:	81 11       	cpse	r24, r1
- 4ec:	fb cf       	rjmp	.-10     	; 0x4e4 <USART_transmit_string+0xe>
- 4ee:	df 91       	pop	r29
- 4f0:	cf 91       	pop	r28
- 4f2:	08 95       	ret
+0000048e <USART_transmit_string>:
+ 48e:	cf 93       	push	r28
+ 490:	df 93       	push	r29
+ 492:	ec 01       	movw	r28, r24
+ 494:	88 81       	ld	r24, Y
+ 496:	88 23       	and	r24, r24
+ 498:	31 f0       	breq	.+12     	; 0x4a6 <USART_transmit_string+0x18>
+ 49a:	21 96       	adiw	r28, 0x01	; 1
+ 49c:	0e 94 3f 02 	call	0x47e	; 0x47e <USART_transmit_byte>
+ 4a0:	89 91       	ld	r24, Y+
+ 4a2:	81 11       	cpse	r24, r1
+ 4a4:	fb cf       	rjmp	.-10     	; 0x49c <USART_transmit_string+0xe>
+ 4a6:	df 91       	pop	r29
+ 4a8:	cf 91       	pop	r28
+ 4aa:	08 95       	ret
 
-000004f4 <USART_transmit_word>:
+000004ac <USART_transmit_word>:
 
 void USART_transmit_word(uint32_t word) {
- 4f4:	4f 92       	push	r4
- 4f6:	5f 92       	push	r5
- 4f8:	6f 92       	push	r6
- 4fa:	7f 92       	push	r7
- 4fc:	8f 92       	push	r8
- 4fe:	9f 92       	push	r9
- 500:	af 92       	push	r10
- 502:	bf 92       	push	r11
- 504:	cf 92       	push	r12
- 506:	df 92       	push	r13
- 508:	ef 92       	push	r14
- 50a:	ff 92       	push	r15
- 50c:	cf 93       	push	r28
- 50e:	df 93       	push	r29
- 510:	2b 01       	movw	r4, r22
- 512:	3c 01       	movw	r6, r24
+ 4ac:	4f 92       	push	r4
+ 4ae:	5f 92       	push	r5
+ 4b0:	6f 92       	push	r6
+ 4b2:	7f 92       	push	r7
+ 4b4:	8f 92       	push	r8
+ 4b6:	9f 92       	push	r9
+ 4b8:	af 92       	push	r10
+ 4ba:	bf 92       	push	r11
+ 4bc:	cf 92       	push	r12
+ 4be:	df 92       	push	r13
+ 4c0:	ef 92       	push	r14
+ 4c2:	ff 92       	push	r15
+ 4c4:	cf 93       	push	r28
+ 4c6:	df 93       	push	r29
+ 4c8:	2b 01       	movw	r4, r22
+ 4ca:	3c 01       	movw	r6, r24
 	uint32_t divisor = 1000000000;
 
 	USART_transmit_byte((word / divisor) + '0');
- 514:	20 e0       	ldi	r18, 0x00	; 0
- 516:	3a ec       	ldi	r19, 0xCA	; 202
- 518:	4a e9       	ldi	r20, 0x9A	; 154
- 51a:	5b e3       	ldi	r21, 0x3B	; 59
- 51c:	0e 94 d9 02 	call	0x5b2	; 0x5b2 <__udivmodsi4>
- 520:	80 e3       	ldi	r24, 0x30	; 48
- 522:	82 0f       	add	r24, r18
- 524:	0e 94 63 02 	call	0x4c6	; 0x4c6 <USART_transmit_byte>
- 528:	c9 e0       	ldi	r28, 0x09	; 9
- 52a:	d0 e0       	ldi	r29, 0x00	; 0
+ 4cc:	20 e0       	ldi	r18, 0x00	; 0
+ 4ce:	3a ec       	ldi	r19, 0xCA	; 202
+ 4d0:	4a e9       	ldi	r20, 0x9A	; 154
+ 4d2:	5b e3       	ldi	r21, 0x3B	; 59
+ 4d4:	0e 94 b5 02 	call	0x56a	; 0x56a <__udivmodsi4>
+ 4d8:	80 e3       	ldi	r24, 0x30	; 48
+ 4da:	82 0f       	add	r24, r18
+ 4dc:	0e 94 3f 02 	call	0x47e	; 0x47e <USART_transmit_byte>
+ 4e0:	c9 e0       	ldi	r28, 0x09	; 9
+ 4e2:	d0 e0       	ldi	r29, 0x00	; 0
 		}
 	}
 }
 
 void USART_transmit_word(uint32_t word) {
 	uint32_t divisor = 1000000000;
- 52c:	0f 2e       	mov	r0, r31
- 52e:	c1 2c       	mov	r12, r1
- 530:	fa ec       	ldi	r31, 0xCA	; 202
- 532:	df 2e       	mov	r13, r31
- 534:	fa e9       	ldi	r31, 0x9A	; 154
- 536:	ef 2e       	mov	r14, r31
- 538:	fb e3       	ldi	r31, 0x3B	; 59
- 53a:	ff 2e       	mov	r15, r31
- 53c:	f0 2d       	mov	r31, r0
+ 4e4:	0f 2e       	mov	r0, r31
+ 4e6:	c1 2c       	mov	r12, r1
+ 4e8:	fa ec       	ldi	r31, 0xCA	; 202
+ 4ea:	df 2e       	mov	r13, r31
+ 4ec:	fa e9       	ldi	r31, 0x9A	; 154
+ 4ee:	ef 2e       	mov	r14, r31
+ 4f0:	fb e3       	ldi	r31, 0x3B	; 59
+ 4f2:	ff 2e       	mov	r15, r31
+ 4f4:	f0 2d       	mov	r31, r0
 
 	USART_transmit_byte((word / divisor) + '0');
 	
 	while (divisor > 1) {
 		divisor = divisor / 10;
- 53e:	0f 2e       	mov	r0, r31
- 540:	fa e0       	ldi	r31, 0x0A	; 10
- 542:	8f 2e       	mov	r8, r31
- 544:	91 2c       	mov	r9, r1
- 546:	a1 2c       	mov	r10, r1
- 548:	b1 2c       	mov	r11, r1
- 54a:	f0 2d       	mov	r31, r0
- 54c:	c7 01       	movw	r24, r14
- 54e:	b6 01       	movw	r22, r12
- 550:	a5 01       	movw	r20, r10
- 552:	94 01       	movw	r18, r8
- 554:	0e 94 d9 02 	call	0x5b2	; 0x5b2 <__udivmodsi4>
- 558:	69 01       	movw	r12, r18
- 55a:	7a 01       	movw	r14, r20
+ 4f6:	0f 2e       	mov	r0, r31
+ 4f8:	fa e0       	ldi	r31, 0x0A	; 10
+ 4fa:	8f 2e       	mov	r8, r31
+ 4fc:	91 2c       	mov	r9, r1
+ 4fe:	a1 2c       	mov	r10, r1
+ 500:	b1 2c       	mov	r11, r1
+ 502:	f0 2d       	mov	r31, r0
+ 504:	c7 01       	movw	r24, r14
+ 506:	b6 01       	movw	r22, r12
+ 508:	a5 01       	movw	r20, r10
+ 50a:	94 01       	movw	r18, r8
+ 50c:	0e 94 b5 02 	call	0x56a	; 0x56a <__udivmodsi4>
+ 510:	69 01       	movw	r12, r18
+ 512:	7a 01       	movw	r14, r20
 		USART_transmit_byte(((word / divisor) % 10) + '0');
- 55c:	c3 01       	movw	r24, r6
- 55e:	b2 01       	movw	r22, r4
- 560:	0e 94 d9 02 	call	0x5b2	; 0x5b2 <__udivmodsi4>
- 564:	ca 01       	movw	r24, r20
- 566:	b9 01       	movw	r22, r18
- 568:	a5 01       	movw	r20, r10
- 56a:	94 01       	movw	r18, r8
- 56c:	0e 94 d9 02 	call	0x5b2	; 0x5b2 <__udivmodsi4>
- 570:	80 e3       	ldi	r24, 0x30	; 48
- 572:	86 0f       	add	r24, r22
- 574:	0e 94 63 02 	call	0x4c6	; 0x4c6 <USART_transmit_byte>
- 578:	21 97       	sbiw	r28, 0x01	; 1
+ 514:	c3 01       	movw	r24, r6
+ 516:	b2 01       	movw	r22, r4
+ 518:	0e 94 b5 02 	call	0x56a	; 0x56a <__udivmodsi4>
+ 51c:	ca 01       	movw	r24, r20
+ 51e:	b9 01       	movw	r22, r18
+ 520:	a5 01       	movw	r20, r10
+ 522:	94 01       	movw	r18, r8
+ 524:	0e 94 b5 02 	call	0x56a	; 0x56a <__udivmodsi4>
+ 528:	80 e3       	ldi	r24, 0x30	; 48
+ 52a:	86 0f       	add	r24, r22
+ 52c:	0e 94 3f 02 	call	0x47e	; 0x47e <USART_transmit_byte>
+ 530:	21 97       	sbiw	r28, 0x01	; 1
 void USART_transmit_word(uint32_t word) {
 	uint32_t divisor = 1000000000;
 
 	USART_transmit_byte((word / divisor) + '0');
 	
 	while (divisor > 1) {
- 57a:	41 f7       	brne	.-48     	; 0x54c <USART_transmit_word+0x58>
+ 532:	41 f7       	brne	.-48     	; 0x504 <USART_transmit_word+0x58>
 		divisor = divisor / 10;
 		USART_transmit_byte(((word / divisor) % 10) + '0');
 	}
 }
- 57c:	df 91       	pop	r29
- 57e:	cf 91       	pop	r28
- 580:	ff 90       	pop	r15
- 582:	ef 90       	pop	r14
- 584:	df 90       	pop	r13
- 586:	cf 90       	pop	r12
- 588:	bf 90       	pop	r11
- 58a:	af 90       	pop	r10
- 58c:	9f 90       	pop	r9
- 58e:	8f 90       	pop	r8
- 590:	7f 90       	pop	r7
- 592:	6f 90       	pop	r6
- 594:	5f 90       	pop	r5
- 596:	4f 90       	pop	r4
- 598:	08 95       	ret
+ 534:	df 91       	pop	r29
+ 536:	cf 91       	pop	r28
+ 538:	ff 90       	pop	r15
+ 53a:	ef 90       	pop	r14
+ 53c:	df 90       	pop	r13
+ 53e:	cf 90       	pop	r12
+ 540:	bf 90       	pop	r11
+ 542:	af 90       	pop	r10
+ 544:	9f 90       	pop	r9
+ 546:	8f 90       	pop	r8
+ 548:	7f 90       	pop	r7
+ 54a:	6f 90       	pop	r6
+ 54c:	5f 90       	pop	r5
+ 54e:	4f 90       	pop	r4
+ 550:	08 95       	ret
 
-0000059a <USART_clear_putty>:
+00000552 <USART_clear_putty>:
 
 void USART_clear_putty() {
- 59a:	cf 93       	push	r28
- 59c:	c4 e1       	ldi	r28, 0x14	; 20
+ 552:	cf 93       	push	r28
+ 554:	c4 e1       	ldi	r28, 0x14	; 20
 	for (uint8_t i = 0; i < 20; i++)
 	{
 		USART_transmit_byte('\n');
- 59e:	8a e0       	ldi	r24, 0x0A	; 10
- 5a0:	0e 94 63 02 	call	0x4c6	; 0x4c6 <USART_transmit_byte>
- 5a4:	c1 50       	subi	r28, 0x01	; 1
+ 556:	8a e0       	ldi	r24, 0x0A	; 10
+ 558:	0e 94 3f 02 	call	0x47e	; 0x47e <USART_transmit_byte>
+ 55c:	c1 50       	subi	r28, 0x01	; 1
 		USART_transmit_byte(((word / divisor) % 10) + '0');
 	}
 }
 
 void USART_clear_putty() {
 	for (uint8_t i = 0; i < 20; i++)
- 5a6:	d9 f7       	brne	.-10     	; 0x59e <USART_clear_putty+0x4>
+ 55e:	d9 f7       	brne	.-10     	; 0x556 <USART_clear_putty+0x4>
 	{
 		USART_transmit_byte('\n');
 	}
 	USART_transmit_byte('\r');
- 5a8:	8d e0       	ldi	r24, 0x0D	; 13
- 5aa:	0e 94 63 02 	call	0x4c6	; 0x4c6 <USART_transmit_byte>
+ 560:	8d e0       	ldi	r24, 0x0D	; 13
+ 562:	0e 94 3f 02 	call	0x47e	; 0x47e <USART_transmit_byte>
 }
- 5ae:	cf 91       	pop	r28
- 5b0:	08 95       	ret
+ 566:	cf 91       	pop	r28
+ 568:	08 95       	ret
 
-000005b2 <__udivmodsi4>:
- 5b2:	a1 e2       	ldi	r26, 0x21	; 33
- 5b4:	1a 2e       	mov	r1, r26
- 5b6:	aa 1b       	sub	r26, r26
- 5b8:	bb 1b       	sub	r27, r27
- 5ba:	fd 01       	movw	r30, r26
- 5bc:	0d c0       	rjmp	.+26     	; 0x5d8 <__udivmodsi4_ep>
+0000056a <__udivmodsi4>:
+ 56a:	a1 e2       	ldi	r26, 0x21	; 33
+ 56c:	1a 2e       	mov	r1, r26
+ 56e:	aa 1b       	sub	r26, r26
+ 570:	bb 1b       	sub	r27, r27
+ 572:	fd 01       	movw	r30, r26
+ 574:	0d c0       	rjmp	.+26     	; 0x590 <__udivmodsi4_ep>
 
-000005be <__udivmodsi4_loop>:
- 5be:	aa 1f       	adc	r26, r26
- 5c0:	bb 1f       	adc	r27, r27
- 5c2:	ee 1f       	adc	r30, r30
- 5c4:	ff 1f       	adc	r31, r31
- 5c6:	a2 17       	cp	r26, r18
- 5c8:	b3 07       	cpc	r27, r19
- 5ca:	e4 07       	cpc	r30, r20
- 5cc:	f5 07       	cpc	r31, r21
- 5ce:	20 f0       	brcs	.+8      	; 0x5d8 <__udivmodsi4_ep>
- 5d0:	a2 1b       	sub	r26, r18
- 5d2:	b3 0b       	sbc	r27, r19
- 5d4:	e4 0b       	sbc	r30, r20
- 5d6:	f5 0b       	sbc	r31, r21
+00000576 <__udivmodsi4_loop>:
+ 576:	aa 1f       	adc	r26, r26
+ 578:	bb 1f       	adc	r27, r27
+ 57a:	ee 1f       	adc	r30, r30
+ 57c:	ff 1f       	adc	r31, r31
+ 57e:	a2 17       	cp	r26, r18
+ 580:	b3 07       	cpc	r27, r19
+ 582:	e4 07       	cpc	r30, r20
+ 584:	f5 07       	cpc	r31, r21
+ 586:	20 f0       	brcs	.+8      	; 0x590 <__udivmodsi4_ep>
+ 588:	a2 1b       	sub	r26, r18
+ 58a:	b3 0b       	sbc	r27, r19
+ 58c:	e4 0b       	sbc	r30, r20
+ 58e:	f5 0b       	sbc	r31, r21
 
-000005d8 <__udivmodsi4_ep>:
- 5d8:	66 1f       	adc	r22, r22
- 5da:	77 1f       	adc	r23, r23
- 5dc:	88 1f       	adc	r24, r24
- 5de:	99 1f       	adc	r25, r25
- 5e0:	1a 94       	dec	r1
- 5e2:	69 f7       	brne	.-38     	; 0x5be <__udivmodsi4_loop>
- 5e4:	60 95       	com	r22
- 5e6:	70 95       	com	r23
- 5e8:	80 95       	com	r24
- 5ea:	90 95       	com	r25
- 5ec:	9b 01       	movw	r18, r22
- 5ee:	ac 01       	movw	r20, r24
- 5f0:	bd 01       	movw	r22, r26
- 5f2:	cf 01       	movw	r24, r30
- 5f4:	08 95       	ret
+00000590 <__udivmodsi4_ep>:
+ 590:	66 1f       	adc	r22, r22
+ 592:	77 1f       	adc	r23, r23
+ 594:	88 1f       	adc	r24, r24
+ 596:	99 1f       	adc	r25, r25
+ 598:	1a 94       	dec	r1
+ 59a:	69 f7       	brne	.-38     	; 0x576 <__udivmodsi4_loop>
+ 59c:	60 95       	com	r22
+ 59e:	70 95       	com	r23
+ 5a0:	80 95       	com	r24
+ 5a2:	90 95       	com	r25
+ 5a4:	9b 01       	movw	r18, r22
+ 5a6:	ac 01       	movw	r20, r24
+ 5a8:	bd 01       	movw	r22, r26
+ 5aa:	cf 01       	movw	r24, r30
+ 5ac:	08 95       	ret
 
-000005f6 <_exit>:
- 5f6:	f8 94       	cli
+000005ae <_exit>:
+ 5ae:	f8 94       	cli
 
-000005f8 <__stop_program>:
- 5f8:	ff cf       	rjmp	.-2      	; 0x5f8 <__stop_program>
+000005b0 <__stop_program>:
+ 5b0:	ff cf       	rjmp	.-2      	; 0x5b0 <__stop_program>

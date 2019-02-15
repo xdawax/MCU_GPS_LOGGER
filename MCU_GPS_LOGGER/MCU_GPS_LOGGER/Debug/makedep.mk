@@ -8,5 +8,7 @@ EEPROM_translator.c
 
 main.c
 
+translator_test.c
+
 USART.c
 
