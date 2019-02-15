@@ -4,6 +4,8 @@
 
 EEPROM.c
 
+EEPROM_test.c
+
 main.c
 
 USART.c

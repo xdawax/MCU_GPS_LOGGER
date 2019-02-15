@@ -15,6 +15,8 @@
 #include "EEPROM.h"
 #include "USART.h"  // debugging
 
+
+
 // automatically set to atomically RW
 void EEPROM_write_byte(uint8_t byte, uint16_t address) {
 	cli();								// disable interrupts so we don't get interrupted between seting the master write and write
@@ -112,3 +114,10 @@ void EEPROM_clear() {
 	EEPROM_write_byte(FIRST_DATA_BYTE, ADDRESS_LOW_BYTE);  // set the address of the first available byte as 2
 	USART_transmit_string("EEPROM CLEARED!\n\n\r");
 }
+
+void EEPROM_increment_index() {
+	uint8_t index = EEPROM_read_byte(ADDRESS_INDEX);
+	index++;
+	EEPROM_write_byte(index, ADDRESS_INDEX);
+}
+

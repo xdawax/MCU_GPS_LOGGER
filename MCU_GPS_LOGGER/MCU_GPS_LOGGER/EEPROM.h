@@ -9,13 +9,16 @@
 #ifndef EEPROM_H_
 #define EEPROM_H_
 
-#define LAST_BYTE 1023			// address-space ends
-#define FIRST_BYTE 0			// address-space start
-#define ADDRESS_HIGH_BYTE 0		// memory header that contains the 8 highest bits of a pointer to the next free spot in memory
-#define ADDRESS_LOW_BYTE 1		// memory header that contains the 8 lowest bits of a pointer to the next free spot in memory
-#define FIRST_DATA_BYTE 2		// memory of where the first data byte is allowed to be written
-#define BYTE 8					// the size of a byte
-#define WORD 4					// number of bytes in a word
+#define HEADER_SIZE 4
+#define LAST_BYTE 1023					// address-space ends
+#define FIRST_BYTE 0					// address-space start
+#define ADDRESS_HIGH_BYTE 0				// memory header that contains the 8 highest bits of a pointer to the next free spot in memory
+#define ADDRESS_LOW_BYTE 1				// memory header that contains the 8 lowest bits of a pointer to the next free spot in memory
+#define ADDRESS_INDEX 3					// data at this address keeps track of how many structs are stored in memory max 255 (8bit)
+#define FIRST_DATA_BYTE HEADER_SIZE		// memory of where the first data byte is allowed to be written
+#define BYTE 8							// the size of a byte
+#define WORD 4							// number of bytes in a word
+
 
 
 
