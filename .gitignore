@@ -53,3 +53,7 @@ dkms.conf
 
 # Project file
 *.atsln
+*.atsuo
+*.lss
+*.mk
+*.cproj
