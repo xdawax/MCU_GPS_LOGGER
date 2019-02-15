@@ -54,6 +54,13 @@ void USART_receive_string(char *buf, uint8_t size);
 /// @returns void
 void USART_transmit_binary(uint8_t byte);
 
+/// transmits the value of byte as base ten digit
+///
+/// @param byte[in] the byte to be transmitted as binary
+///
+/// @returns void
+void USART_transmit_digit(uint8_t byte);
+
 /// transmits the value of a word as base 10 value with leading zeros
 ///
 /// @param word[in] the word to be transmitted 

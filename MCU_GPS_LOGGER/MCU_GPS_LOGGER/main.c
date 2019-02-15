@@ -15,7 +15,6 @@
 #include "EEPROM_translator.h"
 
 
-
 int main(void)
 {
 	USART_init();
