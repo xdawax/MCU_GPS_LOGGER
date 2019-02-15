@@ -15,6 +15,7 @@
 #include "EEPROM.h"
 #include "USART.h"  // debugging
 
+#define DEBUGG 1
 
 
 // automatically set to atomically RW
@@ -110,9 +111,14 @@ void EEPROM_clear() {
 	{
 		EEPROM_write_byte(0, i);
 	}
+	EEPROM_reset_header();
+	USART_transmit_string("EEPROM CLEARED!\n\n\r");
+}
+
+void EEPROM_reset_header() {
 	EEPROM_write_byte(0, ADDRESS_HIGH_BYTE);
 	EEPROM_write_byte(FIRST_DATA_BYTE, ADDRESS_LOW_BYTE);  // set the address of the first available byte as 2
-	USART_transmit_string("EEPROM CLEARED!\n\n\r");
+	EEPROM_write_byte(0, ADDRESS_INDEX);				   // set the amount of stored structs to 0
 }
 
 void EEPROM_increment_index() {

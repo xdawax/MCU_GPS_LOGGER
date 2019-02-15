@@ -73,8 +73,11 @@ void EEPROM_set_free_address(uint8_t size);
 /// @returns void
 void EEPROM_clear();
 
-
-
+/// Resets the header, next free space will be FIRST_DATA_BYTE 
+/// and amount of structs stored will be set to 0
+///
+/// @returns void
+void EEPROM_reset_header();
 
 
 
