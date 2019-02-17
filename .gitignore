@@ -57,3 +57,5 @@ dkms.conf
 *.lss
 *.mk
 *.cproj
+*.eep 
+*.srec
