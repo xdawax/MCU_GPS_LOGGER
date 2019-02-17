@@ -138,6 +138,12 @@
     <Compile Include="EEPROM_translator.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="GPS_parse.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="GPS_parse.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
