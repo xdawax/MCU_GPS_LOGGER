@@ -28,6 +28,7 @@ void output(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
 }
 
 void test_RW_word() {
+	EEPROM_reset_header();
 	USART_transmit_string("TESTING: test_RW_word\n\r");
 	uint8_t values[4] = {0,0,0,0};
 	
@@ -62,7 +63,7 @@ void test_RW_word() {
 	
 }
 void test_RW_byte() {
-	
+	EEPROM_reset_header();
 	USART_transmit_string("TESTING: test_RW_byte\n\r");
 	uint8_t a = '1';
 	uint8_t b = '2';

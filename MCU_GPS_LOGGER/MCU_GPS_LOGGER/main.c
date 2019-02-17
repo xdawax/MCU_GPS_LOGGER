@@ -15,8 +15,10 @@
 #include "USART.h"
 #include "EEPROM.h"
 #include "EEPROM_translator.h"
-#include "translator_test.h"
 
+// test files
+#include "translator_test.h"
+#include "EEPROM_test.h"
 
 int main(void)
 {
@@ -24,7 +26,8 @@ int main(void)
 	USART_clear_putty();
 	
 	test_store_load_struct();
-	
+	test_RW_byte();
+	test_RW_word();
 	
 	/* Replace with your application code */
     while (1) 
