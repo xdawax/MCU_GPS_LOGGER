@@ -51,7 +51,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# Project file
+# MCU Project files
 *.atsln
 *.atsuo
 *.lss
