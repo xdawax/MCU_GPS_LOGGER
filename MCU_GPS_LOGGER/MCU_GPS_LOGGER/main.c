@@ -19,6 +19,7 @@
 // test files
 #include "translator_test.h"
 #include "EEPROM_test.h"
+#include "test_parser.h"
 
 int main(void)
 {
@@ -31,6 +32,9 @@ int main(void)
 	// EEPROM tests
 	test_RW_byte();
 	test_RW_word();
+	
+	// parser tests
+	test_get_gps_coord();
 	
 	/* Replace with your application code */
     while (1) 

@@ -147,6 +147,12 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="test_parser.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="test_parser.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="translator_test.c">
       <SubType>compile</SubType>
     </Compile>
