@@ -38,16 +38,16 @@ void print_struct(gps_t *gps_data) {
 	USART_transmit_word(gps_data->longitude);
 	
 	USART_transmit_string("\n\rMonth: ");
-	USART_transmit_byte(gps_data->month + '0');
+	USART_transmit_digit(gps_data->month);
 	
 	USART_transmit_string("\n\rDay: ");
-	USART_transmit_byte(gps_data->day + '0');
+	USART_transmit_digit(gps_data->day);
 	
 	USART_transmit_string("\n\rHour: ");
-	USART_transmit_byte(gps_data->hour + '0');
+	USART_transmit_digit(gps_data->hour);
 	
 	USART_transmit_string("\n\rMinute: ");
-	USART_transmit_byte(gps_data->minute + '0');
+	USART_transmit_digit(gps_data->minute);
 	USART_transmit_string("\n\r");
 }
 
