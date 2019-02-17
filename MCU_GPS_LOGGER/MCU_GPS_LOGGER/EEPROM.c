@@ -5,12 +5,6 @@
  *  Author: dawa
  */ 
 
-#ifndef F_CPU
-#define F_CPU 1000000
-#endif
-
-
-
 #include "EEPROM.h"
 #include "USART.h"  // debugging
 

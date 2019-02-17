@@ -9,6 +9,10 @@
 #ifndef EEPROM_TRANSLATOR_H_
 #define EEPROM_TRANSLATOR_H_
 
+#ifndef F_CPU
+#define F_CPU 1000000
+#endif
+
 #include "EEPROM.h"
 #include <stdint.h>
 

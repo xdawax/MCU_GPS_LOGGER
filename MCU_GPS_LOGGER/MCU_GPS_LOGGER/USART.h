@@ -9,6 +9,11 @@
 #ifndef USART_H_
 #define USART_H_
 
+#ifndef F_CPU
+#define F_CPU 1000000
+#endif
+
+
 #define BUF_SIZE 255	
 #define BYTE 8
 #define WORD 4
