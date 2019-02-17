@@ -17,6 +17,9 @@ void EEPROM_set_free_address(uint8_t size);
 // automatically set to atomically RW
 void EEPROM_write_byte(uint8_t byte, uint16_t address) {
 	cli();								// disable interrupts so we don't get interrupted between seting the master write and write
+	
+	if (EEPROM_read_byte(address) != byte) {	// dont write if the cell already contains the data
+	
 	while(EECR & (1 << EEPE));			// wait until previous write is completed
 	while(SELFPRGEN & (1 << SPMCSR));
 	
@@ -25,6 +28,7 @@ void EEPROM_write_byte(uint8_t byte, uint16_t address) {
 	EECR |= (1 << EEMPE);	// set Master Write Enable
 	EECR |= (1 << EEPE);	// within 4 clock cycles enable write
 	_delay_ms(5);			// write takes about 3-4 ms, R.I.P Run In Peace
+	}
 	
 	if (address >= FIRST_DATA_BYTE) {
 		EEPROM_set_free_address(1);	// stepping one byte at the time
@@ -103,9 +107,11 @@ void EEPROM_set_free_address(uint8_t size) {
 // takes ~ 5ms/byte in EEPROM
 void EEPROM_clear() {
 	USART_transmit_string("CLEARING THE EEPROM. THIS MIGHT TAKE A WHILE!!!\n\r");
-	for (int i = FIRST_DATA_BYTE; i < LAST_BYTE; i++)	// only erase 10 first bytes debuggmode
+	for (int i = FIRST_DATA_BYTE; i < LAST_BYTE; i++)	// only write over the byte if not already 0
 	{
-		EEPROM_write_byte(0, i);
+		if(!(EEPROM_read_byte(i) == 0)) {
+			EEPROM_write_byte(0, i);
+		}
 	}
 	EEPROM_reset_header();
 	USART_transmit_string("EEPROM CLEARED!\n\n\r");
