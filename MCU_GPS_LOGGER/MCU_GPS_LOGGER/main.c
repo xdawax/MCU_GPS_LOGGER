@@ -15,22 +15,17 @@
 #include "USART.h"
 #include "EEPROM.h"
 #include "EEPROM_translator.h"
+#include "tests.h"
 
-// test files
-#include "translator_test.h"
-#include "EEPROM_test.h"
 
 int main(void)
 {
+	// minimum startup with fresh EEPROM 
 	USART_init();
 	USART_clear_putty();
-	
-	// translator tests
-	test_store_load_struct();
-	
-	// EEPROM tests
-	test_RW_byte();
-	test_RW_word();
+	EEPROM_reset_header();
+
+	test_all();
 	
 	/* Replace with your application code */
     while (1) 

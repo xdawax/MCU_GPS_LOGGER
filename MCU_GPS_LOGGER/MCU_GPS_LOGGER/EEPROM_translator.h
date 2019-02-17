@@ -14,17 +14,8 @@
 #endif
 
 #include "EEPROM.h"
+#include "GPS_parse.h"
 #include <stdint.h>
-
-// Change to use include when parser is complete
-typedef struct {
-	int32_t lattitude;
-	int32_t longitude;
-	int8_t month;
-	int8_t day;
-	int8_t hour;
-	int8_t minute;
-} gps_t;
 
 
 /// Writes the provided struct to the EEPROM in the first available spot
