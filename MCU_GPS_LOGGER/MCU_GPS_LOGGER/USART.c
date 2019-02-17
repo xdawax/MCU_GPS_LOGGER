@@ -81,11 +81,11 @@ void USART_transmit_digit(uint8_t byte) {
 void USART_transmit_word(uint32_t word) {
 	uint32_t divisor = 1000000000;
 
-	USART_transmit_byte((word / divisor) + '0');
+	USART_transmit_digit((word / divisor));
 	
 	while (divisor > 1) {
 		divisor = divisor / 10;
-		USART_transmit_byte(((word / divisor) % 10) + '0');
+		USART_transmit_digit((word / divisor) % 10);
 	}
 }
 

@@ -38,7 +38,7 @@ void test_RW_word() {
 	for (int i = FIRST_DATA_BYTE; i < FIRST_DATA_BYTE + 4; i++)
 	{
 		values[i] = EEPROM_read_byte(i);
-		USART_transmit_byte(values[i] + '0');
+		USART_transmit_digit(values[i]);
 	}
 	USART_transmit_string("\n\r");
 	
