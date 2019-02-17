@@ -9,6 +9,10 @@
 #ifndef TRANSLATOR_TEST_H_
 #define TRANSLATOR_TEST_H_
 
+#ifndef F_CPU
+#define F_CPU 1000000
+#endif
+
 #include "EEPROM_translator.h"
 #include "USART.h"
 

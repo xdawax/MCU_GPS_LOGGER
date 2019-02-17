@@ -11,12 +11,10 @@
 #include <util/delay.h>
 #include "USART.h"
 #include "EEPROM.h"
+#include "EEPROM_test.h"
 
 
 void output(uint8_t a, uint8_t b, uint8_t c, uint8_t d);
-
-
-
 
 void output(uint8_t a, uint8_t b, uint8_t c, uint8_t d) {
 	USART_transmit_byte(a);

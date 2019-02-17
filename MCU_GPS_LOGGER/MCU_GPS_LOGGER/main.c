@@ -25,7 +25,10 @@ int main(void)
 	USART_init();
 	USART_clear_putty();
 	
+	// translator tests
 	test_store_load_struct();
+	
+	// EEPROM tests
 	test_RW_byte();
 	test_RW_word();
 	

@@ -9,6 +9,10 @@
 #ifndef EEPROM_H_
 #define EEPROM_H_
 
+#ifndef F_CPU
+#define F_CPU 1000000
+#endif
+
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>

@@ -9,6 +9,10 @@
 #ifndef EEPROM_TEST_H_
 #define EEPROM_TEST_H_
 
+#ifndef F_CPU
+#define F_CPU 1000000
+#endif
+
 void test_RW_byte();
 void test_RW_word();
 
