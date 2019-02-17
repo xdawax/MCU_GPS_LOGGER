@@ -9,6 +9,11 @@
 #ifndef EEPROM_H_
 #define EEPROM_H_
 
+#include <stdint.h>
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+
 #define HEADER_SIZE 4
 #define LAST_BYTE 1023					// address-space ends
 #define FIRST_BYTE 0					// address-space start
