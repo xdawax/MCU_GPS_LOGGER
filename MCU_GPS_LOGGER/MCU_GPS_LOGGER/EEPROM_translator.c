@@ -6,7 +6,7 @@
  */ 
 #include "EEPROM_translator.h"
 #include "USART.h"				// debugging
-#define EEPROM_HEADER_SIZE 2;	// size of the EEPROM header in bytes TODO: (change to get function in EEPROM module)
+#include "EEPROM.h"
 
 /* Blueprint
 typedef struct {
@@ -54,7 +54,7 @@ void print_struct(gps_t *gps_data) {
 gps_t *get_next_struct();
 
 void get_struct(uint8_t index, gps_t *gps_data) {
-	uint16_t address = index * sizeof(gps_t) + EEPROM_HEADER_SIZE;
+	uint16_t address = (index * sizeof(gps_t)) + HEADER_SIZE;
 	gps_data->lattitude = EEPROM_read_word(address);
 	address += sizeof(uint32_t);
 	gps_data->longitude = EEPROM_read_word(address);

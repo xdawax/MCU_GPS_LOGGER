@@ -6,12 +6,13 @@
  */ 
 
 #include "translator_test.h"
-
+#include "EEPROM.h"
 
 void translator_test_all() {
 	test_store_load_struct();
 }
 void test_store_load_struct() {
+	EEPROM_reset_header();
 	gps_t gps1;
 	gps_t gps2;
 	gps_t temp = {0,0,0,0,0,0};
