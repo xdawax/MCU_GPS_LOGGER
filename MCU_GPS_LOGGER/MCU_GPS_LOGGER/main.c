@@ -5,7 +5,9 @@
  * Author : dawa
  */ 
 
+#ifndef F_CPU
 #define F_CPU 1000000
+#endif
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -13,6 +15,7 @@
 #include "USART.h"
 #include "EEPROM.h"
 #include "EEPROM_translator.h"
+#include "translator_test.h"
 
 
 int main(void)
