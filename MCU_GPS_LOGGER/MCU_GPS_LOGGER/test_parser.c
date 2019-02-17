@@ -9,9 +9,18 @@
 #include "test_parser.h"
 
 #define DEFAULT_SIZE 75
-#define DEFAULT_STRING  "$GPRMC,064951.000,A,2307.1256,N,12016.4438,E,0.03,165.48,260406,3.05,W,A*2C"
+const char *DEFAULT_STRING =  "$GPRMC,064951.000,A,2307.1256,N,12016.4438,E,0.03,165.48,260406,3.05,W,A*2C";
 
 void test_get_gps_coord() {
 	EEPROM_reset_header();
-	USART_transmit_string(DEFAULT_STRING);
+	
+	gps_t gps_data;
+	
+	if (get_gps_coord(&gps_data, DEFAULT_STRING)) {
+		USART_transmit_string("\n\rSUCCESSFULLY RECEIVED GPS DATA");
+		print_struct(&gps_data);
+	} else {
+		USART_transmit_string("\n\rFAILED TO RECEIVE GPS DATA");
+	}
+	
 }
