@@ -86,10 +86,4 @@ void EEPROM_clear();
 void EEPROM_reset_header();
 
 
-
-
-
-
-
-
 #endif /* EEPROM_H_ */
