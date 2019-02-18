@@ -8,8 +8,7 @@
 
 void test_all() {
 	// translator tests
-	test_store_load_struct();
-	
+	translator_test_all();
 	// EEPROM tests
 	test_RW_byte();
 	test_RW_word();
