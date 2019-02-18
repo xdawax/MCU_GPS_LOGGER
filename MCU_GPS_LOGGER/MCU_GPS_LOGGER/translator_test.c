@@ -11,7 +11,44 @@
 
 void translator_test_all() {
 	test_store_load_struct();
+	test_num_coordinates();
 }
+
+void test_num_coordinates() {
+	gps_t gps1;
+	
+	init_structs(&gps1, &gps1);
+	
+	EEPROM_reset_header();
+	
+	USART_transmit_string("######### TESTING num_coordinates() ###########");
+	USART_transmit_string("\n\rEXPECTED: 0");
+	USART_transmit_string("\n\rGOT:");
+	USART_transmit_digit(get_num_coordinates());
+	
+	store_struct(&gps1);
+	USART_transmit_string("\n\rEXPECTED: 1");
+	USART_transmit_string("\n\rGOT:");
+	USART_transmit_digit(get_num_coordinates());
+	
+	store_struct(&gps1);
+	USART_transmit_string("\n\rEXPECTED: 2");
+	USART_transmit_string("\n\rGOT:");
+	USART_transmit_digit(get_num_coordinates());
+	
+	store_struct(&gps1);
+	USART_transmit_string("\n\rEXPECTED: 3");
+	USART_transmit_string("\n\rGOT:");
+	USART_transmit_digit(get_num_coordinates());
+	
+	store_struct(&gps1);
+	USART_transmit_string("\n\rEXPECTED: 4");
+	USART_transmit_string("\n\rGOT:");
+	USART_transmit_digit(get_num_coordinates());
+	store_struct(&gps1);
+	USART_transmit_string("\n\r######### DONE TESTING num_coordinates() ###########\n\r");
+}
+
 void test_store_load_struct() {
 	EEPROM_reset_header();
 	gps_t gps1;
@@ -29,7 +66,10 @@ void test_store_load_struct() {
 	print_struct(&gps1);
 	USART_transmit_string("\n\rGOT:");
 	print_struct(&temp);
-	USART_transmit_string("#############################################");
+	USART_transmit_string("\n\rSTRUCTS IN EEPROM: ");
+	USART_transmit_digit(get_num_coordinates());
+	USART_transmit_string("\n\rEXPECTED: 2");
+	USART_transmit_string("\n\r#############################################");
 	
 	get_struct(1, &temp);
 	
@@ -38,7 +78,10 @@ void test_store_load_struct() {
 	print_struct(&gps2);
 	USART_transmit_string("\n\rGOT:");
 	print_struct(&temp);
-	USART_transmit_string("#############################################");
+	USART_transmit_string("\n\rSTRUCTS IN EEPROM: ");
+	USART_transmit_digit(get_num_coordinates());
+	USART_transmit_string("\n\rEXPECTED: 2");
+	USART_transmit_string("\n\r#############################################");
 }
 
 

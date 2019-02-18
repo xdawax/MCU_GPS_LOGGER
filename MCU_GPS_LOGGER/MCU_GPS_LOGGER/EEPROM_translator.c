@@ -68,3 +68,10 @@ void get_struct(uint8_t index, gps_t *gps_data) {
 	gps_data->minute = EEPROM_read_byte(address);
 	address += sizeof(uint8_t);
 }
+
+uint8_t get_num_coordinates() {
+	uint16_t next_free = EEPROM_get_free_address();
+	uint8_t num_coordinates = (next_free - HEADER_SIZE) / sizeof(gps_t);
+	
+	return num_coordinates;
+}

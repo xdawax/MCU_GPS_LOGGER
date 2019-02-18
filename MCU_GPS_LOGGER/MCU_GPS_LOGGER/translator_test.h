@@ -19,6 +19,6 @@
 void init_structs(gps_t *gps1, gps_t *gps2);
 void test_store_load_struct();
 void translator_test_all();
-
+void test_num_coordinates();
 
 #endif /* TRANSLATOR_TEST_H_ */
