@@ -5,21 +5,21 @@
  *  Author: dawa
  */ 
 
-#ifndef F_CPU
-#define F_CPU 1000000
-#endif
-
-#include <stdint.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
-
 #include "EEPROM.h"
 #include "USART.h"  // debugging
+
+/// updates the next free memory space
+///
+/// @returns void
+void EEPROM_set_free_address(uint8_t size);
+
 
 // automatically set to atomically RW
 void EEPROM_write_byte(uint8_t byte, uint16_t address) {
 	cli();								// disable interrupts so we don't get interrupted between seting the master write and write
+	
+	if (EEPROM_read_byte(address) != byte) {	// dont write if the cell already contains the data
+	
 	while(EECR & (1 << EEPE));			// wait until previous write is completed
 	while(SELFPRGEN & (1 << SPMCSR));
 	
@@ -28,6 +28,7 @@ void EEPROM_write_byte(uint8_t byte, uint16_t address) {
 	EECR |= (1 << EEMPE);	// set Master Write Enable
 	EECR |= (1 << EEPE);	// within 4 clock cycles enable write
 	_delay_ms(5);			// write takes about 3-4 ms, R.I.P Run In Peace
+	}
 	
 	if (address >= FIRST_DATA_BYTE) {
 		EEPROM_set_free_address(1);	// stepping one byte at the time
@@ -106,11 +107,28 @@ void EEPROM_set_free_address(uint8_t size) {
 // takes ~ 5ms/byte in EEPROM
 void EEPROM_clear() {
 	USART_transmit_string("CLEARING THE EEPROM. THIS MIGHT TAKE A WHILE!!!\n\r");
-	for (int i = FIRST_DATA_BYTE; i < LAST_BYTE; i++)	// only erase 10 first bytes debuggmode
+	for (int i = FIRST_DATA_BYTE; i < LAST_BYTE; i++)	// only write over the byte if not already 0
 	{
-		EEPROM_write_byte(0, i);
+		if(!(EEPROM_read_byte(i) == 0)) {
+			EEPROM_write_byte(0, i);
+		}
 	}
-	EEPROM_write_byte(0, ADDRESS_HIGH_BYTE);
-	EEPROM_write_byte(FIRST_DATA_BYTE, ADDRESS_LOW_BYTE);  // set the address of the first available byte as 2
+	EEPROM_reset_header();
 	USART_transmit_string("EEPROM CLEARED!\n\n\r");
 }
+
+void EEPROM_reset_header() {
+	USART_transmit_string("RESETING THE HEADER\n\r");
+	EEPROM_write_byte(0, ADDRESS_HIGH_BYTE);
+	EEPROM_write_byte(FIRST_DATA_BYTE, ADDRESS_LOW_BYTE);  // set the address of the first available byte as 2
+	EEPROM_write_byte(0, ADDRESS_INDEX);				   // set the amount of stored structs to 0
+	USART_transmit_string("HEADER RESET\n\n\r");
+}
+
+void EEPROM_increment_index() {
+	uint8_t index = EEPROM_read_byte(ADDRESS_INDEX);
+	index++;
+	EEPROM_write_byte(index, ADDRESS_INDEX);
+}
+
+

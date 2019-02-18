@@ -9,18 +9,13 @@
 #ifndef EEPROM_TRANSLATOR_H_
 #define EEPROM_TRANSLATOR_H_
 
-#include "EEPROM.h"
-#include <stdint.h>
+#ifndef F_CPU
+#define F_CPU 1000000
+#endif
 
-// Change to use include when parser is complete
-typedef struct {
-	int32_t lattitude;
-	int32_t longitude;
-	int8_t month;
-	int8_t day;
-	int8_t hour;
-	int8_t minute;
-} gps_t;
+#include "EEPROM.h"
+#include "GPS_parse.h"
+#include <stdint.h>
 
 
 /// Writes the provided struct to the EEPROM in the first available spot

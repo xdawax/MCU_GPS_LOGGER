@@ -126,13 +126,43 @@
     <Compile Include="EEPROM.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="EEPROM_test.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="EEPROM_test.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="EEPROM_translator.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="EEPROM_translator.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="GPS_parse.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="GPS_parse.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tests.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="tests.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="test_parser.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="test_parser.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="translator_test.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="translator_test.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="USART.c">

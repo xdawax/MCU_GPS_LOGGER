@@ -6,7 +6,7 @@
  */ 
 #include "EEPROM_translator.h"
 #include "USART.h"				// debugging
-#define EEPROM_HEADER_SIZE 2;	// size of the EEPROM header in bytes TODO: (change to get function in EEPROM module)
+#include "EEPROM.h"
 
 /* Blueprint
 typedef struct {
@@ -38,23 +38,23 @@ void print_struct(gps_t *gps_data) {
 	USART_transmit_word(gps_data->longitude);
 	
 	USART_transmit_string("\n\rMonth: ");
-	USART_transmit_byte(gps_data->month + '0');
+	USART_transmit_word(gps_data->month);
 	
 	USART_transmit_string("\n\rDay: ");
-	USART_transmit_byte(gps_data->day + '0');
+	USART_transmit_word(gps_data->day);
 	
 	USART_transmit_string("\n\rHour: ");
-	USART_transmit_byte(gps_data->hour + '0');
+	USART_transmit_word(gps_data->hour);
 	
 	USART_transmit_string("\n\rMinute: ");
-	USART_transmit_byte(gps_data->minute + '0');
+	USART_transmit_word(gps_data->minute);
 	USART_transmit_string("\n\r");
 }
 
 gps_t *get_next_struct();
 
 void get_struct(uint8_t index, gps_t *gps_data) {
-	uint16_t address = index * sizeof(gps_t) + EEPROM_HEADER_SIZE;
+	uint16_t address = (index * sizeof(gps_t)) + HEADER_SIZE;
 	gps_data->lattitude = EEPROM_read_word(address);
 	address += sizeof(uint32_t);
 	gps_data->longitude = EEPROM_read_word(address);
