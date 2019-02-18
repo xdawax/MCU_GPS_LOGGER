@@ -59,3 +59,5 @@ dkms.conf
 *.cproj
 *.eep 
 *.srec
+
+MCU_GPS_LOGGER/MCU_GPS_LOGGER/Debug/Makefile

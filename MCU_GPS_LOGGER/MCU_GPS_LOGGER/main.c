@@ -16,18 +16,22 @@
 #include "EEPROM.h"
 #include "EEPROM_translator.h"
 #include "tests.h"
+#include "GUI.h"
 
 
 int main(void)
 {
 	// minimum startup with fresh EEPROM 
+	/* Uses PORT D pins 
 	USART_init();
 	USART_clear_putty();
 	EEPROM_reset_header();
+	*/
 
-	test_all();
+	init_GUI();
 	
-	/* Replace with your application code */
+	
+	// Replace with your application code
     while (1) 
     {	
 		
