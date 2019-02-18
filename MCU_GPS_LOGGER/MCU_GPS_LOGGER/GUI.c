@@ -51,6 +51,7 @@ ISR(PCINT2_vect)
 	sei();
 }
 
+
 void init_pin_change_interrupt21(void)
 {
 	PCICR |= (1 << PCIE2); //SET PCIE2 for enabling interrupts ON portD
@@ -67,7 +68,7 @@ void draw_screen() {
 	sprintf(buffer, "Coords: %d", num_coords);
 	NOKIA_print(0,0,buffer,2);
 	NOKIA_print(0,(2+select_option)*8,">",0);
-	for (i=0; i<5; i++)
+	for (i=0; i<2; i++)
 	{
 		NOKIA_print(6,8*(i+2),menu[i], 0);
 	}
