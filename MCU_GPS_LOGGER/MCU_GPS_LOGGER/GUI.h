@@ -5,26 +5,19 @@
  *  Author: YashSeeta
  */ 
 
-
 #ifndef GUI_H_
 #define GUI_H_
 
+#define NUM_OPTION 2 
 
-int select_option = 0;
-int num_option = 5;
-char menu[5][60] = {
-	"1.Grab GPS",
-	"2.Start GPS",
-	"3.Stop GPS",
-	"4.Settings",
-	"5.Exit"
-};
+int select_option;
+char menu[5][60];
 
 /*
 	Draws Menu and updates with selector
 */
 void draw_screen();
 
-
+void init_GUI();
 
 #endif /* GUI_H_ */

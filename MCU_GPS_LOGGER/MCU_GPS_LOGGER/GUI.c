@@ -28,7 +28,6 @@ Switch     PD5|11  18|PB4 MISO
 #include <avr/interrupt.h>
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
-#include "lcd.h"
 
 // display routines for the graphics LCD
 #include "nokia5110.h"    
@@ -42,7 +41,7 @@ ISR(PCINT2_vect)
 	if(bit_is_clear(PIND,PD5))
 	{
 		PORTC |= (1 << PC5);  // set PC5 to 1
-		select_option = (select_option+1)%num_option;
+		select_option = (select_option+1)%NUM_OPTION;
 		draw_screen();
 	} else {
 		PORTC &= ~(1 << PC5); // re-set PC5 to 0
@@ -60,26 +59,37 @@ void init_pin_change_interrupt21(void)
 void draw_screen() {
 	NOKIA_clear();
 	int8_t i=0;
-	NOKIA_print(0,8*select_option,"=>",0);
+	// int8_t num_coords = 23;
+	// NOKIA_print*(0,0,"Coords: ",2);
+	NOKIA_print(0,(1+select_option)*8,">",0);
 	for (i=0; i<5; i++)
 	{
-		NOKIA_print(12, 8*i, menu[i], 0);
+		NOKIA_print(6,8*(i+1),menu[i], 0);
 	}
 	NOKIA_update();
 }
 
 
-int main(void)
+void init_GUI() 
 {
+	strcpy(menu[0], "Start logging" );
+	strcpy(menu[1], "Display path" );
+	select_option = 0;
+	
 	NOKIA_init(0);
-	NOKIA_LED_ENABLE();  
+	NOKIA_LED_ENABLE();
 	NOKIA_setVop(68);
 	DDRC = 0x05;
 	DDRD &= ~(1<<PD5);
 	PORTD |= (1 << PD5);
 	init_pin_change_interrupt21();
-	
 	draw_screen();
+}
+
+/*
+int main(void)
+{
+	init_GUI();
 			
 	while (1); 
-}
+}*/
