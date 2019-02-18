@@ -33,11 +33,13 @@ Switch     PD5|11  18|PB4 MISO
 #include "nokia5110.h"    
 #include <avr/sfr_defs.h>
 #include "GUI.h"
+#include "EEPROM_translator.h"
 // re-useable buffer for numeric-to-text conversion
 
 
 ISR(PCINT2_vect) 
 {
+	cli();
 	if(bit_is_clear(PIND,PD5))
 	{
 		PORTC |= (1 << PC5);  // set PC5 to 1
@@ -46,6 +48,7 @@ ISR(PCINT2_vect)
 	} else {
 		PORTC &= ~(1 << PC5); // re-set PC5 to 0
 	}
+	sei();
 }
 
 void init_pin_change_interrupt21(void)
@@ -59,14 +62,17 @@ void init_pin_change_interrupt21(void)
 void draw_screen() {
 	NOKIA_clear();
 	int8_t i=0;
-	// int8_t num_coords = 23;
-	// NOKIA_print*(0,0,"Coords: ",2);
-	NOKIA_print(0,(1+select_option)*8,">",0);
+	int8_t num_coords = get_num_coordinates();
+	char buffer[20];
+	sprintf(buffer, "Coords: %d", num_coords);
+	NOKIA_print(0,0,buffer,2);
+	NOKIA_print(0,(2+select_option)*8,">",0);
 	for (i=0; i<5; i++)
 	{
-		NOKIA_print(6,8*(i+1),menu[i], 0);
+		NOKIA_print(6,8*(i+2),menu[i], 0);
 	}
 	NOKIA_update();
+	_delay_ms(100);
 }
 
 
