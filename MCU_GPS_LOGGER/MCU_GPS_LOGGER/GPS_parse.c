@@ -120,8 +120,8 @@ int get_date(gps_t *coord, char *gps_str) {
 	day_str[1] = date_str[1];
 	day_str[2] = '\0';
 
-	coord->month = (int8_t) atoi(month_str);
-	coord->day = (int8_t) atoi(day_str);
+	coord->month = (int8_t) string_to_int(month_str);
+	coord->day = (int8_t) string_to_int(day_str);
 	return 1;
 }
 
@@ -133,13 +133,13 @@ int get_time(gps_t *coord, char *gps_str) {
 	hour_str[0] = time_str[0];
 	hour_str[1] = time_str[1];
 	hour_str[2] = '\0';
-	coord->hour = (int8_t) atoi(hour_str);
+	coord->hour = (int8_t) string_to_int(hour_str);
 
 	char min_str[8];
 	min_str[0] = time_str[2];
 	min_str[1] = time_str[3];
 	min_str[2] = '\0';
-	coord->minute = (int8_t) atoi(min_str);
+	coord->minute = (int8_t) string_to_int(min_str);
 	return 1;
 }
 

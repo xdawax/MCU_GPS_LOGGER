@@ -9,9 +9,6 @@
 #ifndef GPS_PARSE_H_
 #define GPS_PARSE_H_
 
-// uses atoi()-function
-#include <stdlib.h>
-
 // uses strcmp()-function
 #include <string.h>
 
