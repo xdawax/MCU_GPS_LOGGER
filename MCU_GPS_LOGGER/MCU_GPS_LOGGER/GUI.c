@@ -93,15 +93,15 @@ void draw_path(uint32_t num_coords) {
 	}
 	
 	/* calculate scale constants */
-	const int32_t slope_lon = (max_lon - min_lon)/(NOKIASIZEX-4);
-	const int32_t slope_lat = (max_lat - min_lat)/(NOKIASIZEY-4);
+	const int32_t slope_lon = (max_lon - min_lon)/(NOKIASIZEX-2*PATH_INSET);
+	const int32_t slope_lat = (max_lat - min_lat)/(NOKIASIZEY-2*PATH_INSET);
 	/* actually draw path */
 	
 	uint8_t x,y;
 	for(i= 0; i < num_coords; i++){
 		coord = coord_arr[i]; // get_struct(i, &coord);
-		x = (uint8_t)((coord.longitude - min_lon + slope_lon*2)/slope_lon);
-		y = (uint8_t)((coord.lattitude - min_lat + slope_lat*2)/slope_lat);
+		x = (uint8_t)((coord.longitude - min_lon + slope_lon*PATH_INSET)/slope_lon);
+		y = (uint8_t)((coord.lattitude - min_lat + slope_lat*PATH_INSET)/slope_lat);
 		NOKIA_setpixel(x,y);
 		NOKIA_setpixel(x+1,y+1);
 		NOKIA_setpixel(x-1,y-1);

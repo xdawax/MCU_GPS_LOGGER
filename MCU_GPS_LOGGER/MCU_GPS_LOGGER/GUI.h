@@ -12,6 +12,7 @@
 #define MENU_START_STOP_LOGGING 0
 #define MENU_SHOW_PATH 1 
 
+#define PATH_INSET 2
 
 int8_t select_option;
 char menu[5][60];
