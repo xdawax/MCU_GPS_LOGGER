@@ -9,9 +9,9 @@
 #include "GPS_parse.h"
 
 int is_gprmc(const char *gps_str) {
-	char gprmc[7] = "$GPRMC";
+	char gprmc[8] = "\n$GPRMC";
 	int i;
-	for (i = 0; i < 6; i++) {
+	for (i = 0; i < 7; i++) {
 		if (gps_str[i] == '\0') return 0;
 		if (gps_str[i] != gprmc[i]) return 0;
 	}
