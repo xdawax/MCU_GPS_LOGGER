@@ -11,6 +11,7 @@
 
 #include "USART.h"
 #include <stdlib.h>
+#include "GPS_parse.h"
 
 void USART_test_word();
 void USART_test_all();

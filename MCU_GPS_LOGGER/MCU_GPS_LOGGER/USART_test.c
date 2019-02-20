@@ -6,14 +6,14 @@
  */ 
 #include "USART_test.h"
 
-char lat_string[6] = "502621";
+char lat_string[7] = "502621\0";
 
 void USART_test_word() {
 	uint32_t max = 4294967295;
 	uint32_t min = 0;
 	uint32_t meh = 2345678762;
 	uint32_t mdeg  = 837701666;
-	uint32_t real_deg = atoi(lat_string);
+	uint32_t real_deg = string_to_int(lat_string);
 	
 	USART_transmit_string("TESTING: USART_transmit_word from USART.c\n\r");
 	USART_transmit_string("\n\rEXPECTING: 4294967295");
