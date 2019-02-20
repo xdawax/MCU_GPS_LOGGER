@@ -93,7 +93,7 @@ void draw_menu_screen() {
 }
 
 void draw_screen() {
-	NOKIA_clear();
+	NOKIA_clearbuffer();
 	if (is_showing_path) {
 		draw_path_screen();
 	} else {
