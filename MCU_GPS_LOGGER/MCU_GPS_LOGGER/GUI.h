@@ -13,6 +13,9 @@
 #define MENU_SHOW_PATH 1 
 
 #define PATH_INSET 2
+#define GET_MIN(a, b) ((a < b) ? a : b)
+#define GET_MAX(a, b) ((a < b) ? b : a)
+
 
 int8_t select_option;
 char menu[5][60];

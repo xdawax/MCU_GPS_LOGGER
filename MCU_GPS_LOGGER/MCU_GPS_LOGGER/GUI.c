@@ -59,7 +59,6 @@ ISR(PCINT2_vect)
 	}
 }
 
-
 void init_pin_change_interrupt21(void)
 {
 	PCICR |= (1 << PCIE2); // SET PCIE2 for enabling interrupts ON portD
@@ -67,6 +66,17 @@ void init_pin_change_interrupt21(void)
 	sei();
 }
 
+void draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1){
+	uint8_t intercept, i, j;
+	int8_t slope;
+	slope = (y1 - y0)/(x1 - x0);
+	intercept = (y0 - slope*x0);
+	for (i = x0+1; i < x1 ; i++)
+	{
+		j = slope*i + intercept;
+		NOKIA_setpixel(i, j);
+	}
+}
 
 void draw_path(uint32_t num_coords) {
 	gps_t coord;
@@ -97,16 +107,27 @@ void draw_path(uint32_t num_coords) {
 	const int32_t slope_lat = (max_lat - min_lat)/(NOKIASIZEY-2*PATH_INSET);
 	/* actually draw path */
 	
-	uint8_t x,y;
+	uint8_t x,y, lastx, lasty;
 	for(i= 0; i < num_coords; i++){
 		coord = coord_arr[i]; // get_struct(i, &coord);
 		x = (uint8_t)((coord.longitude - min_lon + slope_lon*PATH_INSET)/slope_lon);
 		y = (uint8_t)((coord.lattitude - min_lat + slope_lat*PATH_INSET)/slope_lat);
+		y = NOKIASIZEY-y;
 		NOKIA_setpixel(x,y);
 		NOKIA_setpixel(x+1,y+1);
 		NOKIA_setpixel(x-1,y-1);
 		NOKIA_setpixel(x+1,y-1);
 		NOKIA_setpixel(x-1,y+1);
+		if (i > 0) {
+			draw_line(lastx, lasty, x, y);	
+		}
+		
+		
+		//char buffer[16];
+		//printf(buffer, "x: %d, y: %d", x, y);
+		//NOKIA_print(0, i*8, buffer, 0);
+		lastx = x;
+		lasty = y;
 	}
 }
 
