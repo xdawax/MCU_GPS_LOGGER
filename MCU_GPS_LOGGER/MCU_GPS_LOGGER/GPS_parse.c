@@ -57,13 +57,28 @@ int get_lattitude(gps_t *coord, char *gps_str) {
 	deg_str[2] = '\0';
 	for (i = 2; i < 4; i++) min_str[i-2] = lat_str[i];
 	for (i = 5; i < 9; i++) min_str[i-3] = lat_str[i];
-	min_str[7] = '\0';
+	min_str[6] = '\0';
 
 	char dir_str[8];
 	int32_t direction = 1;
 	extract_arg_gstr(dir_str, gps_str, 4);
 	if (strcmp(dir_str, "S") == 0) direction *= -1;
 
+	if (atoi(min_str) == 389178) {
+		USART_transmit_string("\n\rWUEPPA!\n\r");
+	}
+	USART_transmit_string("\n\rSTR: ");
+	USART_transmit_string(min_str);
+	USART_transmit_string("\n\rDEG: ");
+	USART_transmit_word(atoi(deg_str)*1000000);
+	USART_transmit_string("\n\rDEC:");
+	USART_transmit_word((100*atoi(min_str))/60);
+	USART_transmit_string("\n\r100*(min_str) : ");
+	USART_transmit_word(100*atoi(min_str));
+	USART_transmit_string("\n\rmin_str: ");
+	USART_transmit_word(atoi(min_str));
+	USART_transmit_string("\n\r");
+	
 	coord->lattitude = direction*(atoi(deg_str)*1000000 + (100*atoi(min_str))/60);
 	return 1;
 }
@@ -81,8 +96,10 @@ int get_longitude(gps_t *coord, char *gps_str) {
 	deg_str[3] = '\0';
 	for (i = 3; i < 5; i++) min_str[i-3] = lon_str[i];
 	for (i = 6; i < 10; i++) min_str[i-4] = lon_str[i];
-	min_str[8] = '\0';
-
+	min_str[6] = '\0';
+	if (atoi(min_str) == 502621) {
+		USART_transmit_string("\n\rWUEPPA!\n\r");
+	}
 	char dir_str[8];
 	int32_t direction = 1;
 	extract_arg_gstr(dir_str, gps_str, 6);

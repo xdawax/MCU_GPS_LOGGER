@@ -13,7 +13,7 @@
 #include "translator_test.h"
 #include "EEPROM_test.h"
 #include "test_parser.h"
-
+#include "USART_test.h"
 void test_all();
 
 

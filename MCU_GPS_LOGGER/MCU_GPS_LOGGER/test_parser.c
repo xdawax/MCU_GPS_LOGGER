@@ -16,13 +16,13 @@ void test_get_gps_coord() {
 	EEPROM_reset_header();
 	
 	gps_t gps_data;
-	USART_transmit_string("TESTING: get_gps_coord from GPS_parce.c\n\r");
+	USART_transmit_string("TESTING: get_gps_coord from GPS_parse.c\n\r");
 	if (get_gps_coord(&gps_data, REAL_STRING)) {
 		USART_transmit_string("\n\rSUCCESSFULLY RECEIVED GPS DATA");
 		print_struct(&gps_data);
 	} else {
 		USART_transmit_string("\n\rFAILED TO RECEIVE GPS DATA");
 	}
-	USART_transmit_string("TEST COMPLETED: test_gps_coord from GPS_parce.c\n\n\r");
+	USART_transmit_string("TEST COMPLETED: test_gps_coord from GPS_parse.c\n\n\r");
 	
 }
