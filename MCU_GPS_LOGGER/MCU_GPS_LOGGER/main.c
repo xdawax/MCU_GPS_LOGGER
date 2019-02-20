@@ -18,7 +18,7 @@
 #include "tests.h"
 
 #define GPS_INTERVAL 1000	// interval between gps readings in ms
-#define MAX_STRUCTS 10
+#define MAX_STRUCTS (LAST_BYTE - HEADER_SIZE) / sizeof(gps_t)
 char GPS_DATA[BUF_SIZE];
 
 
@@ -36,11 +36,12 @@ int main(void)
 	USART_transmit_string("\n\r###############################################################");
 	USART_transmit_string("\n\rECHO: \n\r");
 	
-	test_all();
+	//test_all();
 
 	/* Replace with your application code */
     while (1) 
-    {	/*
+    {	
+	
 		while (!(is_gprmc(GPS_DATA))) {
 			USART_receive_string(GPS_DATA, BUF_SIZE);
 		}
@@ -64,7 +65,7 @@ int main(void)
 			}
 			while(1);
 		}
-		*/
+		
 		
     }
 	return 0;

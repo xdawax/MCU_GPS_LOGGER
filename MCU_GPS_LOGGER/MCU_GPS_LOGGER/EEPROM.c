@@ -15,9 +15,11 @@ void EEPROM_set_free_address(uint8_t size);
 
 
 // automatically set to atomically RW
-void EEPROM_write_byte(uint8_t byte, uint16_t address) {
+uint8_t EEPROM_write_byte(uint8_t byte, uint16_t address) {
 	cli();								// disable interrupts so we don't get interrupted between seting the master write and write
-	
+	if (address > LAST_BYTE) {			// return 0 if no more memory
+		return 0;
+	}
 	if (EEPROM_read_byte(address) != byte) {	// dont write if the cell already contains the data
 	
 	while(EECR & (1 << EEPE));			// wait until previous write is completed
@@ -34,6 +36,7 @@ void EEPROM_write_byte(uint8_t byte, uint16_t address) {
 		EEPROM_set_free_address(1);	// stepping one byte at the time
 	}
 	sei();								// enable the interrupts
+	return 1;
 }
 
 void EEPROM_write_byte_next_free(uint8_t byte) {

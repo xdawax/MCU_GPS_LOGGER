@@ -36,8 +36,8 @@
 /// @param byte the byte to be written into EEPROM
 /// @param address the location in memory where to store the data
 ///             
-/// @returns void
-void EEPROM_write_byte(uint8_t byte, uint16_t address);
+/// @returns 1 if sucessfully written to memory, 0 if memory is full
+uint8_t EEPROM_write_byte(uint8_t byte, uint16_t address);
 
 /// Writes a byte of data to EEPROM memory at the lowest available position
 ///
