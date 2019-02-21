@@ -67,10 +67,23 @@ void init_pin_change_interrupt21(void)
 }
 
 void draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1){
-	uint8_t intercept, i, j;
+	uint8_t intercept, i, j, temp;
 	int8_t slope;
+	if (x0 > x1)
+	{
+		// flip x coordinates
+		temp = x0;
+		x0 = x1;
+		x1 = temp;
+		
+		//flip y coordinates
+		temp = y0;
+		y0 = y1;
+		y1 = temp;
+	}
 	slope = (y1 - y0)/(x1 - x0);
 	intercept = (y0 - slope*x0);
+	
 	for (i = x0+1; i < x1 ; i++)
 	{
 		j = slope*i + intercept;
