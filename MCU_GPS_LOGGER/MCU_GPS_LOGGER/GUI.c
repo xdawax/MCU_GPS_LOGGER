@@ -208,13 +208,24 @@ void init_GUI()
 	DDRD &= ~(1 << PD6);	// Make pin D6 input (button select)
 	PORTD |= (1 << PD6); 
 	
-	coord_arr[0].longitude = 51200; coord_arr[0].lattitude = 60800;
-	coord_arr[1].longitude = 52400; coord_arr[1].lattitude = 64000;
-	coord_arr[2].longitude = 53600; coord_arr[2].lattitude = 60800;
-	coord_arr[3].longitude = 54800; coord_arr[3].lattitude = 64400;
-	coord_arr[4].longitude = 56400; coord_arr[4].lattitude = 60000;
-	coord_arr[5].longitude = 58800; coord_arr[5].lattitude = 62800;
-	coord_arr[6].longitude = 50400; coord_arr[6].lattitude = 62300;
+	/* -- old path -- */
+	// coord_arr[0].longitude = 51200; coord_arr[0].lattitude = 60800;
+	// coord_arr[1].longitude = 52400; coord_arr[1].lattitude = 64000;
+	// coord_arr[2].longitude = 53600; coord_arr[2].lattitude = 60800;
+	// coord_arr[3].longitude = 54800; coord_arr[3].lattitude = 64400;
+	// coord_arr[4].longitude = 56400; coord_arr[4].lattitude = 60000;
+	// coord_arr[5].longitude = 58800; coord_arr[5].lattitude = 62800;
+	// coord_arr[6].longitude = 50400; coord_arr[6].lattitude = 62300;
+	
+	
+	/* -- new path -- */
+	coord_arr[0].longitude = 50800; coord_arr[0].lattitude = 65200;
+	coord_arr[1].longitude = 50800; coord_arr[1].lattitude = 67200;
+	coord_arr[2].longitude = 57600; coord_arr[2].lattitude = 67200;
+	coord_arr[3].longitude = 57200; coord_arr[3].lattitude = 62800;
+	coord_arr[4].longitude = 51200; coord_arr[4].lattitude = 62000;
+	coord_arr[5].longitude = 55600; coord_arr[5].lattitude = 66000;
+	coord_arr[6].longitude = 52000; coord_arr[6].lattitude = 66800;
 	
 	init_pin_change_interrupt21();
 	draw_screen();
