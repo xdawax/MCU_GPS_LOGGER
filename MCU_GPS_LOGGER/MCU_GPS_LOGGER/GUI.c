@@ -19,13 +19,9 @@ Switch     PD5|11  18|PB4 MISO
 #define F_CPU 1000000UL
 
 #include <avr/io.h>
-#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <util/delay.h>
 #include <avr/pgmspace.h>
-#include <avr/interrupt.h>
-#include <avr/sleep.h>
 #include <avr/interrupt.h>
 
 // display routines for the graphics LCD
@@ -66,11 +62,10 @@ void init_pin_change_interrupt21(void)
 	sei();
 }
 
-void draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1){
-	uint8_t intercept, i, j, temp;
-	int8_t slope;
-	if (x0 > x1)
-	{
+void draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
+	uint8_t intercept, x, y, temp;
+	int8_t slope, delta_x, delta_y;
+	if (x0 > x1) {
 		// flip x coordinates
 		temp = x0;
 		x0 = x1;
@@ -81,14 +76,15 @@ void draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1){
 		y0 = y1;
 		y1 = temp;
 	}
-	slope = (y1 - y0)/(x1 - x0);
-	intercept = (y0 - slope*x0);
-	
-	for (i = x0+1; i < x1 ; i++)
-	{
-		j = slope*i + intercept;
-		NOKIA_setpixel(i, j);
+	delta_x = x1 - x0;
+	delta_y = y1 - y0;
+	slope = (10*delta_y) / delta_x ;
+	intercept = (y0 - (slope*x0)/10);
+	for (x = x0+1; x < x1 ; x++) {
+		y = ((slope*x)/10) + intercept;
+		NOKIA_setpixel(x, y);
 	}
+	
 }
 
 void draw_path(uint32_t num_coords) {
