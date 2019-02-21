@@ -64,7 +64,7 @@ void init_pin_change_interrupt21(void)
 
 void draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
 	uint8_t intercept, x, y, temp;
-	int8_t slope, delta_x, delta_y;
+	int8_t delta_x, delta_y, slope;
 	if (x0 > x1) {
 		// flip x coordinates
 		temp = x0;
@@ -80,10 +80,18 @@ void draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
 	delta_y = y1 - y0;
 	slope = (10*delta_y) / delta_x ;
 	intercept = (y0 - (slope*x0)/10);
-	for (x = x0+1; x < x1 ; x++) {
-		y = ((slope*x)/10) + intercept;
-		NOKIA_setpixel(x, y);
+	if (delta_x > delta_y) {
+		for (x = x0+1; x < x1 ; x++) {
+			y = ((slope*x)/10) + intercept;
+			NOKIA_setpixel(x, y);
+		}
+	} else if ( delta_y > delta_x) {
+		for (y = y0+1; y < y1 ; y++) {
+			x = ((y - intercept)/slope)*10;
+			NOKIA_setpixel(x,y);
+		}
 	}
+	
 	
 }
 
