@@ -16,7 +16,7 @@
 
 void USART_init()
 {
-	UCSR0B = (1 << TXEN0) | (1 << RXEN0);		// enable TX and RX
+	UCSR0B = (1 << RXEN0);					// enable RX
 	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);     // 8 data bits, 1 stop bit
 	
 	// Set baud to 9600
