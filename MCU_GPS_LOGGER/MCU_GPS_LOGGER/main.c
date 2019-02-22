@@ -11,14 +11,13 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include <stdlib.h>  // for nulls
 #include "USART.h"
 #include "EEPROM.h"
 #include "EEPROM_translator.h"
 #include "tests.h"
 
-#define GPS_INTERVAL 1000	// interval between gps readings in ms
-#define MAX_STRUCTS (LAST_BYTE - HEADER_SIZE) / sizeof(gps_t)
+#define GPS_INTERVAL 5	// skipping storing GPS_INTERVAL times == GPS_INTERVAL seconds
+
 char GPS_DATA[BUF_SIZE];
 
 
@@ -30,7 +29,7 @@ int main(void)
 	EEPROM_reset_header();
 
 	uint8_t i = 0;
-	
+	uint16_t interval = 0;
 	gps_t gps;
 
 	USART_transmit_string("\n\r###############################################################");
@@ -41,20 +40,23 @@ int main(void)
 	/* Replace with your application code */
     while (1) 
     {	
-	
+		GPS_DATA[0] = '0';
+		
 		while (!(is_gprmc(GPS_DATA))) {
 			USART_receive_string(GPS_DATA, BUF_SIZE);
 		}
 		if (is_gprmc(GPS_DATA)) {
+			interval++;	
+		}
+		
+		// every GPS_INTERVALth iteration store the struct
+		if((interval % GPS_INTERVAL) == 0) {
 			USART_transmit_string("\n\rFOUND GPS DATA!\n\r");
 			get_gps_coord(&gps, GPS_DATA);
 			print_struct(&gps);
-			GPS_DATA[0] = '0';
 			store_struct(&gps);
 			i++;
 		}
-		
-		_delay_ms(GPS_INTERVAL);
 		
 		if (i == MAX_STRUCTS) {
 			for (int j = 0; j < MAX_STRUCTS; j++) {
@@ -65,7 +67,6 @@ int main(void)
 			}
 			while(1);
 		}
-		
 		
     }
 	return 0;
