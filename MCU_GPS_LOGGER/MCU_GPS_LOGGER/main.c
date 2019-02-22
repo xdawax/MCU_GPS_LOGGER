@@ -27,7 +27,9 @@ int main(void)
 	// minimum startup with fr10esh EEPROM 
 	USART_init();
 	USART_clear_putty();
+
 	EEPROM_reset_header();
+
 	
 
 	uint8_t i = 0;
