@@ -78,19 +78,29 @@ void draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
 	}
 	delta_x = x1 - x0;
 	delta_y = y1 - y0;
-	slope = (10*delta_y) / delta_x ;
-	intercept = (y0 - (slope*x0)/10);
-	if (delta_x > delta_y) {
-		for (x = x0+1; x < x1 ; x++) {
-			y = ((slope*x)/10) + intercept;
-			NOKIA_setpixel(x, y);
-		}
-	} else if ( delta_y > delta_x) {
-		for (y = y0+1; y < y1 ; y++) {
-			x = ((y - intercept)/slope)*10;
+	if (delta_x == 0){
+		x = x0;
+		for (y = GET_MIN(y0,y1); y < GET_MAX(y0,y1) ; y++ )
+		{
 			NOKIA_setpixel(x,y);
 		}
+	} else {
+		slope = (10*delta_y) / delta_x ;
+		intercept = (y0 - (slope*x0)/10);
+		if (delta_x > delta_y) {
+			for (x = x0+1; x < x1 ; x++) {
+				y = ((slope*x)/10) + intercept;
+				NOKIA_setpixel(x, y);
+			}
+			} else if ( delta_y > delta_x) {
+			for (y = y0+1; y < y1 ; y++) {
+				x = ((y - intercept)/slope)*10;
+				NOKIA_setpixel(x,y);
+			}
+		}
+		
 	}
+	
 	
 	
 }
@@ -129,7 +139,7 @@ void draw_path(uint32_t num_coords) {
 		coord = coord_arr[i]; // get_struct(i, &coord);
 		x = (uint8_t)((coord.longitude - min_lon + slope_lon*PATH_INSET)/slope_lon);
 		y = (uint8_t)((coord.lattitude - min_lat + slope_lat*PATH_INSET)/slope_lat);
-		y = NOKIASIZEY-y;
+		y = NOKIASIZEY-y; // ? What does this do? 
 		NOKIA_setpixel(x,y);
 		NOKIA_setpixel(x+1,y+1);
 		NOKIA_setpixel(x-1,y-1);
@@ -139,9 +149,9 @@ void draw_path(uint32_t num_coords) {
 			draw_line(lastx, lasty, x, y);	
 		}
 		
-		
+		//NOKIA_print(0,40,"Check",0);
 		//char buffer[16];
-		//printf(buffer, "x: %d, y: %d", x, y);
+		//sprintf(buffer, "x: %d, y: %d", x, y);
 		//NOKIA_print(0, i*8, buffer, 0);
 		lastx = x;
 		lasty = y;
