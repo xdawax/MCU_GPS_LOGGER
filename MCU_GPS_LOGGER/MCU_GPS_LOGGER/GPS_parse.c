@@ -9,9 +9,9 @@
 #include "GPS_parse.h"
 
 int is_gprmc(const char *gps_str) {
-	char gprmc[7] = "$GPRMC";
+	char gprmc[8] = "\n$GPRMC";
 	int i;
-	for (i = 0; i < 6; i++) {
+	for (i = 0; i < 7; i++) {
 		if (gps_str[i] == '\0') return 0;
 		if (gps_str[i] != gprmc[i]) return 0;
 	}
@@ -64,8 +64,21 @@ int get_lattitude(gps_t *coord, char *gps_str) {
 	extract_arg_gstr(dir_str, gps_str, 4);
 	if (strcmp(dir_str, "S") == 0) direction *= -1;
 
-	coord->lattitude = direction*(atoi(deg_str)*1000000 + (100*atoi(min_str))/60);
+	coord->lattitude = direction*(string_to_int(deg_str)*1000000 + (100*string_to_int(min_str))/60);
 	return 1;
+}
+
+uint32_t string_to_int(char *str)
+{
+	uint32_t res = 0; // Initialize result
+	
+	// Iterate through all characters of input string and
+	// update result
+	for (int i = 0; str[i] != '\0'; ++i)
+	res = res*10 + str[i] - '0';
+	
+	// return result.
+	return res;
 }
 
 
@@ -88,7 +101,7 @@ int get_longitude(gps_t *coord, char *gps_str) {
 	extract_arg_gstr(dir_str, gps_str, 6);
 	if (strcmp(dir_str, "W") == 0) direction *= -1;
 
-	coord->longitude = direction*(atoi(deg_str)*1000000 + (100*atoi(min_str))/60);
+	coord->longitude = direction*(string_to_int(deg_str)*1000000 + (100*string_to_int(min_str))/60);
 	return 1;
 }
 
@@ -107,8 +120,8 @@ int get_date(gps_t *coord, char *gps_str) {
 	day_str[1] = date_str[1];
 	day_str[2] = '\0';
 
-	coord->month = (int8_t) atoi(month_str);
-	coord->day = (int8_t) atoi(day_str);
+	coord->month = (int8_t) string_to_int(month_str);
+	coord->day = (int8_t) string_to_int(day_str);
 	return 1;
 }
 
@@ -120,13 +133,13 @@ int get_time(gps_t *coord, char *gps_str) {
 	hour_str[0] = time_str[0];
 	hour_str[1] = time_str[1];
 	hour_str[2] = '\0';
-	coord->hour = (int8_t) atoi(hour_str);
+	coord->hour = (int8_t) string_to_int(hour_str);
 
 	char min_str[8];
 	min_str[0] = time_str[2];
 	min_str[1] = time_str[3];
 	min_str[2] = '\0';
-	coord->minute = (int8_t) atoi(min_str);
+	coord->minute = (int8_t) string_to_int(min_str);
 	return 1;
 }
 

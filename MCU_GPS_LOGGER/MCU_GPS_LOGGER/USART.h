@@ -12,7 +12,7 @@
 #ifndef F_CPU
 #define F_CPU 1000000
 #endif
-
+#include <stdint.h>
 
 #define BUF_SIZE 255	
 #define BYTE 8
