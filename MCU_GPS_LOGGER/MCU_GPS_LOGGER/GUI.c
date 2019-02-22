@@ -31,7 +31,7 @@ Switch     PD5|11  18|PB4 MISO
 #include "EEPROM_translator.h"
 // re-useable buffer for numeric-to-text conversion
 
-gps_t coord_arr[8]; 
+// gps_t coord_arr[8]; 
 
 
 ISR(PCINT2_vect) 
@@ -104,7 +104,7 @@ void draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
 void draw_path(uint32_t num_coords) {
 	gps_t coord;
 	uint8_t i;
-	coord = coord_arr[0]; // get_struct(0, &coord);
+	get_struct(0, &coord);
 	int32_t min_lon = coord.longitude;
 	int32_t max_lon = coord.longitude;
 	int32_t min_lat = coord.lattitude;
@@ -112,7 +112,7 @@ void draw_path(uint32_t num_coords) {
 	
 	/* get minimum and maxim values */
 	for (i = 1; i < num_coords ; i++ ) {
-		coord = coord_arr[i]; // get_struct(i, &coord);
+		get_struct(i, &coord);
 		if(min_lon > coord.longitude) {
 			min_lon = coord.longitude;
 		} else if (max_lon < coord.longitude) {
@@ -132,7 +132,7 @@ void draw_path(uint32_t num_coords) {
 	
 	uint8_t x,y, lastx, lasty;
 	for(i= 0; i < num_coords; i++){
-		coord = coord_arr[i]; // get_struct(i, &coord);
+		get_struct(i, &coord);
 		x = (uint8_t)((coord.longitude - min_lon + slope_lon*PATH_INSET)/slope_lon);
 		y = (uint8_t)((coord.lattitude - min_lat + slope_lat*PATH_INSET)/slope_lat);
 		y = NOKIASIZEY-y; // ? What does this do? 
@@ -155,7 +155,7 @@ void draw_path(uint32_t num_coords) {
 }
 
 void draw_path_screen() {
-	uint8_t num_coords = 7;// get_num_coordinates();
+	uint8_t num_coords = get_num_coordinates();
 	if (num_coords > 1) {
 		draw_path(num_coords);
 	} else {
@@ -229,13 +229,13 @@ void init_GUI()
 	
 	
 	/* -- new path -- */
-	coord_arr[0].longitude = 50800; coord_arr[0].lattitude = 65200;
-	coord_arr[1].longitude = 50800; coord_arr[1].lattitude = 67200;
-	coord_arr[2].longitude = 57600; coord_arr[2].lattitude = 67200;
-	coord_arr[3].longitude = 57200; coord_arr[3].lattitude = 62800;
-	coord_arr[4].longitude = 51200; coord_arr[4].lattitude = 62000;
-	coord_arr[5].longitude = 55600; coord_arr[5].lattitude = 66000;
-	coord_arr[6].longitude = 52000; coord_arr[6].lattitude = 66800;
+	// coord_arr[0].longitude = 50800; coord_arr[0].lattitude = 67200;
+	// coord_arr[1].longitude = 50800; coord_arr[1].lattitude = 67200;
+	// coord_arr[2].longitude = 57600; coord_arr[2].lattitude = 67200;
+	// coord_arr[3].longitude = 57200; coord_arr[3].lattitude = 62800;
+	// coord_arr[4].longitude = 51200; coord_arr[4].lattitude = 62000;
+	// coord_arr[5].longitude = 55600; coord_arr[5].lattitude = 66000;
+	// coord_arr[6].longitude = 52000; coord_arr[6].lattitude = 66800;
 	
 	init_pin_change_interrupt21();
 	draw_screen();
