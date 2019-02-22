@@ -9,9 +9,21 @@
 #define GUI_H_
 
 #define NUM_OPTION 2 
+#define MENU_START_STOP_LOGGING 0
+#define MENU_SHOW_PATH 1 
 
-int select_option;
+#define PATH_INSET 2
+#define GET_MIN(a, b) ((a < b) ? a : b)
+#define GET_MAX(a, b) ((a < b) ? b : a)
+
+
+int8_t select_option;
 char menu[5][60];
+
+int8_t is_logging;
+int8_t is_showing_path;
+char start_logging_str[16];
+char stop_logging_str[16];
 
 /*
 	Draws Menu and updates with selector

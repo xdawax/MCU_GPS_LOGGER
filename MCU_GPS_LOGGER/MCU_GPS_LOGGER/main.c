@@ -25,8 +25,9 @@ int main(void)
 	/* Uses PORT D pins 
 	USART_init();
 	USART_clear_putty();
-	EEPROM_reset_header();
 	*/
+	EEPROM_reset_header();
+	
 
 	init_GUI();
 	

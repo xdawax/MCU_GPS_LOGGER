@@ -24,20 +24,20 @@ Nokia.DC   PD2|4   25|PC2
 Nokia.SCE  PD3|5   24|PC1
 Nokia.RST  PD4|6   23|PC0
 */
-#define RST        PD4
-#define RST_PORT   PORTD
+#define RST        PC4
+#define RST_PORT   PORTC
 
 #define SCE        PD3
-#define SCE_PORT   PORTD
+#define SCE_PORT   PORTD    // light screen
 
-#define SCL        PD0
-#define SCL_PORT   PORTD
+#define SCL        PC0
+#define SCL_PORT   PORTC
 
-#define DC         PD2
-#define DC_PORT    PORTD
+#define DC         PC2
+#define DC_PORT    PORTC
 
 #define SD         PD1
-#define SD_PORT    PORTD
+#define SD_PORT    PORTD // screen blacked-out
 
 #define NOKIA_LED           PD5
 #define NOKIA_LED_PORT      PORTD
