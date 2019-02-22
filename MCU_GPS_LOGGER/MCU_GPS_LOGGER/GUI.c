@@ -63,8 +63,7 @@ void init_pin_change_interrupt21(void)
 }
 
 void draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
-	uint8_t intercept, x, y, temp;
-	int8_t delta_x, delta_y, slope;
+	int16_t intercept, x, y, temp, delta_x, delta_y, slope;
 	if (x0 > x1) {
 		// flip x coordinates
 		temp = x0;
@@ -82,27 +81,24 @@ void draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
 		x = x0;
 		for (y = GET_MIN(y0,y1); y < GET_MAX(y0,y1) ; y++ )
 		{
-			NOKIA_setpixel(x,y);
+			NOKIA_setpixel((uint8_t)x,(uint8_t)y);
 		}
 	} else {
-		slope = (10*delta_y) / delta_x ;
-		intercept = (y0 - (slope*x0)/10);
-		if (delta_x > delta_y) {
+		int16_t scale = 50;
+		slope = (scale*delta_y) / delta_x ;
+		intercept = (y0 - (slope*x0)/scale);
+		if (abs(delta_x) > abs(delta_y)) {
 			for (x = x0+1; x < x1 ; x++) {
-				y = ((slope*x)/10) + intercept;
-				NOKIA_setpixel(x, y);
+				y = ((slope*x)/scale) + intercept;
+				NOKIA_setpixel((uint8_t)x,(uint8_t)y);
 			}
-			} else if ( delta_y > delta_x) {
-			for (y = y0+1; y < y1 ; y++) {
-				x = ((y - intercept)/slope)*10;
-				NOKIA_setpixel(x,y);
+			} else if ( abs(delta_y) > abs(delta_x)) {
+			for (y = GET_MIN(y0,y1); y < GET_MAX(y0,y1) ; y++) {
+				x = (scale*(y - intercept))/slope;
+				NOKIA_setpixel((uint8_t)x,(uint8_t)y);
 			}
-		}
-		
-	}
-	
-	
-	
+		}	
+	}	
 }
 
 void draw_path(uint32_t num_coords) {
