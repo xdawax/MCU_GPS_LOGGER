@@ -7,6 +7,7 @@
 #include "tests.h"
 
 void test_all() {
+	
 	// translator tests
 	translator_test_all();
 	// EEPROM tests
@@ -15,4 +16,7 @@ void test_all() {
 		
 	// parser tests
 	test_get_gps_coord();
+	
+	// USART tests
+	USART_test_all();
 }

@@ -45,7 +45,8 @@ C_SRCS +=  \
 ../tests.c \
 ../test_parser.c \
 ../translator_test.c \
-../USART.c
+../USART.c \
+../USART_test.c
 
 
 PREPROCESSING_SRCS += 
@@ -63,7 +64,8 @@ main.o \
 tests.o \
 test_parser.o \
 translator_test.o \
-USART.o
+USART.o \
+USART_test.o
 
 OBJS_AS_ARGS +=  \
 EEPROM.o \
@@ -74,7 +76,8 @@ main.o \
 tests.o \
 test_parser.o \
 translator_test.o \
-USART.o
+USART.o \
+USART_test.o
 
 C_DEPS +=  \
 EEPROM.d \
@@ -85,7 +88,8 @@ main.d \
 tests.d \
 test_parser.d \
 translator_test.d \
-USART.d
+USART.d \
+USART_test.d
 
 C_DEPS_AS_ARGS +=  \
 EEPROM.d \
@@ -96,7 +100,8 @@ main.d \
 tests.d \
 test_parser.d \
 translator_test.d \
-USART.d
+USART.d \
+USART_test.d
 
 OUTPUT_FILE_PATH +=MCU_GPS_LOGGER.elf
 
@@ -169,6 +174,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./USART.o: .././USART.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./USART_test.o: .././USART_test.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328p -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\gcc\dev\atmega328p" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

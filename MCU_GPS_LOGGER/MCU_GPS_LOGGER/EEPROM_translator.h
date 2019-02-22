@@ -17,7 +17,7 @@
 #include "GPS_parse.h"
 #include <stdint.h>
 
-
+#define MAX_STRUCTS (LAST_BYTE - HEADER_SIZE) / sizeof(gps_t)
 /// Writes the provided struct to the EEPROM in the first available spot
 ///
 /// @param gps_data[in] the struct to be stored in EEPROM 

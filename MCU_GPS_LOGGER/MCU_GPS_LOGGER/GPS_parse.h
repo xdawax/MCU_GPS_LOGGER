@@ -9,9 +9,6 @@
 #ifndef GPS_PARSE_H_
 #define GPS_PARSE_H_
 
-// uses atoi()-function
-#include <stdlib.h>
-
 // uses strcmp()-function
 #include <string.h>
 
@@ -67,5 +64,5 @@ int is_gprmc(const char *gps_str);
 */
 int get_gps_coord(gps_t *coord, char *gps_str);
 
-
+uint32_t string_to_int(char *string);
 #endif /* GPS_PARSE_H_ */
