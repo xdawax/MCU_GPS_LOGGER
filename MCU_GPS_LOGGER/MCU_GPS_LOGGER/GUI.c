@@ -92,7 +92,7 @@ ISR(PCINT2_vect) {
 				}
 			break;
 			case(display_coords):
-				if (gps_index >= get_num_coordinates()) {
+				if (gps_index >= get_num_coordinates() - 1) {
 					gps_index = 0;
 				} else {
 					gps_index = gps_index+1;	
