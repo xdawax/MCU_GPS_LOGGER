@@ -230,13 +230,11 @@ void draw_path_screen() {
 void show_coords() {
 	uint8_t num_coords;
 	num_coords = get_num_coordinates();
-	/*
 	if (num_coords == 0) {
 		NOKIA_print(0, 0, "Not enough", 0);
 		NOKIA_print(0, 8, "coords", 0);
 		return;
 	} 
-	*/
 	gps_t coord;
 	char buffer[20];
 	
@@ -252,7 +250,7 @@ void show_coords() {
 	sprintf(buffer, "%ld", coord.longitude);
 	NOKIA_print(0, 4*8, buffer, 0);
 	
-	sprintf(buffer,"%d/%d %d:%d", coord.month,coord.day,coord.hour,coord.minute);
+	sprintf(buffer,"%s %d, %d:%d", months_str[coord.month-1], coord.day, coord.hour, coord.minute);
 	NOKIA_print(0, 5*8, buffer, 0);
 	
 }
@@ -303,6 +301,20 @@ void init_GUI() {
 	strcpy(menu[1], "Display path" );
 	strcpy(menu[2], "Show Coords");	
 	select_option = 0;
+	
+	strcpy(months_str[0] , "Jan") ;
+	strcpy(months_str[1] , "Feb") ;
+	strcpy(months_str[2] , "Mar") ;
+	strcpy(months_str[3] , "Apr") ;
+	strcpy(months_str[4] , "May") ;
+	strcpy(months_str[5] , "Jun") ;
+	strcpy(months_str[6] , "Jul") ;
+	strcpy(months_str[7] , "Aug") ;
+	strcpy(months_str[8] , "Sep") ;
+	strcpy(months_str[9] , "Oct") ;
+	strcpy(months_str[10],  "Nov");
+	strcpy(months_str[11],  "Dec");
+	
 	
 	/* Initiazing nokia display */
 	NOKIA_init(0);

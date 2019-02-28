@@ -31,6 +31,8 @@ enum display_state_t {
 char start_logging_str[16];
 char stop_logging_str[16];
 
+char months_str[12][4];
+
 /*
 	Draws Menu and updates with selector
 */
