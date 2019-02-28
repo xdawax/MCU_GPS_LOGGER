@@ -1,20 +1,20 @@
 /*
 ATmega8, 48, 88, 168, 328
 
-    /Reset PC6|1   28|PC5      LED
-Nokia.SCL  PD0|2   27|PC4      
-Nokia.SDIN PD1|3   26|PC3     
-Nokia.DC   PD2|4   25|PC2     
-Nokia.SCE  PD3|5   24|PC1
-Nokia.RST  PD4|6   23|PC0
-           Vcc|7   22|Gnd
-           Gnd|8   21|Aref
-Xtal       PB6|9   20|AVcc
-Xtal       PB7|10  19|PB5 SCK  
-Switch     PD5|11  18|PB4 MISO 
-           PD6|12  17|PB3 MOSI 
-           PD7|13  16|PB2      
-           PB0|14  15|PB1      
+     Reset    PC6|1   28|PC5	LED
+    GPS.TX    PD0|2   27|PC4	Nokia.RST 
+Nokia.SDIN    PD1|3   26|PC3	
+              PD2|4   25|PC2	Nokia.DC
+Nokia.SCE     PD3|5   24|PC1
+              PD4|6   23|PC0	Nokia.SCL
+              Vcc|7   22|Gnd
+              Gnd|8   21|Aref
+Xtal          PB6|9   20|AVcc
+Xtal          PB7|10  19|PB5 SCK  
+Down Button   PD5|11  18|PB4 MISO 
+Select Button PD6|12  17|PB3 MOSI 
+Up Button     PD7|13  16|PB2      
+              PB0|14  15|PB1      
 */
 #define F_CPU 1000000UL
 
@@ -37,11 +37,14 @@ Switch     PD5|11  18|PB4 MISO
 
 ISR(PCINT2_vect) 
 {
+	// DOWN-BUTTON
 	if(bit_is_clear(PIND,PD5))
 	{
 		select_option = (select_option+1)%NUM_OPTION;
 		draw_screen();
 	}
+	
+	// SELECT-BUTTON
 	if(bit_is_clear(PIND,PD6)) {
 		if (is_showing_path) {
 			is_showing_path = 0;
@@ -53,12 +56,26 @@ ISR(PCINT2_vect)
 		} 
 		draw_screen();	
 	}
+	
+	//UP-BUTTON
+	if (bit_is_clear(PIND,PD7))
+	{
+		if (select_option == 0)
+		{
+			select_option = NUM_OPTION-1;
+		} else {
+			select_option = (select_option-1)%NUM_OPTION;
+		}
+		draw_screen();
+		
+	}
+	
 }
 
 void init_pin_change_interrupt21(void)
 {
 	PCICR |= (1 << PCIE2); // SET PCIE2 for enabling interrupts ON portD
-	PCMSK2 |= (1 << PCINT21) | (1 << PCINT22); // set mask to look at PCINT21 and PCINT22 
+	PCMSK2 |= (1 << PCINT21) | (1 << PCINT22) | (1 << PCINT23); // set mask to look at PCINT21 PCINT22 and PCINT23
 	sei();
 }
 
@@ -202,7 +219,7 @@ void draw_menu_screen() {
 	NOKIA_print(0,0,buffer,2);
 	NOKIA_print(0,(2+select_option)*8,">",0);
 	int8_t i=0;
-	for (i=0; i<2; i++)
+	for (i=0; i<3; i++)
 	{
 		NOKIA_print(6,8*(i+2),menu[i], 0);
 	}
@@ -229,6 +246,7 @@ void init_GUI()
 	strcpy(stop_logging_str, "Stop logging");
 	strcpy(menu[0], start_logging_str );
 	strcpy(menu[1], "Display path" );
+	strcpy(menu[2], "Show Coords");	
 	select_option = 0;
 	
 	/* Initiazing nokia display */
@@ -242,6 +260,8 @@ void init_GUI()
 	PORTD |= (1 << PD5);
 	DDRD &= ~(1 << PD6);	// Make pin D6 input (button select)
 	PORTD |= (1 << PD6); 
+	DDRD &= ~(1 << PD7);	// Make pin D7 input (button up)
+	PORTD |= (1 << PD7);
 	
 	/* -- old path -- */
 	// coord_arr[0].longitude = 51200; coord_arr[0].lattitude = 60800;

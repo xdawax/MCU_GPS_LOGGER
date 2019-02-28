@@ -8,9 +8,10 @@
 #ifndef GUI_H_
 #define GUI_H_
 
-#define NUM_OPTION 2 
+#define NUM_OPTION 3 
 #define MENU_START_STOP_LOGGING 0
 #define MENU_SHOW_PATH 1 
+#define MENU_SHOW_COORDS 2
 
 #define PATH_INSET 2
 #define GET_MIN(a, b) ((a < b) ? a : b)
