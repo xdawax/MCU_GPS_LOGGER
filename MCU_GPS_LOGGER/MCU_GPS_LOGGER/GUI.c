@@ -126,8 +126,8 @@ void draw_path(uint32_t num_coords) {
 	}
 	
 	/* calculate scale constants */
-	const int32_t slope_lon = (max_lon - min_lon)/(NOKIASIZEX-2*PATH_INSET);
-	const int32_t slope_lat = (max_lat - min_lat)/(NOKIASIZEY-2*PATH_INSET);
+	const int32_t slope_lon = ((max_lon - min_lon) + (NOKIASIZEX-2*PATH_INSET)/2)/(NOKIASIZEX-2*PATH_INSET);
+	const int32_t slope_lat = ((max_lat - min_lat) + (NOKIASIZEY-2*PATH_INSET)/2)/(NOKIASIZEY-2*PATH_INSET);
 	/* actually draw path */
 	
 	uint8_t x,y, lastx, lasty;
