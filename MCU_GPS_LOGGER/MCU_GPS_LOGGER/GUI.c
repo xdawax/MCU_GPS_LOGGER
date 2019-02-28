@@ -99,6 +99,7 @@ ISR(PCINT2_vect) {
 				}
 			break;
 		}
+		draw_screen();
 	}
 }
 
@@ -229,29 +230,30 @@ void draw_path_screen() {
 void show_coords() {
 	uint8_t num_coords;
 	num_coords = get_num_coordinates();
-	
+	/*
 	if (num_coords == 0) {
 		NOKIA_print(0, 0, "Not enough", 0);
 		NOKIA_print(0, 8, "coords", 0);
 		return;
 	} 
-	uint8_t i;
+	*/
 	gps_t coord;
-	char coord_strs[5][12];
-	sprintf(coord_strs[0], "TOTAL : %d ", num_coords);
-	NOKIA_print(0, 0*8, coord_strs[0], 0);
-	sprintf(coord_strs[1], "GPS INDEX : %d", gps_index);
-	NOKIA_print(0, 1*8, coord_strs[1],0);
-	NOKIA_print(0, 3*8, "Lat",0);
-	NOKIA_print(0, 4*8, "Lon",0);
-	NOKIA_print(0, 5*8, "Time",0);
+	char buffer[20];
 	
-	for (i = 0; i < num_coords ; i++)
-	{
-		get_struct(i,&coord);
-		//coord[0] = 
-		//NOKIA_print(0,24,)	
-	}
+	get_struct(gps_index,&coord);
+	sprintf(buffer, "%d out of %d", gps_index ,num_coords);
+	NOKIA_print(0,0*8, buffer, 0);
+	
+	NOKIA_print(0, 1*8, "Latitude", 0);
+	sprintf(buffer, "%ld", coord.lattitude);
+	NOKIA_print(0, 2*8, buffer, 0);
+	
+	NOKIA_print(0, 3*8, "Longitude",0);
+	sprintf(buffer, "%ld", coord.longitude);
+	NOKIA_print(0, 4*8, buffer, 0);
+	
+	sprintf(buffer,"%d/%d %d:%d", coord.month,coord.day,coord.hour,coord.minute);
+	NOKIA_print(0, 5*8, buffer, 0);
 	
 }
 
