@@ -57,7 +57,7 @@ int get_lattitude(gps_t *coord, char *gps_str) {
 	deg_str[2] = '\0';
 	for (i = 2; i < 4; i++) min_str[i-2] = lat_str[i];
 	for (i = 5; i < 9; i++) min_str[i-3] = lat_str[i];
-	min_str[7] = '\0';
+	min_str[6] = '\0';
 
 	char dir_str[8];
 	int32_t direction = 1;
@@ -95,7 +95,7 @@ int get_longitude(gps_t *coord, char *gps_str) {
 	deg_str[3] = '\0';
 	for (i = 3; i < 5; i++) min_str[i-3] = lon_str[i];
 	for (i = 6; i < 10; i++) min_str[i-4] = lon_str[i];
-	min_str[8] = '\0';
+	min_str[6] = '\0';
 
 	char dir_str[8];
 	int32_t direction = 1;
