@@ -112,7 +112,7 @@ void draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
 				y = ((slope*x)/scale) + intercept;
 				NOKIA_setpixel((uint8_t)x,(uint8_t)y);
 			}
-			} else if ( abs(delta_y) > abs(delta_x)) {
+		} else {
 			for (y = GET_MIN(y0,y1); y < GET_MAX(y0,y1) ; y++) {
 				x = (scale*(y - intercept))/slope;
 				NOKIA_setpixel((uint8_t)x,(uint8_t)y);
