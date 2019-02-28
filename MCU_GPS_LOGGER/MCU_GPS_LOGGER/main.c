@@ -28,8 +28,6 @@ int main(void)
 	USART_init();
 	// USART_clear_putty();
 
-	EEPROM_reset_header();
-
 	init_GUI();
 	DDRC |= (1 << PC5);	// LED-Output
 	

@@ -14,6 +14,10 @@ void translator_test_all() {
 	test_num_coordinates();
 }
 
+void translate_reset_header() {
+	EEPROM_reset_header();
+}
+
 void test_num_coordinates() {
 	gps_t gps1;
 	

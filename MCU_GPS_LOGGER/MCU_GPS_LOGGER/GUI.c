@@ -50,6 +50,9 @@ ISR(PCINT2_vect)
 			is_showing_path = 0;
 		} else if (select_option == MENU_START_STOP_LOGGING) {
 			is_logging = !is_logging;
+			if (is_logging) {
+				translate_reset_header();
+			}
 		} else if (select_option == MENU_SHOW_PATH) {
 			// --- switch to showing path mode here --- 
 			is_showing_path = 1;

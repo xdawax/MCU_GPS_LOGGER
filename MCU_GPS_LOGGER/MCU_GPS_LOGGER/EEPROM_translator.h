@@ -47,4 +47,9 @@ void get_struct(uint8_t index, gps_t *gps_data);
 ///
 /// @returns the number of structs stored in EEPROM
 uint8_t get_num_coordinates();
+
+/// Resets the EEPROM header
+///
+/// @returns void
+void translate_reset_header();
 #endif /* EEPROM_TRANSLATOR_H_ */
