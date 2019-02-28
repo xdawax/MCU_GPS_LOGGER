@@ -64,7 +64,8 @@ int get_lattitude(gps_t *coord, char *gps_str) {
 	extract_arg_gstr(dir_str, gps_str, 4);
 	if (strcmp(dir_str, "S") == 0) direction *= -1;
 
-	coord->lattitude = direction*(string_to_int(deg_str)*1000000 + (100*string_to_int(min_str))/60);
+	//coord->lattitude = direction*(string_to_int(deg_str)*1000000 + (100*string_to_int(min_str))/60);
+	coord->lattitude = string_to_int(min_str);
 	return 1;
 }
 
@@ -101,7 +102,8 @@ int get_longitude(gps_t *coord, char *gps_str) {
 	extract_arg_gstr(dir_str, gps_str, 6);
 	if (strcmp(dir_str, "W") == 0) direction *= -1;
 
-	coord->longitude = direction*(string_to_int(deg_str)*1000000 + (100*string_to_int(min_str))/60);
+	//coord->longitude = direction*(string_to_int(deg_str)*1000000 + (100*string_to_int(min_str))/60);
+	coord->longitude = string_to_int(min_str);
 	return 1;
 }
 

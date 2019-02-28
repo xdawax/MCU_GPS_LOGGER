@@ -34,6 +34,7 @@ Switch     PD5|11  18|PB4 MISO
 // gps_t coord_arr[8]; 
 
 
+
 ISR(PCINT2_vect) 
 {
 	if(bit_is_clear(PIND,PD5))
@@ -49,7 +50,6 @@ ISR(PCINT2_vect)
 		} else if (select_option == MENU_SHOW_PATH) {
 			// --- switch to showing path mode here --- 
 			is_showing_path = 1;
-			// PORTC |= (1 << PC5); // LED-Display
 		} 
 		draw_screen();	
 	}
@@ -135,12 +135,37 @@ void draw_path(uint32_t num_coords) {
 		get_struct(i, &coord);
 		x = (uint8_t)((coord.longitude - min_lon + slope_lon*PATH_INSET)/slope_lon);
 		y = (uint8_t)((coord.lattitude - min_lat + slope_lat*PATH_INSET)/slope_lat);
-		y = NOKIASIZEY-y; // ? What does this do? 
-		NOKIA_setpixel(x,y);
-		NOKIA_setpixel(x+1,y+1);
-		NOKIA_setpixel(x-1,y-1);
-		NOKIA_setpixel(x+1,y-1);
-		NOKIA_setpixel(x-1,y+1);
+		y = NOKIASIZEY-y; // Flip the y-axis
+		
+		// Draw a cross for the first coordinate
+		if (i == 0)
+		{
+			NOKIA_setpixel(x,y);
+			NOKIA_setpixel(x+1,y+1);
+			NOKIA_setpixel(x-1,y-1);
+			NOKIA_setpixel(x+1,y-1);
+			NOKIA_setpixel(x-1,y+1);
+		}
+		
+		// Draw a circle for the last coordinate
+		if ( i == num_coords - 1)
+		{
+			NOKIA_setpixel(x,y);
+			NOKIA_setpixel(x+2,y);
+			NOKIA_setpixel(x+2,y+1);
+			NOKIA_setpixel(x+1,y+2);
+			NOKIA_setpixel(x,y+2);
+			NOKIA_setpixel(x-1,y+2);
+			NOKIA_setpixel(x-2,y+1);
+			NOKIA_setpixel(x-2,y);
+			NOKIA_setpixel(x-2,y-1);
+			NOKIA_setpixel(x-1,y-2);
+			NOKIA_setpixel(x,y-2);
+			NOKIA_setpixel(x+1,y-2);
+			NOKIA_setpixel(x+2,y-1);
+			
+		}
+
 		if (i > 0) {
 			draw_line(lastx, lasty, x, y);	
 		}

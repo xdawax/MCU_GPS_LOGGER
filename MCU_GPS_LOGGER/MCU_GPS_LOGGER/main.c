@@ -59,21 +59,28 @@ int main(void)
 		} */
 		GPS_DATA[0] = '0';
 		
+		// while no valid coordinates are received do this ? 
 		while (!(is_gprmc(GPS_DATA))) {
 			USART_receive_string(GPS_DATA, BUF_SIZE);
 		}
-		PORTC |= (1 << PC5); // LED-Display
+		//PORTC |= (1 << PC5); // LED-Display
 		if (is_gprmc(GPS_DATA)) {
 			interval++;	
 		}
 		
 		// every GPS_INTERVALth iteration store the struct
-		if((interval % GPS_INTERVAL) == 0) {
+		if((interval % GPS_INTERVAL) == 0 && is_logging == 1) {
 			// USART_transmit_string("\n\rFOUND GPS DATA!\n\r");
-			get_gps_coord(&gps, GPS_DATA);
-			// print_struct(&gps);
-			store_struct(&gps);
-			i++;
+			if(get_gps_coord(&gps, GPS_DATA)){
+				PORTC |= (1 << PC5);
+				// print_struct(&gps);
+				store_struct(&gps);
+				i++;
+				_delay_ms(100);
+				PORTC &= ~(1 << PC5);
+			}
+			
+			
 		}
 		
 		if (i == MAX_STRUCTS) {
