@@ -38,39 +38,67 @@ Up Button     PD7|13  16|PB2
 ISR(PCINT2_vect) {
 	// DOWN-BUTTON
 	if(bit_is_clear(PIND,PD5)) {
-		select_option = (select_option+1)%NUM_OPTION;
+		switch((int) display_state) {
+		case(display_menu):
+			select_option = (select_option+1)%NUM_OPTION;	
+		break;
+		case(display_coords):
+			if (gps_index == 0) {
+				uint8_t num = get_num_coordinates();
+				if (num) {
+					gps_index = num-1;
+				}
+			} else {
+				gps_index = gps_index-1;		
+			}
+		break;
+		}
 		draw_screen();
 	}
 	
 	// SELECT-BUTTON
 	if(bit_is_clear(PIND,PD6)) {
-		if (is_showing_path) {
-			is_showing_path = 0;
-		} else if (select_option == MENU_START_STOP_LOGGING) {
-			is_logging = !is_logging;
-			if (is_logging) {
-				translate_reset_header();
+		switch (display_state) {
+		case(display_menu):
+			if (select_option == MENU_START_STOP_LOGGING) {
+				is_logging = !is_logging;
+				if (is_logging) {
+					translate_reset_header();
+				}
+			} else if(select_option == MENU_SHOW_PATH) {
+				display_state = display_path;
+			} else if (select_option == MENU_SHOW_COORDS) {
+				display_state = display_coords;
 			}
-		} else if (select_option == MENU_SHOW_PATH) {
-			// --- switch to showing path mode --- 
-			is_showing_path = 1;
-		} else if (select_option == MENU_SHOW_COORDS){
-			// --- switch to showing coordinates ---
-			is_showing_coords = 1;
+		break;
+		case(display_path):
+			display_state = display_menu;
+		break;
+		case(display_coords):
+			display_state = display_menu;
+		break;
 		}
-		draw_screen();	
+		draw_screen();
 	}
 	
 	//UP-BUTTON
 	if (bit_is_clear(PIND,PD7)) {
-		if (select_option == 0) {
-			select_option = NUM_OPTION-1;
-		}else if (is_showing_coords == 1) {
-			gps_index = gps_index + 1;
-		}else {
-			select_option = (select_option-1)%NUM_OPTION;
+		switch((int)display_state) {
+			case(display_menu):
+				if (select_option == 0) {
+					select_option = NUM_OPTION-1;
+				} else {
+					select_option = select_option-1;
+				}
+			break;
+			case(display_coords):
+				if (gps_index >= get_num_coordinates()) {
+					gps_index = 0;
+				} else {
+					gps_index = gps_index+1;	
+				}
+			break;
 		}
-		draw_screen();	
 	}
 }
 
@@ -183,11 +211,6 @@ void draw_path(uint32_t num_coords) {
 		if (i > 0) {
 			draw_line(lastx, lasty, x, y);	
 		}
-		
-		//NOKIA_print(0,40,"Check",0);
-		//char buffer[16];
-		//sprintf(buffer, "x: %d, y: %d", x, y);
-		//NOKIA_print(0, i*8, buffer, 0);
 		lastx = x;
 		lasty = y;
 	}
@@ -203,18 +226,25 @@ void draw_path_screen() {
 	}
 }
 
-void show_coords(){
+void show_coords() {
 	uint8_t num_coords;
+	num_coords = get_num_coordinates();
+	
+	if (num_coords == 0) {
+		NOKIA_print(0, 0, "Not enough", 0);
+		NOKIA_print(0, 8, "coords", 0);
+		return;
+	} 
 	uint8_t i;
 	gps_t coord;
-	num_coords = get_num_coordinates();
-	sprintf(menu[0],"TOTAL : %d ",num_coords);
-	NOKIA_print(0,0*8,menu[0],0);
-	sprintf(menu[1],"GPS INDEX : %d",gps_index);
-	NOKIA_print(0,1*8,menu[1],0);
-	NOKIA_print(0,3*8,"Lat",0);
-	NOKIA_print(0,4*8,"Lon",0);
-	NOKIA_print(0,5*8,"Time",0);
+	char coord_strs[5][12];
+	sprintf(coord_strs[0], "TOTAL : %d ", num_coords);
+	NOKIA_print(0, 0*8, coord_strs[0], 0);
+	sprintf(coord_strs[1], "GPS INDEX : %d", gps_index);
+	NOKIA_print(0, 1*8, coord_strs[1],0);
+	NOKIA_print(0, 3*8, "Lat",0);
+	NOKIA_print(0, 4*8, "Lon",0);
+	NOKIA_print(0, 5*8, "Time",0);
 	
 	for (i = 0; i < num_coords ; i++)
 	{
@@ -223,7 +253,7 @@ void show_coords(){
 		//NOKIA_print(0,24,)	
 	}
 	
-	}
+}
 
 void draw_menu_screen() {
 	uint8_t num_coords = get_num_coordinates();
@@ -245,23 +275,26 @@ void draw_menu_screen() {
 
 void draw_screen() {
 	NOKIA_clearbuffer();
-	if (is_showing_path) {
-		draw_path_screen();
-	}else if (is_showing_coords) {
-		show_coords();
-	}else {
+	switch(display_state) {
+	case(display_menu):
 		draw_menu_screen();
+	break;
+	case(display_path):
+		draw_path_screen();
+	break;
+	case(display_coords):
+		show_coords();
+	break;
 	}
 	NOKIA_update();
 	_delay_ms(100);
 }
 
 
-void init_GUI() 
-{
+void init_GUI() {
 	/* Setting  variables */
 	is_logging = 0;
-	is_showing_path = 0;
+	display_state = display_menu;
 	strcpy(start_logging_str, "Start logging");
 	strcpy(stop_logging_str, "Stop logging");
 	strcpy(menu[0], start_logging_str );

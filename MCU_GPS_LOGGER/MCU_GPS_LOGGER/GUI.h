@@ -20,10 +20,14 @@
 
 int8_t select_option;
 char menu[5][20];
-char coord[5][12];
 
 uint8_t gps_index;
-int8_t is_logging, is_showing_path, is_showing_coords;
+int8_t is_logging; // , is_showing_path, is_showing_coords;
+enum display_state_t {
+	display_menu=0,
+	display_path=1,
+	display_coords=2
+} display_state;
 char start_logging_str[16];
 char stop_logging_str[16];
 
