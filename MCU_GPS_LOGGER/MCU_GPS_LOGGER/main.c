@@ -17,7 +17,7 @@
 #include "tests.h"
 #include "GUI.h"
 
-#define GPS_INTERVAL 5	// skipping storing GPS_INTERVAL times == GPS_INTERVAL seconds
+#define GPS_INTERVAL 15	// skipping storing GPS_INTERVAL times == GPS_INTERVAL seconds
 
 char GPS_DATA[BUF_SIZE];
 
