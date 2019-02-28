@@ -35,11 +35,9 @@ Up Button     PD7|13  16|PB2
 
 
 
-ISR(PCINT2_vect) 
-{
+ISR(PCINT2_vect) {
 	// DOWN-BUTTON
-	if(bit_is_clear(PIND,PD5))
-	{
+	if(bit_is_clear(PIND,PD5)) {
 		select_option = (select_option+1)%NUM_OPTION;
 		draw_screen();
 	}
@@ -54,29 +52,29 @@ ISR(PCINT2_vect)
 				translate_reset_header();
 			}
 		} else if (select_option == MENU_SHOW_PATH) {
-			// --- switch to showing path mode here --- 
+			// --- switch to showing path mode --- 
 			is_showing_path = 1;
-		} 
+		} else if (select_option == MENU_SHOW_COORDS){
+			// --- switch to showing coordinates ---
+			is_showing_coords = 1;
+		}
 		draw_screen();	
 	}
 	
 	//UP-BUTTON
-	if (bit_is_clear(PIND,PD7))
-	{
-		if (select_option == 0)
-		{
+	if (bit_is_clear(PIND,PD7)) {
+		if (select_option == 0) {
 			select_option = NUM_OPTION-1;
-		} else {
+		}else if (is_showing_coords == 1) {
+			gps_index = gps_index + 1;
+		}else {
 			select_option = (select_option-1)%NUM_OPTION;
 		}
-		draw_screen();
-		
+		draw_screen();	
 	}
-	
 }
 
-void init_pin_change_interrupt21(void)
-{
+void init_pin_change_interrupt21(void) {
 	PCICR |= (1 << PCIE2); // SET PCIE2 for enabling interrupts ON portD
 	PCMSK2 |= (1 << PCINT21) | (1 << PCINT22) | (1 << PCINT23); // set mask to look at PCINT21 PCINT22 and PCINT23
 	sei();
@@ -99,8 +97,7 @@ void draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1) {
 	delta_y = y1 - y0;
 	if (delta_x == 0){
 		x = x0;
-		for (y = GET_MIN(y0,y1); y < GET_MAX(y0,y1) ; y++ )
-		{
+		for (y = GET_MIN(y0,y1); y < GET_MAX(y0,y1) ; y++ ) {
 			NOKIA_setpixel((uint8_t)x,(uint8_t)y);
 		}
 	} else {
@@ -158,8 +155,7 @@ void draw_path(uint32_t num_coords) {
 		y = NOKIASIZEY-y; // Flip the y-axis
 		
 		// Draw a cross for the first coordinate
-		if (i == 0)
-		{
+		if (i == 0) {
 			NOKIA_setpixel(x,y);
 			NOKIA_setpixel(x+1,y+1);
 			NOKIA_setpixel(x-1,y-1);
@@ -168,8 +164,7 @@ void draw_path(uint32_t num_coords) {
 		}
 		
 		// Draw a circle for the last coordinate
-		if ( i == num_coords - 1)
-		{
+		if ( i == num_coords - 1) {
 			NOKIA_setpixel(x,y);
 			NOKIA_setpixel(x+2,y);
 			NOKIA_setpixel(x+2,y+1);
@@ -182,8 +177,7 @@ void draw_path(uint32_t num_coords) {
 			NOKIA_setpixel(x-1,y-2);
 			NOKIA_setpixel(x,y-2);
 			NOKIA_setpixel(x+1,y-2);
-			NOKIA_setpixel(x+2,y-1);
-			
+			NOKIA_setpixel(x+2,y-1);	
 		}
 
 		if (i > 0) {
@@ -209,6 +203,28 @@ void draw_path_screen() {
 	}
 }
 
+void show_coords(){
+	uint8_t num_coords;
+	uint8_t i;
+	gps_t coord;
+	num_coords = get_num_coordinates();
+	sprintf(menu[0],"TOTAL : %d ",num_coords);
+	NOKIA_print(0,0*8,menu[0],0);
+	sprintf(menu[1],"GPS INDEX : %d",gps_index);
+	NOKIA_print(0,1*8,menu[1],0);
+	NOKIA_print(0,3*8,"Lat",0);
+	NOKIA_print(0,4*8,"Lon",0);
+	NOKIA_print(0,5*8,"Time",0);
+	
+	for (i = 0; i < num_coords ; i++)
+	{
+		get_struct(i,&coord);
+		//coord[0] = 
+		//NOKIA_print(0,24,)	
+	}
+	
+	}
+
 void draw_menu_screen() {
 	uint8_t num_coords = get_num_coordinates();
 	if (is_logging) {
@@ -222,8 +238,7 @@ void draw_menu_screen() {
 	NOKIA_print(0,0,buffer,2);
 	NOKIA_print(0,(2+select_option)*8,">",0);
 	int8_t i=0;
-	for (i=0; i<3; i++)
-	{
+	for (i=0; i<3; i++) {
 		NOKIA_print(6,8*(i+2),menu[i], 0);
 	}
 }
@@ -232,7 +247,9 @@ void draw_screen() {
 	NOKIA_clearbuffer();
 	if (is_showing_path) {
 		draw_path_screen();
-	} else {
+	}else if (is_showing_coords) {
+		show_coords();
+	}else {
 		draw_menu_screen();
 	}
 	NOKIA_update();
